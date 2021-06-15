@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.social.friends">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".ui.EmojiAppication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true"
+        android:icon="@mipmap/ic_launcher_app_icon"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_app_icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/MakeFriends">
+        <activity android:name=".manage.userpost.FavouritePost" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".friendrequest.chatting.ShareMessages" />
+        <activity android:name=".friendrequest.chatting.background.DarkWallpaper" />
+        <activity android:name=".friendrequest.chatting.background.LightWallpaper" />
+        <activity android:name=".friendrequest.chatting.background.ViewWallpaper" />
+        <activity android:name=".friendrequest.chatting.background.SelectWallpaper" />
+        <activity android:name=".friendrequest.chatting.ViewMessageImages" />
+        <activity
+            android:name=".friendrequest.chatting.ChatWithFriends"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".friendrequest.SendFriendRequestDuplicate" />
+        <activity android:name=".ui.TabLayoutView" />
+        <activity android:name=".friendrequest.SendFriendRequest" />
+        <activity android:name=".manage.userpost.ViewPost" />
+        <activity android:name=".friendrequest.SearchFriends" />
+        <activity android:name=".manage.userpost.UserPostComment" />
+        <activity android:name=".manage.userpost.UpdatePost" />
+        <activity android:name=".manage.userprofile.ViewProfileImage" />
+        <activity android:name=".manage.userprofile.UpdateProfile" />
+        <activity android:name=".activity.Post" />
+        <activity android:name=".activity.UserProfile" />
+        <activity android:name=".activity.Notifications" />
+        <activity android:name=".activity.Chats" />
+        <activity android:name=".activity.Home" />
+        <activity android:name=".loginactivity.ResetPassword" />
+        <activity android:name=".loginactivity.SignUp" />
+        <activity android:name=".loginactivity.Login"/>
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- For Image Editor -->
+        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"/>
+        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorStickerActivity"/>
+        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorTextActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorCropActivity"/>
+        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity"/>
+
+        <!-- Facebook login -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+
+        <!-- Firebase Messaging -->
+        <service
+            android:name=".notification.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

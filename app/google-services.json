@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "89827427535",
+    "project_id": "make-friends-21376",
+    "storage_bucket": "make-friends-21376.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89827427535:android:fe5d3a0fb496351cfa23ba",
+        "android_client_info": {
+          "package_name": "com.social.friends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89827427535-hlhcg30cup013c40b9ti0d3ak0hlmh8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.social.friends",
+            "certificate_hash": "9b560c3bd12640679f815f1956bd937029496ca5"
+          }
+        },
+        {
+          "client_id": "89827427535-cskmigj38rsmu0sgk13lhk7ql65rj9bn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx_gAPM3UYgqGFSnW2RKhoUk2MRp1Ic-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89827427535-cskmigj38rsmu0sgk13lhk7ql65rj9bn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

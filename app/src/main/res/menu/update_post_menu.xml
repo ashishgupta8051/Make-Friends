@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_download_post"
+        android:orderInCategory="1"
+        android:title="Download"
+        />
+
+    <item
+        android:id="@+id/action_share_post"
+        android:orderInCategory="2"
+        android:title="Share"
+        />
+
+    <item
+        android:id="@+id/action_update_post"
+        android:orderInCategory="3"
+        android:title="Update Post"
+        />
+
+    <item
+        android:id="@+id/action_delete_post"
+        android:orderInCategory="4"
+        android:title="Delete Post"
+        />
+
+</menu>

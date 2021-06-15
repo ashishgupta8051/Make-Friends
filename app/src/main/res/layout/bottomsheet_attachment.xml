@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_10sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/pick_camera_click_image"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:src="@drawable/cameras"
+            app:layout_constraintRight_toLeftOf="@+id/pick_image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/pick_image"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:src="@drawable/image"
+            app:layout_constraintLeft_toRightOf="@+id/pick_camera_click_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_One"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camera"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintRight_toRightOf="@+id/pick_camera_click_image"
+            app:layout_constraintLeft_toLeftOf="@+id/pick_camera_click_image"
+            app:layout_constraintTop_toBottomOf="@+id/pick_camera_click_image"/>
+
+        <TextView
+            android:id="@+id/textView_Two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Image"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintRight_toRightOf="@+id/pick_image"
+            app:layout_constraintLeft_toLeftOf="@+id/pick_image"
+            app:layout_constraintTop_toBottomOf="@+id/pick_image"/>
+
+        <ImageView
+            android:id="@+id/pick_video"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:src="@drawable/video"
+            app:layout_constraintRight_toLeftOf="@+id/pick_audio"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_One" />
+
+        <ImageView
+            android:id="@+id/pick_audio"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:src="@drawable/audio_recording"
+            app:layout_constraintLeft_toRightOf="@+id/pick_video"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Two" />
+
+        <TextView
+            android:id="@+id/textView_Three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Video"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintRight_toRightOf="@+id/pick_video"
+            app:layout_constraintLeft_toLeftOf="@+id/pick_video"
+            app:layout_constraintTop_toBottomOf="@+id/pick_video"/>
+
+
+        <TextView
+            android:id="@+id/textView_Four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Audio"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintRight_toRightOf="@+id/pick_audio"
+            app:layout_constraintLeft_toLeftOf="@+id/pick_audio"
+            app:layout_constraintTop_toBottomOf="@+id/pick_audio"/>
+
+        <ImageView
+            android:id="@+id/pick_file"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/file"
+            app:layout_constraintRight_toRightOf="@+id/textView_Four"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_Three"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Three" />
+
+        <TextView
+            android:id="@+id/textView_Five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Files"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:paddingBottom="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintRight_toRightOf="@+id/pick_file"
+            app:layout_constraintLeft_toLeftOf="@+id/pick_file"
+            app:layout_constraintTop_toBottomOf="@+id/pick_file"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

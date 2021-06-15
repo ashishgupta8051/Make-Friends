@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/message_const1"
+    tools:context=".friendrequest.chatting.ChatWithFriends">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/chat_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/purple_500"/>
+
+    <ImageView
+        android:id="@+id/chat_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chat_toolbar"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/chat_back_button"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:src="@drawable/back_arrow"
+        />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/chat_User_Profile_Image"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:clickable="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toRightOf="@+id/chat_back_button"
+        android:src="@drawable/profile_image"
+        />
+
+    <TextView
+        android:id="@+id/chat_User_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:singleLine="true"
+        android:text="User Name"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:layout_toRightOf="@id/chat_User_Profile_Image"
+        />
+
+    <TextView
+        android:id="@+id/chat_Online_Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:singleLine="true"
+        android:text="Online"
+        android:textColor="@color/white"
+        android:textSize="12dp"
+        android:layout_below="@id/chat_User_Name"
+        android:layout_toRightOf="@id/chat_User_Profile_Image"
+        />
+
+    <ImageView
+        android:id="@+id/mute_icon"
+        android:layout_width="55px"
+        android:layout_height="55px"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/_13sdp"
+        android:layout_marginRight="50dp"
+        android:src="@drawable/mute_icon"
+        android:visibility="invisible" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chat_toolbar"
+        android:layout_above="@+id/chat_input_box">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="-42dp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/purple_500"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.vanniktech.emoji.EmojiEditText
+        android:id="@+id/chat_input_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="46dp"
+        android:layout_marginRight="58dp"
+        android:hint="Type your Message ..."
+        android:textColorHint="#696969"
+        android:maxHeight="90dp"
+        android:paddingRight="20dp"
+        android:paddingLeft="40dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/message_editbox_border"/>
+
+    <ImageView
+        android:id="@+id/chat_message3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/message_send"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4.6dp"/>
+
+    <ImageView
+        android:id="@+id/thumb"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/thumb"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="4.6dp"/>
+
+    <ImageView
+        android:id="@+id/emoji"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/emoji"
+        android:layout_marginLeft="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="9dp"/>
+
+    <ImageView
+        android:id="@+id/chat_attachment"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="2dp"
+        android:src="@drawable/attach"/>
+
+</RelativeLayout>

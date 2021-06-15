@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".friendrequest.SearchFriends">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_friend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/clear_all"
+        tools:listitem="@layout/search_friends_list"/>
+
+      <TextView
+          android:id="@+id/clear_all"
+          android:layout_width="match_parent"
+          android:layout_height="20dp"
+          android:text=" Clear all search History "
+          android:textColor="@color/black"
+          android:background="@color/grey"
+          android:textStyle="bold"
+          android:gravity="center"
+          android:visibility="invisible"
+          android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

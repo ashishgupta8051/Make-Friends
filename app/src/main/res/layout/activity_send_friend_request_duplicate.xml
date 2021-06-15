@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".friendrequest.SendFriendRequestDuplicate">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/friend_request_const2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/view_profile_Image2"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:clickable="true"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="2dp"
+            android:src="@drawable/profile_image"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/view_name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="9dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14.5dp"
+            app:layout_constraintLeft_toRightOf="@+id/view_profile_Image2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/view_users_name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14.5dp"
+            app:layout_constraintLeft_toRightOf="@+id/view_profile_Image2"
+            app:layout_constraintTop_toBottomOf="@+id/view_name2" />
+
+        <TextView
+            android:id="@+id/view_email2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14.5dp"
+            app:layout_constraintLeft_toRightOf="@+id/view_profile_Image2"
+            app:layout_constraintTop_toBottomOf="@+id/view_users_name2" />
+
+        <TextView
+            android:id="@+id/view_dob2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14.5dp"
+            app:layout_constraintLeft_toRightOf="@+id/view_profile_Image2"
+            app:layout_constraintTop_toBottomOf="@+id/view_email2" />
+
+        <TextView
+            android:id="@+id/view_address2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="3dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="14.5dp"
+            app:layout_constraintLeft_toRightOf="@+id/view_profile_Image2"
+            app:layout_constraintTop_toBottomOf="@+id/view_dob2" />
+
+        <TextView
+            android:id="@+id/view_bio2"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="5dp"
+            android:maxLines="3"
+            android:maxLength="136"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_profile_Image2" />
+
+        <Button
+            android:id="@+id/friend_request_bt3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text=" Add Friend "
+            android:textColor="@color/white"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_bio2" />
+
+        <Button
+            android:id="@+id/unfriend2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintRight_toLeftOf="@+id/decline_friend_request_bt3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_bio2" />
+
+        <Button
+            android:id="@+id/decline_friend_request_bt3"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text=" DECLINE "
+            android:visibility="invisible"
+            android:textColor="@color/white"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/unfriend2"
+            app:layout_constraintTop_toBottomOf="@+id/view_bio2" />
+
+        <Button
+            android:id="@+id/send_message2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Message"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/unfriend2"
+            app:layout_constraintTop_toBottomOf="@+id/view_bio2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_friend_recycler2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="255dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        tools:listitem="@layout/profile_view_post_list"
+        app:layout_constraintTop_toBottomOf="@+id/friend_request_const2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/privacy_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:textSize="24dp"
+        android:text="Privacy Policy"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/privacy2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <ImageView
+        android:id="@+id/privacy2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/privacy"
+        app:layout_constraintTop_toBottomOf="@+id/friend_request_const2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/purple_500"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/friend_request_const2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

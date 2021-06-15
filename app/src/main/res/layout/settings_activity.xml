@@ -1,0 +1,109 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/i1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/fav"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/save_post"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Favorite Post"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/i1"/>
+
+        <ImageView
+            android:id="@+id/i4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/password"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@+id/i1"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/changePasswordEdt"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Change Password"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp"
+            app:layout_constraintTop_toBottomOf="@+id/save_post"
+            app:layout_constraintLeft_toRightOf="@+id/i1"/>
+
+        <ImageView
+            android:id="@+id/i2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/theme"
+            app:layout_constraintTop_toBottomOf="@+id/i4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_alignParentLeft="true"/>
+
+
+        <TextView
+            android:id="@+id/theme"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Theme"
+            android:layout_below="@+id/save_post"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@+id/changePasswordEdt"
+            app:layout_constraintLeft_toRightOf="@+id/i3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp" />
+
+
+        <ImageView
+            android:id="@+id/i3"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/logout"
+            app:layout_constraintTop_toBottomOf="@+id/i2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_alignParentLeft="true"/>
+
+
+        <TextView
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="Logout"
+            app:layout_constraintTop_toBottomOf="@+id/theme"
+            app:layout_constraintLeft_toRightOf="@+id/i3"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_toRightOf="@+id/i3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15sdp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="@dimen/_5sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_profile_image3"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            app:civ_border_color="@color/black"
+            app:civ_border_width="@dimen/_1sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:src="@drawable/profile_image"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/user_name3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginLeft="@dimen/_6sdp"
+            android:layout_toRightOf="@+id/user_profile_image3"/>
+
+        <TextView
+            android:id="@+id/comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginLeft="@dimen/_6sdp"
+            android:singleLine="true"
+            android:layout_below="@+id/user_name3"
+            android:layout_toRightOf="@+id/user_profile_image3"
+            />
+
+        <com.vanniktech.emoji.EmojiTextView
+            android:id="@+id/post_comment3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_1sdp"
+            android:layout_below="@+id/user_profile_image3"
+            />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:id="@+id/like_comment"
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
+                    android:src="@drawable/fav"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_alignParentRight="true" />
+
+                <TextView
+                    android:id="@+id/count_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 likes"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/like_comment"
+                    app:layout_constraintLeft_toLeftOf="@+id/like_comment"
+                    app:layout_constraintRight_toRightOf="@+id/like_comment"
+                    />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
