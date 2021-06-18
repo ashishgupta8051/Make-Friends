@@ -263,7 +263,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Check(progressDialog);
+                    Check(progressDialog,"You are login with your 𝐆𝐦𝐚𝐢𝐥 𝐀𝐜𝐜𝐨𝐮𝐧𝐭");
                 }else {
                     Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -313,7 +313,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Check(progressDialog);
+                    Check(progressDialog, "You are login with your 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐀𝐜𝐜𝐨𝐮𝐧𝐭.");
                 }else {
                     progressDialog.dismiss();
                     Toast.makeText(Login.this, "Login Failed", Toast.LENGTH_SHORT).show();
@@ -324,7 +324,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void Check(AlertDialog progressDialog) {
+    private void Check(AlertDialog progressDialog, String loginDetails) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -373,8 +373,8 @@ public class Login extends AppCompatActivity {
                     String Name = firebaseUser.getDisplayName();
                     String Email = firebaseUser.getEmail();
                     String CurrentUserUid = firebaseAuth.getCurrentUser().getUid();
-                    String Dob = "",Address = "",Bio = "",ProfilePic = "None",usersName = "",UserValue = "1";
-                    UserDetails userDetails = new UserDetails(Name,Email,Dob,Address,Bio,ProfilePic,usersName,UserValue,CurrentUserUid,"",""
+                    String Dob = "",Address = "",Bio = "",ProfilePic = "None",usersName = "";
+                    UserDetails userDetails = new UserDetails(Name,Email,Dob,Address,Bio,ProfilePic,usersName,loginDetails,CurrentUserUid,"",""
                             ,"",Url,"");
                     databaseReference.setValue(userDetails);
                     sharedPrefManager.saveWallpaper("d");

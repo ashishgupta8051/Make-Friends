@@ -8,7 +8,7 @@ public class UserDetails {
     String UserBio;
     String UserProfileImageUrl;
     String UsersName;
-    String UserValue;
+    String LoginDetails;
     String UserUid;
     String OnlineDate;
     String OnlineTime;
@@ -19,7 +19,7 @@ public class UserDetails {
     public UserDetails(){}
 
     public UserDetails(String userName, String userEmail, String userDob, String userAddress, String userBio,String userProfileImageUrl,
-                       String usersName, String userValue, String userUid, String onlineDate, String onlineTime, String onlineStatus,
+                       String usersName, String loginDetails, String userUid, String onlineDate, String onlineTime, String onlineStatus,
                        String chatBackgroundWall, String userPassword) {
         UserName = userName;
         UserEmail = userEmail;
@@ -28,7 +28,7 @@ public class UserDetails {
         UserBio = userBio;
         UserProfileImageUrl = userProfileImageUrl;
         UsersName = usersName;
-        UserValue = userValue;
+        LoginDetails = loginDetails;
         UserUid = userUid;
         OnlineDate = onlineDate;
         OnlineTime = onlineTime;
@@ -83,9 +83,13 @@ public class UserDetails {
 
     public void setUsersName(String usersName) { UsersName = usersName; }
 
-    public String getUserValue() { return UserValue; }
+    public String getLoginDetails() {
+        return LoginDetails;
+    }
 
-    public void setUserValue(String userValue) { UserValue = userValue; }
+    public void setLoginDetails(String loginDetails) {
+        LoginDetails = loginDetails;
+    }
 
     public String getUserUid() { return UserUid; }
 

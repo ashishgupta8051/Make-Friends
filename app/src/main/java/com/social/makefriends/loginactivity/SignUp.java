@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.PatternMatcher;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -74,9 +76,12 @@ public class SignUp extends AppCompatActivity {
         if (TextUtils.isEmpty(Name)){
             name.requestFocus();
             name.setError("Enter Name");
-        }else if (TextUtils.isEmpty(Email)){
+        } else if (TextUtils.isEmpty(Email)){
             email.requestFocus();
             email.setError("Enter Email Id");
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(Email).matches()){
+            email.requestFocus();
+            email.setError("Enter Valid Email Id");
         }else if (TextUtils.isEmpty(Password)){
             password.requestFocus();
             password.setError("Enter Password");
@@ -117,9 +122,9 @@ public class SignUp extends AppCompatActivity {
 
     private void SendUserData() {
         String CurrentUserUid = firebaseAuth.getCurrentUser().getUid();
-        String Dob = "",Address = "",Bio = "",profileImageUrl = "None",userName = "",UserValue = "1";
+        String Dob = "",Address = "",Bio = "",profileImageUrl = "None",userName = "",loginDetails = "You are login with 𝐄𝐦𝐚𝐢𝐥 and 𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝.";
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
-        UserDetails userDetails = new UserDetails(Name,Email,Dob,Address,Bio,profileImageUrl,userName,UserValue,CurrentUserUid,""
+        UserDetails userDetails = new UserDetails(Name,Email,Dob,Address,Bio,profileImageUrl,userName,loginDetails,CurrentUserUid,""
                 ,"","",url,Password);
         databaseReference.setValue(userDetails);
 

@@ -3,8 +3,10 @@ package com.social.makefriends.activity;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -12,6 +14,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -59,12 +62,12 @@ public class Post extends AppCompatActivity {
     private ImageView post_image;
     private EditText caption;
     private Button post_button;
-    private Uri uri;
+    private Uri finalUri;
     private String Caption,CurrentDate,CurrentTime,PostImageUrl;
     private long countPost = 0;
     private long countPostProfile = 0;
     private static final int PERMISSION = 999;
-    private ActivityResultLauncher<Intent> pickResultLauncher;
+    private ActivityResultLauncher<String> pickResultLauncher;
     private ActivityResultLauncher<Intent> launcher;
 
     @Override
@@ -89,9 +92,7 @@ public class Post extends AppCompatActivity {
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(Post.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    pickResultLauncher.launch(intent);
+                    pickResultLauncher.launch("image/*");
                 }else {
                     requestPermission();
                 }
@@ -102,7 +103,7 @@ public class Post extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Caption = caption.getText().toString();
-                if (uri == null){
+                if (finalUri == null){
                     Toast.makeText(Post.this, "Please select Image", Toast.LENGTH_SHORT).show();
                 }else if (TextUtils.isEmpty(Caption)){
                     caption.setError("Write your caption");
@@ -166,25 +167,19 @@ public class Post extends AppCompatActivity {
             }
         });
 
-        pickResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
+        pickResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
                     @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK){
-                            Intent data = result.getData();
-                            uri = data.getData();
+                    public void onActivityResult(Uri result) {
+                        if (result != null){
                             Intent dsPhotoEditorIntent = new Intent(getApplicationContext(), DsPhotoEditorActivity.class);
-                            dsPhotoEditorIntent.setData(uri);
+                            dsPhotoEditorIntent.setData(result);
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF6200EE"));
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FFFFFF"));
 
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,new int[]{
                                     DsPhotoEditorActivity.TOOL_WARMTH,DsPhotoEditorActivity.TOOL_PIXELATE});
                             launcher.launch(dsPhotoEditorIntent);
-//                            startActivityForResult(dsPhotoEditorIntent, 200);
-
-                        }else {
-                            Log.e("Error","Pick Image Error");
                         }
                     }
         });
@@ -195,10 +190,10 @@ public class Post extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK){
                             Intent intent = result.getData();
-                            Uri data = intent.getData();
-                            Picasso.get().load(data).into(post_image);
+                            finalUri = intent.getData();
+                            Picasso.get().load(intent.getData()).into(post_image);
                         }else {
-                            Log.e("Error","Pick Image Error 2");
+                            Log.e("Result","Error in DsPhotoEditor Intent");
                         }
                     }
         });
@@ -210,9 +205,7 @@ public class Post extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType("image/*");
-                    pickResultLauncher.launch(intent);
+                    pickResultLauncher.launch("image/*");
                     Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Enable Permission", Toast.LENGTH_SHORT).show();
@@ -220,31 +213,6 @@ public class Post extends AppCompatActivity {
             }
         }
     }
-
-  /*  @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK){
-            uri = data.getData();
-            switch (requestCode){
-                case PICK_IMAGE:
-                    Intent dsPhotoEditorIntent = new Intent(this, DsPhotoEditorActivity.class);
-                    dsPhotoEditorIntent.setData(uri);
-                    dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF6200EE"));
-                    dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FFFFFF"));
-
-                    dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,new int[]{
-                            DsPhotoEditorActivity.TOOL_WARMTH,DsPhotoEditorActivity.TOOL_PIXELATE});
-                    startActivityForResult(dsPhotoEditorIntent, 200);
-                    break;
-                case 200:
-                    Picasso.get().load(uri).fit().into(post_image);
-                    Log.i("URI",String.valueOf(uri));
-                    break;
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }*/
 
     private void SendPostInformation(AlertDialog progressDialog, TextView message) {
         String userId = firebaseAuth.getCurrentUser().getUid();
@@ -294,7 +262,7 @@ public class Post extends AppCompatActivity {
             }
         });
 
-        storageReference.putFile(uri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+        storageReference.putFile(finalUri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());

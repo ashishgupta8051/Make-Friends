@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".loginactivity.LoginWithPhone">
+    tools:context=".loginactivity.OTPVerification">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/const1"
+        android:id="@+id/const2"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@color/purple_500"
@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In with Phone"
+            android:text="OTP Verification"
             android:textColor="@color/black"
             android:textSize="35dp"
             android:layout_marginLeft="20dp"
@@ -30,7 +30,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
-        android:id="@+id/phoneview"
+        android:id="@+id/phoneview1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/wave"
@@ -43,10 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/phoneview"
+        app:layout_constraintTop_toBottomOf="@+id/phoneview1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        >
+        app:layout_constraintRight_toRightOf="parent">
 
         <ImageView
             android:layout_width="120dp"
@@ -56,45 +55,39 @@
             android:layout_marginTop="20dp"/>
 
         <TextView
+            android:id="@+id/number"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please enter your phone number"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Verify number"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_gravity="center"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.mukesh.OtpView
+            android:id="@+id/otp_view"
+            android:layout_margin="15dp"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="horizontal">
-
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <EditText
-                android:id="@+id/et_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:inputType="phone"/>
-
-        </LinearLayout>
+            android:layout_marginTop="72dp"
+            android:inputType="number"
+            android:itemBackground="#E3E1E1"
+            app:OtpItemCount="6"
+            app:OtpLineColor="@color/teal_700"
+            android:focusableInTouchMode="true"
+            app:OtpViewType="rectangle"
+            />
 
         <Button
-            android:id="@+id/btn_submit"
+            android:id="@+id/btn_verify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="next"
+            android:text="Verify"
             android:backgroundTint="@color/teal_700"/>
 
+
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

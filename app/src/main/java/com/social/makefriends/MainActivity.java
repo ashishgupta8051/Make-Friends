@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,9 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getWindow().setStatusBarColor((ContextCompat.getColor(MainActivity.this, R.color.Splash)));
+        this.getWindow().setStatusBarColor(Color.parseColor("#338CB1"));
         getSupportActionBar().hide();
-
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         Thread thread = new Thread(){
