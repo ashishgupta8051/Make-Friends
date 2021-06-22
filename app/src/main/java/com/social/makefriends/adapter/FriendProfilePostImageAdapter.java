@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -58,7 +59,15 @@ public class FriendProfilePostImageAdapter extends RecyclerView.Adapter<FriendPr
                 if (snapshot.exists()){
                     UserPost userPost = snapshot.getValue(UserPost.class);
                     String image = userPost.getPostImage();
-                    Picasso.get().load(image).placeholder(R.drawable.progress).into(holder.PostImage);
+
+                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+                    circularProgressDrawable.setStrokeWidth(8);
+                    circularProgressDrawable.setCenterRadius(35);
+                    circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+                    circularProgressDrawable.start();
+
+
+                    Picasso.get().load(image).placeholder(circularProgressDrawable).into(holder.PostImage);
                 }
             }
 

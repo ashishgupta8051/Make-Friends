@@ -63,7 +63,7 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
     private DatabaseReference getUserDetailsRef;
     private TextView Name,UserName,Email,Dob,Address,Bio,PrivacyText;
     private CircleImageView Profile_Image;
-    private ImageView PrivacyImage;
+    private ImageView PrivacyImage,noPostAvailable;
     private Button Button1,Button2,Button3,Button4;
     private String CurrentUserId,CURRENT_STATE,CurrentTime,CurrentDate;
     private DatabaseReference SendFriendRequestRef,FriendRef,userPost;
@@ -114,6 +114,8 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
 
         Profile_Image = (CircleImageView)findViewById(R.id.view_profile_Image2);
         PrivacyImage = (ImageView)findViewById(R.id.privacy2);
+
+        noPostAvailable = findViewById(R.id.noPostFrndReqDup);
 
         recycler = (RecyclerView)findViewById(R.id.search_friend_recycler2);
         recycler.setLayoutManager(new GridLayoutManager(this,3));
@@ -262,6 +264,7 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
                                 friendProfilePostImageAdapterDuplicate.notifyDataSetChanged();
                                 progressBar.setVisibility(View.INVISIBLE);
                             }else {
+                                noPostAvailable.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
                         }

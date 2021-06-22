@@ -3,6 +3,7 @@ package com.social.makefriends.manage.userprofile;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.content.Intent;
 import android.os.Build;
@@ -48,7 +49,14 @@ public class ViewProfileImage extends AppCompatActivity {
                     if (ProfileImage.equals("None")){
                        imageView.setImageResource(R.drawable.profile_image);
                     }else {
-                        Picasso.get().load(ProfileImage).fit().placeholder(R.drawable.profile_image).into(imageView);
+
+                        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(ViewProfileImage.this);
+                        circularProgressDrawable.setStrokeWidth(10);
+                        circularProgressDrawable.setCenterRadius(45);
+                        circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+                        circularProgressDrawable.start();
+
+                        Picasso.get().load(ProfileImage).fit().placeholder(circularProgressDrawable).into(imageView);
                     }
                 }
             }

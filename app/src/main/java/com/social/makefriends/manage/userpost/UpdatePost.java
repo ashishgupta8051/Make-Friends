@@ -2,6 +2,7 @@ package com.social.makefriends.manage.userpost;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,7 +65,14 @@ public class UpdatePost extends AppCompatActivity {
                 if (snapshot.exists()){
                     String Caption = snapshot.child("caption").getValue().toString();
                     String Image = snapshot.child("postImage").getValue().toString();
-                    Picasso.get().load(Image).fit().placeholder(R.drawable.progress).into(postImage);
+
+                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(UpdatePost.this);
+                    circularProgressDrawable.setStrokeWidth(10);
+                    circularProgressDrawable.setCenterRadius(45);
+                    circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+                    circularProgressDrawable.start();
+
+                    Picasso.get().load(Image).fit().placeholder(circularProgressDrawable).into(postImage);
                     postCaption.setText(Caption);
                 }
             }

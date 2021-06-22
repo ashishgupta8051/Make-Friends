@@ -29,7 +29,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +54,6 @@ import com.social.makefriends.manage.userpost.UpdatePost;
 import com.social.makefriends.model.FavPost;
 import com.social.makefriends.model.UserDetails;
 import com.squareup.picasso.Picasso;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -60,6 +61,9 @@ import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.content.ContentValues.TAG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyViewHolder> implements ActivityCompat.OnRequestPermissionsResultCallback {
     private Bitmap bitmap;
@@ -102,8 +106,13 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
             Picasso.get().load(Profile_Pic).fit().placeholder(R.drawable.profile_image).into(holder.ProfilePic);
         }
 
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(10);
+        circularProgressDrawable.setCenterRadius(45);
+        circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+        circularProgressDrawable.start();
         //Post Image
-        Picasso.get().load(PostImage).placeholder(R.drawable.progress).into(holder.PostImage);
+        Picasso.get().load(PostImage).placeholder(circularProgressDrawable).into(holder.PostImage);
 
         holder.UserName.setText(model.getUserName());
         holder.Date.setText(model.getCurrentDate());
@@ -344,11 +353,15 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.action_download_post:
-                                if (ContextCompat.checkSelfPermission(context,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                if (Build.VERSION.SDK_INT >= 23){
+                                     if (ContextCompat.checkSelfPermission(context,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                     savePostImage(context,model);
                                 }else {
                                     requestPermission(context);
+                                }
+                                }else {
+                                    savePostImage(context,model);
                                 }
                                 break;
                             case R.id.action_share_post:
@@ -489,7 +502,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
 
     private void requestPermission(Activity v) {
         if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             new androidx.appcompat.app.AlertDialog.Builder(context)
                     .setTitle("Permission needed")
                     .setMessage("This permission is needed because of this and that")
@@ -497,7 +510,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions((Activity) context,
-                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
                         }
                     })
                     .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -509,29 +522,24 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                     .create().show();
         } else {
             ActivityCompat.requestPermissions((Activity) context,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
         }
     }
 
     private void savePostImage(Activity v, AllPost model) {
         String title = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
-        String Message = model.getPostImage();
-        DownloadManager.Request request=new DownloadManager.Request(Uri.parse(Message));
+        String url = model.getPostImage();
+
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse(url));
         request.setTitle(title);
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB){
-//            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        }
+        //request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         String folder = "/Make Friends/Post Image";
-        try {
-            request.setDestinationInExternalPublicDir(folder,title+".png");
-        }catch (Exception e){
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,title+".png");
-        }
+        request.setDestinationInExternalPublicDir(folder,title+".jpg");
 
         DownloadManager downloadManager=(DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
         request.setMimeType("image/*");
-//        request.allowScanningByMediaScanner();
+        //request.allowScanningByMediaScanner();
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         downloadManager.enqueue(request);
     }

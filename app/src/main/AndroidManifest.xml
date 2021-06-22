@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/MakeFriends"
         android:usesCleartextTraffic="true">
-        <activity android:name=".loginactivity.OTPVerification"></activity>
+        <activity android:name=".loginactivity.OTPVerification" />
         <activity android:name=".loginactivity.LoginWithPhone" />
         <activity android:name=".loginactivity.ChangePassword" />
         <activity android:name=".manage.userpost.PostLikedUsers" />
@@ -58,14 +58,18 @@
         <activity android:name=".activity.Home" />
         <activity android:name=".loginactivity.ResetPassword" />
         <activity android:name=".loginactivity.SignUp" />
-        <activity android:name=".loginactivity.Login" /> <!-- For Image Editor -->
+        <activity android:name=".loginactivity.Login" />
+
+        <!-- For Image Editor -->
         <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity" />
         <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorStickerActivity" />
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorTextActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorCropActivity" />
-        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity" /> <!-- Facebook login -->
+        <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity" />
+
+        <!-- Facebook login -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -85,7 +89,9 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity> <!-- Firebase Messaging -->
+        </activity>
+
+        <!-- Firebase Messaging -->
         <service
             android:name=".notification.MyFirebaseMessaging"
             android:enabled="true"

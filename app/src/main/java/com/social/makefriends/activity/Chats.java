@@ -124,7 +124,7 @@ public class Chats extends AppCompatActivity {
                             Token token1 = new Token(token);
                             reference.child(CurrentUserId).setValue(token1);
                         }else {
-                            Toast.makeText(Chats.this, task.getResult().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Chats.this, task.getResult(), Toast.LENGTH_SHORT).show();
                         }
                     }
         });

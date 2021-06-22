@@ -64,7 +64,7 @@ public class SendFriendRequest extends AppCompatActivity {
     private DatabaseReference getUserDetailsRef;
     private TextView Name,UserName,Email,Dob,Address,Bio,PrivacyText;
     private CircleImageView Profile_Image;
-    private ImageView PrivacyImage;
+    private ImageView PrivacyImage,noPostAvailable;
     private Button Button1,Button2,Button3,Button4;
     private String CurrentUserId,CURRENT_STATE,CurrentTime,CurrentDate,wallpaper;
     private DatabaseReference SendFriendRequestRef,FriendRef,userPost,UserDetails;
@@ -107,6 +107,8 @@ public class SendFriendRequest extends AppCompatActivity {
 
         Profile_Image = (CircleImageView)findViewById(R.id.view_profile_Image);
         PrivacyImage = (ImageView)findViewById(R.id.privacy);
+
+        noPostAvailable = findViewById(R.id.noPostFrndReq);
 
         Calendar Date = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
@@ -228,6 +230,7 @@ public class SendFriendRequest extends AppCompatActivity {
                                 friendProfilePostImageAdapter.notifyDataSetChanged();
                                 progressBar.setVisibility(View.INVISIBLE);
                             }else {
+                                noPostAvailable.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
                         }

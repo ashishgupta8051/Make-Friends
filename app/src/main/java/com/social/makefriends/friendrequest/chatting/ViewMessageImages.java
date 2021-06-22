@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.Manifest;
 import android.app.DownloadManager;
@@ -29,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.social.makefriends.R;
+import com.social.makefriends.manage.userprofile.ViewProfileImage;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -77,8 +79,15 @@ public class ViewMessageImages extends AppCompatActivity {
             }
         });
 
+        //Create image loader
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(ViewMessageImages.this);
+        circularProgressDrawable.setStrokeWidth(10);
+        circularProgressDrawable.setCenterRadius(45);
+        circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+        circularProgressDrawable.start();
+
         //Set image in imageview
-        Glide.with(ViewMessageImages.this).load(Message).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
+        Glide.with(ViewMessageImages.this).load(Message).placeholder(circularProgressDrawable).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
 
         download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,11 +100,15 @@ public class ViewMessageImages extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.download:
-                                if (ContextCompat.checkSelfPermission(ViewMessageImages.this,
-                                        Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                    downloadImage();
+                                if (Build.VERSION.SDK_INT >= 23){
+                                    if (ContextCompat.checkSelfPermission(ViewMessageImages.this,
+                                            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                        downloadImage();
+                                    }else {
+                                        requestPermission();
+                                    }
                                 }else {
-                                    requestPermission();
+                                    downloadImage();
                                 }
                         }
                         return true;
@@ -125,7 +138,7 @@ public class ViewMessageImages extends AppCompatActivity {
 
 
     private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(ViewMessageImages.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(ViewMessageImages.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(ViewMessageImages.this);
             builder.setTitle("Permission needed");
             builder.setMessage("This permission is needed because of this and that");
@@ -133,7 +146,7 @@ public class ViewMessageImages extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ActivityCompat.requestPermissions(ViewMessageImages.this,
-                            new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
                 }
             }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -144,7 +157,7 @@ public class ViewMessageImages extends AppCompatActivity {
             builder.show();
         } else {
             ActivityCompat.requestPermissions(ViewMessageImages.this,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
         }
     }
 
@@ -170,11 +183,7 @@ public class ViewMessageImages extends AppCompatActivity {
 //            request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         }
-        try {
-            request.setDestinationInExternalPublicDir("/Make Friends/Message/Image",title+".png");
-        }catch (Exception e){
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,title+".png");
-        }
+        request.setDestinationInExternalPublicDir("/Make Friends/Message/Image",title+".jpg");
 
         DownloadManager downloadManager=(DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
         request.setMimeType("image/*");

@@ -68,6 +68,7 @@ public class UpdateProfile extends AppCompatActivity {
     private String Value;
     private ActivityResultLauncher<Intent> dpLauncher;
     private ActivityResultLauncher<Intent> launcher;
+    private TextView loginDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,8 @@ public class UpdateProfile extends AppCompatActivity {
         bio = (EditText) findViewById(R.id.update_bio);
 
         userName = (EditText) findViewById(R.id.update_username);
+
+        loginDetails = findViewById(R.id.account_details);
 
         UpdateProfileImage = (CircleImageView) findViewById(R.id.update_profile_Image);
 
@@ -134,6 +137,7 @@ public class UpdateProfile extends AppCompatActivity {
                     dob.setText(userDetails.getUserDob());
                     address.setText(userDetails.getUserAddress());
                     bio.setText(userDetails.getUserBio());
+                    loginDetails.setText(userDetails.getLoginDetails());
                 } else {
                     Log.e("Error", "Update Profile");
                 }

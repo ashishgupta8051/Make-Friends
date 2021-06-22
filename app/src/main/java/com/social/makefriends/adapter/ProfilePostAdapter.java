@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +48,14 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<ProfilePostAdapter.
         UserPost model = userPosts.get(position);
         String postId = model.getPostId();
         String PostImage = model.getPostImage();
-        Picasso.get().load(PostImage).placeholder(R.drawable.progress).into(holder.PostImage);
+
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
+        circularProgressDrawable.setStrokeWidth(8);
+        circularProgressDrawable.setCenterRadius(35);
+        circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+        circularProgressDrawable.start();
+
+        Picasso.get().load(PostImage).placeholder(circularProgressDrawable).into(holder.PostImage);
 
         firebaseAuth = FirebaseAuth.getInstance();
 

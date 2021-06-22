@@ -36,6 +36,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
@@ -370,7 +371,14 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     holder.ChatTime_4.setVisibility(View.VISIBLE);
                     holder.ChatTime_4.setText(chatMessages.getMessageDate()+" "+ chatMessages.getMessageTime());
                     holder.SenderMessageImage.setVisibility(View.VISIBLE);
-                    Picasso.get().load(chatMessages.getMessageDetails()).placeholder(R.drawable.progress).into(holder.SenderMessageImage);
+
+                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
+                    circularProgressDrawable.setStrokeWidth(10);
+                    circularProgressDrawable.setCenterRadius(42);
+                    circularProgressDrawable.setColorSchemeColors(R.color.light_blue_900);
+                    circularProgressDrawable.start();
+
+                    Picasso.get().load(chatMessages.getMessageDetails()).placeholder(circularProgressDrawable).into(holder.SenderMessageImage);
 
                     if (chatMessages.getForward().equals("yes")){
                         holder.imgSenFor.setTypeface(holder.txtSenFor.getTypeface(), Typeface.BOLD);
@@ -486,7 +494,14 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     holder.ChatTime_3.setText(chatMessages.getMessageDate()+" "+ chatMessages.getMessageTime());
                     holder.Profile_Image.setVisibility(View.VISIBLE);
                     holder.ReceiverMessageImage.setVisibility(View.VISIBLE);
-                    Picasso.get().load(chatMessages.getMessageDetails()).placeholder(R.drawable.progress).into(holder.ReceiverMessageImage);
+
+                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
+                    circularProgressDrawable.setStrokeWidth(10);
+                    circularProgressDrawable.setCenterRadius(42);
+                    circularProgressDrawable.setColorSchemeColors(R.color.silver);
+                    circularProgressDrawable.start();
+
+                    Picasso.get().load(chatMessages.getMessageDetails()).placeholder(circularProgressDrawable).into(holder.ReceiverMessageImage);
 
                     if (chatMessages.getForward().equals("yes")){
                         holder.imgRetFor.setTypeface(holder.txtSenFor.getTypeface(), Typeface.BOLD);
@@ -744,7 +759,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         @Override
                         public void onClick(View v) {
                             if (ContextCompat.checkSelfPermission(v.getContext(),
-                                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                 if (chatMessages.getFileType().equals("application/pdf")) {
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
@@ -983,7 +998,6 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                             } else {
                                 requestStoragePermission(v);
                             }
-
                         }
                     });
                 }else {
@@ -1036,7 +1050,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         @Override
                         public void onClick(View v) {
                             if (ContextCompat.checkSelfPermission(v.getContext(),
-                                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                 if (chatMessages.getFileType().equals("application/pdf")) {
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
@@ -1456,7 +1470,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         @Override
                         public void onClick(View v) {
                             if (ContextCompat.checkSelfPermission(activity,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                 String msg = chatMessages.getMessageDetails();
                                 String title = chatMessages.getFileName();
                                 DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1650,7 +1664,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         @Override
                         public void onClick(View v) {
                             if (ContextCompat.checkSelfPermission(activity,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                 String msg = chatMessages.getMessageDetails();
                                 String title = chatMessages.getFileName();
                                 DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1909,7 +1923,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 
     private void requestStoragePermission(View v) {
         if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) v.getContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             new AlertDialog.Builder(v.getContext())
                     .setTitle("Permission needed")
                     .setMessage("This permission is needed because of this and that")
@@ -1917,7 +1931,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions((Activity) v.getContext(),
-                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
                         }
                     })
                     .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -1929,7 +1943,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     .create().show();
         } else {
             ActivityCompat.requestPermissions((Activity) v.getContext(),
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
         }
     }
 

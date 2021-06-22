@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -63,8 +64,16 @@ public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdap
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 AllPost allPost = snapshot.child(favPost.getFavPostId()).getValue(AllPost.class);
+
+                CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
+                circularProgressDrawable.setStrokeWidth(8);
+                circularProgressDrawable.setCenterRadius(35);
+                circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+                circularProgressDrawable.start();
+
+
                 Glide.with(activity).load(allPost.getPostImage()).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).
-                        placeholder(R.drawable.progress).into(holder.imageView);
+                        placeholder(circularProgressDrawable).into(holder.imageView);
 
                 userDetailsRef.addValueEventListener(new ValueEventListener() {
                     @Override

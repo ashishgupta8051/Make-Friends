@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -237,7 +238,14 @@ public class ViewPost extends AppCompatActivity {
                     AllPost allPost = snapshot.getValue(AllPost.class);
                     String Post_Image = allPost.getPostImage();
                     String ProfileImage = allPost.getUserProfilePic();
-                    Picasso.get().load(Post_Image).placeholder(R.drawable.progress).into(PostImage);
+
+                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(ViewPost.this);
+                    circularProgressDrawable.setStrokeWidth(10);
+                    circularProgressDrawable.setCenterRadius(45);
+                    circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
+                    circularProgressDrawable.start();
+
+                    Picasso.get().load(Post_Image).placeholder(circularProgressDrawable).into(PostImage);
 
                     if (ProfileImage.equals("None")){
                         UserProfileImage.setImageResource(R.drawable.profile_image);
@@ -314,7 +322,7 @@ public class ViewPost extends AppCompatActivity {
                                         String Post_Image = allPost.getPostImage();
 //                                        bitmap = ((BitmapDrawable)PostImage.getDrawable()).getBitmap();
                                         if (ContextCompat.checkSelfPermission(ViewPost.this,
-                                                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                                             savePostImage(Post_Image);
                                         }else {
                                             requestPermission();
@@ -505,7 +513,7 @@ public class ViewPost extends AppCompatActivity {
     }
 
     private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(ViewPost.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(ViewPost.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(ViewPost.this);
             builder.setTitle("Permission needed");
             builder.setMessage("This permission is needed because of this and that");
@@ -513,7 +521,7 @@ public class ViewPost extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ActivityCompat.requestPermissions(ViewPost.this,
-                            new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION);
+                            new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION);
                 }
             }).setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -537,9 +545,9 @@ public class ViewPost extends AppCompatActivity {
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         }
         try {
-            request.setDestinationInExternalPublicDir("/Make Friends/Message/Image",title+".png");
+            request.setDestinationInExternalPublicDir("/Make Friends/Message/Image",title+".jpg");
         }catch (Exception e){
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,title+" .png");
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,title+" .jpg");
         }
         DownloadManager downloadManager=(DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
         request.setMimeType("image/*");

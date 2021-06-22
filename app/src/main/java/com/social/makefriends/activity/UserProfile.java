@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class UserProfile extends AppCompatActivity {
     private ArrayList<UserPost> userPosts = new ArrayList<>();
     private DatabaseReference userPostRef;
     private ProgressBar progressBar;
+    private ImageView noPostImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,8 @@ public class UserProfile extends AppCompatActivity {
         updateprofile = (Button)findViewById(R.id.update_profile);
 
         progressBar = findViewById(R.id.progressBar1);
+
+        noPostImage = findViewById(R.id.noPost);
 
         Value = getIntent().getExtras().get("UserFriendsValue").toString();
 
@@ -205,8 +209,11 @@ public class UserProfile extends AppCompatActivity {
                     profilePostAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.INVISIBLE);
                 }else {
+                    noPostImage.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                 }
+                ViewFriend.setVisibility(View.VISIBLE);
+                updateprofile.setVisibility(View.VISIBLE);
             }
 
 
