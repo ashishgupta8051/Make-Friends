@@ -28,18 +28,24 @@ import com.social.makefriends.R;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.manage.userprofile.UpdateProfile;
 import com.social.makefriends.notification.Token;
+import com.social.makefriends.utils.SharedPrefManager;
+
+import java.util.HashMap;
 
 public class SignUp extends AppCompatActivity {
     private TextView Signin;
     private EditText name,email,password;
     private Button register;
     private FirebaseAuth firebaseAuth;
-    private String Name,Email,Password,url;
+    private String Name,Email,Password;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        sharedPrefManager = new SharedPrefManager(this);
 
         Signin = (TextView)findViewById(R.id.signin);
         register = (Button)findViewById(R.id.register);
@@ -49,8 +55,6 @@ public class SignUp extends AppCompatActivity {
         password = (EditText)findViewById(R.id.Password);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        url = "d";
 
         Signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,11 +126,24 @@ public class SignUp extends AppCompatActivity {
 
     private void SendUserData() {
         String CurrentUserUid = firebaseAuth.getCurrentUser().getUid();
-        String Dob = "",Address = "",Bio = "",profileImageUrl = "None",userName = "",loginDetails = "You are login with 𝐄𝐦𝐚𝐢𝐥 and 𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝.";
+        HashMap<String,Object> addUserDetails = new HashMap<>();
+        addUserDetails.put("userName",Name);
+        addUserDetails.put("userEmail",Email);
+        addUserDetails.put("userDob","");
+        addUserDetails.put("userAddress","");
+        addUserDetails.put("userBio","");
+        addUserDetails.put("userProfileImageUrl","None");
+        addUserDetails.put("usersName","");
+        addUserDetails.put("loginDetails","You are login with 𝐄𝐦𝐚𝐢𝐥 and 𝐏𝐚𝐬𝐬𝐰𝐨𝐫𝐝.");
+        addUserDetails.put("userUid",CurrentUserUid);
+        addUserDetails.put("onlineDate","");
+        addUserDetails.put("onlineTime","");
+        addUserDetails.put("onlineStatus","");
+        addUserDetails.put("chatBackgroundWall","d");
+        addUserDetails.put("userPassword",Password);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
-        UserDetails userDetails = new UserDetails(Name,Email,Dob,Address,Bio,profileImageUrl,userName,loginDetails,CurrentUserUid,""
-                ,"","",url,Password);
-        databaseReference.setValue(userDetails);
+        databaseReference.setValue(addUserDetails);
+        sharedPrefManager.saveWallpaper("d");
 
         //get Token Id
         FirebaseMessaging.getInstance().getToken()
@@ -136,8 +153,9 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String token = task.getResult();
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                            Token token1 = new Token(token);
-                            reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(token1);
+                            HashMap<String,Object> addToken = new HashMap<>();
+                            addToken.put("token",token);
+                            reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
                         }else {
                             Toast.makeText(SignUp.this, task.getResult().toString(), Toast.LENGTH_SHORT).show();
                         }

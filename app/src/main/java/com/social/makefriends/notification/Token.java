@@ -1,7 +1,7 @@
 package com.social.makefriends.notification;
 
 public class Token {
-    private String token;
+    String token;
 
     public Token() {
     }

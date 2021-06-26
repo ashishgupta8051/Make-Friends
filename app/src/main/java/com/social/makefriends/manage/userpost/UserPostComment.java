@@ -33,6 +33,7 @@ import com.vanniktech.emoji.EmojiPopup;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -166,8 +167,20 @@ public class UserPostComment extends AppCompatActivity {
                                 String Image = userDetails.getUserProfileImageUrl();
                                 String userName = userDetails.getUsersName();
                                 String TotalPostComment = String.valueOf(postComment);
-                                Comments comments = new Comments(commentId,Image,userName,CurrentDate,CurrentTime,Comment,CurrentUserId,PostId,TotalPostComment,UserId);
-                                commentRef.child(commentId).setValue(comments);
+
+                                HashMap<String,Object> addComment = new HashMap<>();
+                                addComment.put("commentId",commentId);
+                                addComment.put("image",Image);
+                                addComment.put("name",userName);
+                                addComment.put("currentDate",CurrentDate);
+                                addComment.put("currentTime",CurrentTime);
+                                addComment.put("postComment",Comment);
+                                addComment.put("currentUserId",CurrentUserId);
+                                addComment.put("postId",PostId);
+                                addComment.put("postCommentCount",TotalPostComment);
+                                addComment.put("postUserId",UserId);
+
+                                commentRef.child(commentId).updateChildren(addComment);
                                 CommentEditBox.setText(null);
                                 emojiImg.setImageResource(R.drawable.emoji);
                                 check = false;

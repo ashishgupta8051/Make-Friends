@@ -185,6 +185,7 @@ public class UpdateProfile extends AppCompatActivity {
 
             }
         }*/
+
                             Intent intent = result.getData();
                             Uri uri = intent.getData();
 
@@ -196,19 +197,6 @@ public class UpdateProfile extends AppCompatActivity {
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,new int[]{
                                     DsPhotoEditorActivity.TOOL_WARMTH,DsPhotoEditorActivity.TOOL_PIXELATE});
                             launcher.launch(dsPhotoEditorIntent);
-                        }else {
-                            Log.e("Error","Dp change error");
-                        }
-                    }
-        });
-
-        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK){
-                            Intent intent = result.getData();
-                            Uri uri = intent.getData();
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfile.this);
                             View view = getLayoutInflater().inflate(R.layout.progressdialog,null);
@@ -372,11 +360,27 @@ public class UpdateProfile extends AppCompatActivity {
                                     }
                                 }
                             });
+
+                        }else {
+                            Log.e("Error","Dp change error");
+                        }
+                    }
+        });
+
+      /*  launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK){
+                            Intent intent = result.getData();
+                            Uri uri = intent.getData();
+
+
                         }else {
                             Log.e("Error","Dp change error 2");
                         }
                     }
-        });
+        });*/
     }
 
     private void requestPermission() {

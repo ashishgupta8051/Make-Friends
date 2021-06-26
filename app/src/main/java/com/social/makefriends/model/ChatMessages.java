@@ -1,19 +1,19 @@
 package com.social.makefriends.model;
 
 public class ChatMessages {
-    private String MessageDetails;
-    private String MessageTime;
-    private String MessageDate;
-    private String MessageType;
-    private String SenderId;
-    private String ReceiverId;
-    private String MessageId;
-    private String MessageSeenDetails;
-    private String FileName;
-    private String FileType;
-    private String SenderSideMsgDelete;
-    private String ReceiverSideMsgDelete;
-    private String Forward;
+    String MessageDetails;
+    String MessageTime;
+    String MessageDate;
+    String MessageType;
+    String SenderId;
+    String ReceiverId;
+    String MessageId;
+    String MessageSeenDetails;
+    String FileName;
+    String FileType;
+    String SenderSideMsgDelete;
+    String ReceiverSideMsgDelete;
+    String Forward;
 
     public ChatMessages() {
     }

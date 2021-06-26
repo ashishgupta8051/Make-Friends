@@ -2,7 +2,7 @@ package com.social.makefriends.model;
 
 public class FavPost {
 
-    private String favPostId;
+    String favPostId;
 
     public FavPost() {
     }

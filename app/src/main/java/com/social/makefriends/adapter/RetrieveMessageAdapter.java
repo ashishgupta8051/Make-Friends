@@ -32,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -116,6 +117,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
         }
 
         if (messageType.equals("text")) {
+            holder.recCard.setVisibility(View.GONE);
+            holder.senCard.setVisibility(View.GONE);
             holder.txtRetFor.setVisibility(View.GONE);
             holder.txtSenFor.setVisibility(View.GONE);
             holder.imgRetFor.setVisibility(View.GONE);
@@ -328,6 +331,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
         }
 
         if (messageType.equals("image")) {
+            holder.recCard.setVisibility(View.GONE);
+            holder.senCard.setVisibility(View.GONE);
             holder.txtRetFor.setVisibility(View.GONE);
             holder.txtSenFor.setVisibility(View.GONE);
             holder.imgRetFor.setVisibility(View.GONE);
@@ -368,6 +373,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     }else {
                         holder.MessageWaiting_2.setVisibility(View.VISIBLE);
                     }
+                    holder.senCard.setVisibility(View.VISIBLE);
                     holder.ChatTime_4.setVisibility(View.VISIBLE);
                     holder.ChatTime_4.setText(chatMessages.getMessageDate()+" "+ chatMessages.getMessageTime());
                     holder.SenderMessageImage.setVisibility(View.VISIBLE);
@@ -479,6 +485,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         }
                     });
                 }else {
+                    holder.senCard.setVisibility(View.GONE);
                     holder.SenderMessageImage.setVisibility(View.GONE);
                     holder.ChatTime_4.setVisibility(View.GONE);
                     holder.MessageSend_2.setVisibility(View.GONE);
@@ -487,6 +494,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                 }
             }else {
                 if (chatMessages.getReceiverSideMsgDelete().equals("not_delete")){
+                    holder.recCard.setVisibility(View.VISIBLE);
                     holder.MessageSendSuccessful_2.setVisibility(View.INVISIBLE);
                     holder.MessageSend_2.setVisibility(View.INVISIBLE);
                     holder.MessageWaiting_2.setVisibility(View.INVISIBLE);
@@ -505,7 +513,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 
                     if (chatMessages.getForward().equals("yes")){
                         holder.imgRetFor.setTypeface(holder.txtSenFor.getTypeface(), Typeface.BOLD);
-                        holder.imgRetFor.setVisibility(View.GONE);
+                        holder.imgRetFor.setVisibility(View.VISIBLE);
                     }
 
                     holder.ReceiverMessageImage.setOnClickListener(new View.OnClickListener() {
@@ -587,6 +595,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     });
 
                 }else {
+                    holder.recCard.setVisibility(View.GONE);
                     holder.Profile_Image.setVisibility(View.GONE);
                     holder.ReceiverMessageImage.setVisibility(View.GONE);
                     holder.ChatTime_3.setVisibility(View.GONE);
@@ -598,6 +607,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
         }
 
         if (messageType.equals("file")) {
+            holder.recCard.setVisibility(View.GONE);
+            holder.senCard.setVisibility(View.GONE);
             holder.txtRetFor.setVisibility(View.GONE);
             holder.txtSenFor.setVisibility(View.GONE);
             holder.imgRetFor.setVisibility(View.GONE);
@@ -647,31 +658,31 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         holder.MessageWaiting_3.setVisibility(View.VISIBLE);
                     }
 
-                    if (chatMessages.getFileType().equals("application/pdf")){
+                    if (chatMessages.getFileType().equals("pdf")){
                         holder.SenderFileType.setText(".pdf");
                         holder.SenderFileImage.setImageResource(R.drawable.pdf);
-                    }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                    }else if (chatMessages.getFileType().equals("docx")){
                         holder.SenderFileType.setText(".docx");
                         holder.SenderFileImage.setImageResource(R.drawable.doc_docx);
-                    }else if (chatMessages.getFileType().equals("application/msword")){
+                    }else if (chatMessages.getFileType().equals("doc")){
                         holder.SenderFileType.setText(".doc");
                         holder.SenderFileImage.setImageResource(R.drawable.doc_docx);
-                    }else if (chatMessages.getFileType().equals("application/vnd.ms-powerpoint")){
+                    }else if (chatMessages.getFileType().equals("ppt")){
                         holder.SenderFileType.setText(".ppt");
                         holder.SenderFileImage.setImageResource(R.drawable.ppt);
-                    }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")){
+                    }else if (chatMessages.getFileType().equals("pptx")){
                         holder.SenderFileType.setText(".pptx");
                         holder.SenderFileImage.setImageResource(R.drawable.pptx);
-                    }else if (chatMessages.getFileType().equals("application/zip")){
+                    }else if (chatMessages.getFileType().equals("zip")){
                         holder.SenderFileType.setText(".zip");
                         holder.SenderFileImage.setImageResource(R.drawable.zip);
-                    }else if (chatMessages.getFileType().equals("text/html")){
+                    }else if (chatMessages.getFileType().equals("htm")){
                         holder.SenderFileType.setText(".html");
                         holder.SenderFileImage.setImageResource(R.drawable.html);
-                    }else if (chatMessages.getFileType().equals("text/plain")){
+                    }else if (chatMessages.getFileType().equals("txt")){
                         holder.SenderFileType.setText(".txt");
                         holder.SenderFileImage.setImageResource(R.drawable.text);
-                    }else if (chatMessages.getFileType().equals("application/vnd.ms-excel")){
+                    }else if (chatMessages.getFileType().equals("xls")){
                         holder.SenderFileType.setText(".xls");
                         holder.SenderFileImage.setImageResource(R.drawable.excel);
                     }else {
@@ -760,7 +771,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         public void onClick(View v) {
                             if (ContextCompat.checkSelfPermission(v.getContext(),
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                if (chatMessages.getFileType().equals("application/pdf")) {
+                                if (chatMessages.getFileType().equals("pdf")) {
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -786,7 +797,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                                     downloadManager.enqueue(request);
 
                                     Toast.makeText(activity, "pdf", Toast.LENGTH_SHORT).show();
-                                }else if (chatMessages.getFileType().equals("application/zip")){
+                                }else if (chatMessages.getFileType().equals("zip")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -809,7 +820,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("text/plain")){
+                                }else if (chatMessages.getFileType().equals("tex")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -832,7 +843,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("text/html")){
+                                }else if (chatMessages.getFileType().equals("htm")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -856,7 +867,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                                }else if (chatMessages.getFileType().equals("docx")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -879,7 +890,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/msword")){
+                                }else if (chatMessages.getFileType().equals("doc")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -902,7 +913,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.ms-powerpoint")){
+                                }else if (chatMessages.getFileType().equals("ppt")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -925,7 +936,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")){
+                                }else if (chatMessages.getFileType().equals("pptx")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -948,7 +959,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.ms-excel")){
+                                }else if (chatMessages.getFileType().equals("xls")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1005,31 +1016,31 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                 }
             }else {
                 if (chatMessages.getReceiverSideMsgDelete().equals("not_delete")){
-                    if (chatMessages.getFileType().equals("application/pdf")){
+                    if (chatMessages.getFileType().equals("pdf")){
                         holder.ReceiverFileType.setText(".pdf");
                         holder.ReceiverFileImage.setImageResource(R.drawable.pdf);
-                    }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                    }else if (chatMessages.getFileType().equals("docx")){
                         holder.ReceiverFileType.setText(".docx");
                         holder.ReceiverFileImage.setImageResource(R.drawable.doc_docx);
-                    }else if (chatMessages.getFileType().equals("application/msword")){
+                    }else if (chatMessages.getFileType().equals("doc")){
                         holder.ReceiverFileType.setText(".doc");
                         holder.ReceiverFileImage.setImageResource(R.drawable.doc_docx);
-                    }else if (chatMessages.getFileType().equals("application/vnd.ms-powerpoint")){
+                    }else if (chatMessages.getFileType().equals("ppt")){
                         holder.ReceiverFileType.setText(".ppt");
                         holder.ReceiverFileImage.setImageResource(R.drawable.pptx);
-                    }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")){
+                    }else if (chatMessages.getFileType().equals("pptx")){
                         holder.ReceiverFileType.setText(".pptx");
                         holder.ReceiverFileImage.setImageResource(R.drawable.pptx);
-                    }else if (chatMessages.getFileType().equals("application/zip")){
+                    }else if (chatMessages.getFileType().equals("zip")){
                         holder.ReceiverFileType.setText(".zip");
                         holder.ReceiverFileImage.setImageResource(R.drawable.zip);
-                    }else if (chatMessages.getFileType().equals("text/html")){
+                    }else if (chatMessages.getFileType().equals("htm")){
                         holder.ReceiverFileType.setText(".html");
                         holder.ReceiverFileImage.setImageResource(R.drawable.html);
-                    }else if (chatMessages.getFileType().equals("text/plain")){
+                    }else if (chatMessages.getFileType().equals("txt")){
                         holder.ReceiverFileType.setText(".txt");
                         holder.ReceiverFileImage.setImageResource(R.drawable.text);
-                    }else if (chatMessages.getFileType().equals("application/vnd.ms-excel")){
+                    }else if (chatMessages.getFileType().equals("xls")){
                         holder.ReceiverFileType.setText(".xls");
                         holder.ReceiverFileImage.setImageResource(R.drawable.excel);
                     }else {
@@ -1051,7 +1062,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         public void onClick(View v) {
                             if (ContextCompat.checkSelfPermission(v.getContext(),
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                if (chatMessages.getFileType().equals("application/pdf")) {
+                                if (chatMessages.getFileType().equals("pdf")) {
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1074,7 +1085,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/zip")){
+                                }else if (chatMessages.getFileType().equals("zip")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1097,7 +1108,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("text/plain")){
+                                }else if (chatMessages.getFileType().equals("txt")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1120,7 +1131,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("text/html")){
+                                }else if (chatMessages.getFileType().equals("htm")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1143,7 +1154,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")){
+                                }else if (chatMessages.getFileType().equals("docx")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1166,7 +1177,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/msword")){
+                                }else if (chatMessages.getFileType().equals("doc")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1189,7 +1200,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.ms-powerpoint")){
+                                }else if (chatMessages.getFileType().equals("ppt")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1212,7 +1223,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")){
+                                }else if (chatMessages.getFileType().equals("pptx")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1235,7 +1246,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
 //                                    request.allowScanningByMediaScanner();
                                     request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
                                     downloadManager.enqueue(request);
-                                }else if (chatMessages.getFileType().equals("application/vnd.ms-excel")){
+                                }else if (chatMessages.getFileType().equals("xls")){
                                     String msg = chatMessages.getMessageDetails();
                                     String title = chatMessages.getFileName();
                                     DownloadManager.Request request=new DownloadManager.Request(Uri.parse(msg));
@@ -1350,6 +1361,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
         }
 
         if (messageType.equals("audio")) {
+            holder.recCard.setVisibility(View.GONE);
+            holder.senCard.setVisibility(View.GONE);
             holder.txtRetFor.setVisibility(View.GONE);
             holder.txtSenFor.setVisibility(View.GONE);
             holder.imgRetFor.setVisibility(View.GONE);
@@ -1771,6 +1784,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
         }
 
         if (messageType.equals("icon")) {
+            holder.recCard.setVisibility(View.GONE);
+            holder.senCard.setVisibility(View.GONE);
             holder.txtRetFor.setVisibility(View.GONE);
             holder.txtSenFor.setVisibility(View.GONE);
             holder.imgRetFor.setVisibility(View.GONE);
@@ -1975,8 +1990,12 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
         private ConstraintLayout ReceiverConst,SenderConst,ReceiverConst2,SenderConst2,ReceiverConst3,SenderConst3;
         private EmojiTextView SenderMessage,ReceiverMessage;
         private TextView txtRetFor,txtSenFor,imgRetFor,imgSenFor,fileRetFor,fileSenFor,audioRetFor,audioSenFor;
+        private CardView recCard,senCard;
         public MessageHolder(@NonNull View itemView) {
             super(itemView);
+
+            recCard = itemView.findViewById(R.id.imageCardReceiver);
+            senCard = itemView.findViewById(R.id.imageSenCard);
 
             txtRetFor = itemView.findViewById(R.id.receiver_forward_msg);
             txtSenFor = itemView.findViewById(R.id.sender_forward_msg);

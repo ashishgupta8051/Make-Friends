@@ -113,21 +113,6 @@ public class Chats extends AppCompatActivity {
             }
         });
 
-        //Update Token
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            String token = task.getResult();
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                            Token token1 = new Token(token);
-                            reference.child(CurrentUserId).setValue(token1);
-                        }else {
-                            Toast.makeText(Chats.this, task.getResult(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-        });
     }
 
     private void checkOnlineStatus(String status){

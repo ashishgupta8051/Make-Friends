@@ -1,8 +1,8 @@
 package com.social.makefriends.model;
 
 public class ExistsChatUser {
-    private String ExistsUserId;
-    private String FirstPosition;
+    String ExistsUserId;
+    String FirstPosition;
 
     public ExistsChatUser() {
     }

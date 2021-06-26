@@ -15,8 +15,7 @@ public class AllPost {
     public AllPost(){}
 
     public AllPost(String key, String userName, String userProfilePic, String currentDate, String currentTime, String postImage,
-                   String caption, String currentUserId, String countPost,
-                   String usersName) {
+                   String caption, String currentUserId, String countPost, String usersName) {
         Key = key;
         UserName = userName;
         UserProfilePic = userProfilePic;

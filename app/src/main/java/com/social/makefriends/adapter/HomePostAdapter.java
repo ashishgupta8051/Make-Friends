@@ -57,6 +57,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -206,7 +207,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                             if (snapshot.child(postId).hasChild(currentUserId)) {
                                 likeRef.child(postId).child(currentUserId).removeValue();
                             } else {
-                                likeRef.child(postId).child(currentUserId).setValue(currentUserId);
+                                HashMap<String,Object> like = new HashMap<>();
+                                like.put(currentUserId,currentUserId);
+                                likeRef.child(postId).setValue(like);
                             }
                             LickChecker[0] = false;
                         }
@@ -233,7 +236,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                                 disLikeRef.child(postId).child(currentUserId).removeValue();
                                 //holder.PostLike.setImageResource(R.drawable.uncolored_like);
                             } else {
-                                disLikeRef.child(postId).child(currentUserId).setValue(currentUserId);
+                                HashMap<String,Object> dislike = new HashMap<>();
+                                dislike.put(currentUserId,currentUserId);
+                                disLikeRef.child(postId).setValue(dislike);
                                 //holder.PostLike.setImageResource(R.drawable.colored_like);
                             }
                             LickChecker2[0] = false;
@@ -324,8 +329,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                             if (snapshot.hasChild(model.getKey())){
                                 savePostRef.child(model.getKey()).removeValue();
                             }else {
-                                FavPost favPost = new FavPost(model.getKey());
-                                savePostRef.child(model.getKey()).setValue(favPost);
+                                HashMap<String,Object> addFevPost = new HashMap<>();
+                                addFevPost.put("favPostId",model.getKey());
+                                savePostRef.child(model.getKey()).updateChildren(addFevPost);
                             }
                             postChecker[0] = false;
                         }

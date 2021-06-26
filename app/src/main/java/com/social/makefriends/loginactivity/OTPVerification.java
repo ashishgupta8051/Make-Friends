@@ -38,6 +38,7 @@ import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.notification.Token;
 import com.social.makefriends.utils.SharedPrefManager;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class OTPVerification extends AppCompatActivity {
@@ -137,8 +138,9 @@ public class OTPVerification extends AppCompatActivity {
                                                 if (task.isSuccessful()) {
                                                     String token = task.getResult();
                                                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                                                    Token token1 = new Token(token);
-                                                    reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(token1);
+                                                    HashMap<String,Object> addToken = new HashMap<>();
+                                                    addToken.put("token",token);
+                                                    reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
                                                 }else {
                                                     Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
                                                 }
@@ -160,10 +162,25 @@ public class OTPVerification extends AppCompatActivity {
                     });
                 }else {
                     String CurrentUserUid = firebaseAuth.getCurrentUser().getUid();
-                    String Dob = "",Address = "",Bio = "",ProfilePic = "None",usersName = "";
-                    UserDetails userDetails = new UserDetails("","",Dob,Address,Bio,ProfilePic,usersName,loginDetails,CurrentUserUid,"",""
-                            ,"",Url,"");
-                    databaseReference.setValue(userDetails);
+
+                    HashMap<String,Object> addUserDetails = new HashMap<>();
+                    addUserDetails.put("userName","");
+                    addUserDetails.put("userEmail","");
+                    addUserDetails.put("userDob","");
+                    addUserDetails.put("userAddress","");
+                    addUserDetails.put("userBio","");
+                    addUserDetails.put("userProfileImageUrl","None");
+                    addUserDetails.put("usersName","");
+                    addUserDetails.put("loginDetails",loginDetails);
+                    addUserDetails.put("userUid",CurrentUserUid);
+                    addUserDetails.put("onlineDate","");
+                    addUserDetails.put("onlineTime","");
+                    addUserDetails.put("onlineStatus","");
+                    addUserDetails.put("chatBackgroundWall","d");
+                    addUserDetails.put("userPassword","");
+
+
+                    databaseReference.setValue(addUserDetails);
                     sharedPrefManager.saveWallpaper("d");
 
                     //get Token Id
@@ -174,8 +191,9 @@ public class OTPVerification extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         String token = task.getResult();
                                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                                        Token token1 = new Token(token);
-                                        reference.child(CurrentUserUid).setValue(token1);
+                                        HashMap<String,Object> addToken = new HashMap<>();
+                                        addToken.put("token",token);
+                                        reference.child(CurrentUserUid).setValue(addToken);
                                     }else {
                                         Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
                                     }

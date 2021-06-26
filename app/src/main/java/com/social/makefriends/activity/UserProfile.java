@@ -209,6 +209,7 @@ public class UserProfile extends AppCompatActivity {
                     profilePostAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.INVISIBLE);
                 }else {
+                    Log.e("Error","User does not exists");
                     noPostImage.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
                 }

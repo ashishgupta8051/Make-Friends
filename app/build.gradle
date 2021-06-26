@@ -11,8 +11,8 @@ android {
         applicationId 'com.social.makefriends'
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 2
-        versionName "1.1"
+        versionCode 8
+        versionName "1.2.0"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

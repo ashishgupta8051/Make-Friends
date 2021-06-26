@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,6 +41,8 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -90,6 +94,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.ContentValues.TAG;
 
 public class ChatWithFriends extends AppCompatActivity {
     private String UserId,Value,Image,CurrentUserId,CurrentDate,CurrentTime,MessageType,MsgSentDetails,
@@ -439,7 +445,7 @@ public class ChatWithFriends extends AppCompatActivity {
 
         fetchAllMessages();
 
-       cameraResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        cameraResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -453,7 +459,7 @@ public class ChatWithFriends extends AppCompatActivity {
             }
         });
 
-       galleryResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        galleryResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -482,7 +488,7 @@ public class ChatWithFriends extends AppCompatActivity {
             }
        });
 
-       fileResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        fileResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                new ActivityResultCallback<ActivityResult>() {
                    @Override
                    public void onActivityResult(ActivityResult result) {
@@ -502,26 +508,27 @@ public class ChatWithFriends extends AppCompatActivity {
                                                String uriString = file_uri.toString();
                                                File myFile = new File(uriString);
                                                String path = myFile.getAbsolutePath();
-                                               String displayName = null;
+                                               String fileName = null;
                                                if (uriString.startsWith("content://")) {
                                                    Cursor cursor = null;
                                                    try {
                                                        cursor = getApplicationContext().getContentResolver().query(file_uri, null, null, null, null);
                                                        if (cursor != null && cursor.moveToFirst()) {
-                                                           displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                                                           fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                                                        }
                                                    } finally {
                                                        cursor.close();
                                                    }
                                                } else if (uriString.startsWith("file://")) {
-                                                   displayName = myFile.getName();
+                                                   fileName = myFile.getName();
                                                }
                                                //get file type
-                                               String extension = uriString.substring(uriString.lastIndexOf("."));
-                                               String mimeTypeMap = MimeTypeMap.getFileExtensionFromUrl(extension);
-                                               String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mimeTypeMap);
+                                               String fileExtension;
+                                               ContentResolver contentResolver = getContentResolver();
+                                               MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+                                               fileExtension= mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(file_uri));
 
-                                               sendFiles(file_uri,displayName,mimeType);
+                                               sendFiles(file_uri,fileName,fileExtension);
                                            }
                                        }
                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -547,26 +554,28 @@ public class ChatWithFriends extends AppCompatActivity {
                                        String uriString = file_uri.toString();
                                        File myFile = new File(uriString);
                                        String path = myFile.getAbsolutePath();
-                                       String displayName = null;
+                                       String fileName = null;
                                        if (uriString.startsWith("content://")) {
                                            Cursor cursor = null;
                                            try {
                                                cursor = getApplicationContext().getContentResolver().query(file_uri, null, null, null, null);
                                                if (cursor != null && cursor.moveToFirst()) {
-                                                   displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                                                   fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                                                }
                                            } finally {
                                                cursor.close();
                                            }
                                        } else if (uriString.startsWith("file://")) {
-                                           displayName = myFile.getName();
+                                           fileName = myFile.getName();
                                        }
                                        //get file type
-                                       String extension = uriString.substring(uriString.lastIndexOf("."));
-                                       String mimeTypeMap = MimeTypeMap.getFileExtensionFromUrl(extension);
-                                       String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(mimeTypeMap);
+                                       String fileExtension;
+                                       ContentResolver contentResolver = getContentResolver();
+                                       MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+                                       fileExtension= mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(file_uri));
 
-                                       sendFiles(file_uri,displayName,mimeType);
+                                       sendFiles(file_uri,fileName,fileExtension);
+
                                    }
                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                                    @Override
@@ -584,7 +593,7 @@ public class ChatWithFriends extends AppCompatActivity {
                    }
        });
 
-       audioResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        audioResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                new ActivityResultCallback<ActivityResult>() {
                    @Override
                    public void onActivityResult(ActivityResult result) {
@@ -677,7 +686,7 @@ public class ChatWithFriends extends AppCompatActivity {
                    }
        });
 
-       videoResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        videoResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                new ActivityResultCallback<ActivityResult>() {
                    @Override
                    public void onActivityResult(ActivityResult result) {
@@ -985,8 +994,23 @@ public class ChatWithFriends extends AppCompatActivity {
                                 if (snapshot.child(UserId).exists()){
                                     MessageType = "image";
                                     MsgSentDetails = "not_seen";
-                                    ChatMessages senderChatMessages = new ChatMessages(MultipleImageUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails, null,null,"not_delete","not_delete","no");
-                                    MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                    HashMap<String,Object> addMessage = new HashMap<>();
+                                    addMessage.put("messageDetails",MultipleImageUri);
+                                    addMessage.put("messageTime",CurrentTime);
+                                    addMessage.put("messageDate",CurrentDate);
+                                    addMessage.put("messageType",MessageType);
+                                    addMessage.put("senderId",CurrentUserId);
+                                    addMessage.put("receiverId",UserId);
+                                    addMessage.put("messageId",MessagePushKey);
+                                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                                    addMessage.put("fileName",null);
+                                    addMessage.put("fileType",null);
+                                    addMessage.put("senderSideMsgDelete","not_delete");
+                                    addMessage.put("receiverSideMsgDelete","not_delete");
+                                    addMessage.put("forward","no");
+
+                                    MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                     HashMap<String,Object> position = new HashMap<String, Object>();
                                     position.put("firstPosition","first");
@@ -1062,8 +1086,23 @@ public class ChatWithFriends extends AppCompatActivity {
                                     MessageType = "image";
                                     MsgSentDetails = "not_seen";
                                     Position = "first";
-                                    ChatMessages senderChatMessages = new ChatMessages(MultipleImageUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                                    MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                    HashMap<String,Object> addMessage = new HashMap<>();
+                                    addMessage.put("messageDetails",MultipleImageUri);
+                                    addMessage.put("messageTime",CurrentTime);
+                                    addMessage.put("messageDate",CurrentDate);
+                                    addMessage.put("messageType",MessageType);
+                                    addMessage.put("senderId",CurrentUserId);
+                                    addMessage.put("receiverId",UserId);
+                                    addMessage.put("messageId",MessagePushKey);
+                                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                                    addMessage.put("fileName",null);
+                                    addMessage.put("fileType",null);
+                                    addMessage.put("senderSideMsgDelete","not_delete");
+                                    addMessage.put("receiverSideMsgDelete","not_delete");
+                                    addMessage.put("forward","no");
+
+                                    MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                     ExistsChatUser senders = new ExistsChatUser(UserId,Position);
                                     CheckUserIdRef.child(CurrentUserId).child(UserId).setValue(senders);
@@ -1194,8 +1233,23 @@ public class ChatWithFriends extends AppCompatActivity {
                     MessageType = "text";
                     MsgSentDetails = "not_seen";
                     String MessagePushKey = MessageRef.push().getKey();
-                    ChatMessages senderChatMessages = new ChatMessages(sendMessageInput, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                    MessageRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",sendMessageInput);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",MessageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",UserId);
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","no");
+
+                    MessageRef.child(MessagePushKey).setValue(addMessage);
 
                     HashMap<String,Object> position = new HashMap<String, Object>();
                     position.put("firstPosition","first");
@@ -1266,8 +1320,23 @@ public class ChatWithFriends extends AppCompatActivity {
                     MsgSentDetails = "not_seen";
                     Position = "first";
                     String MessagePushKey = MessageRef.push().getKey();
-                    ChatMessages senderChatMessages = new ChatMessages(sendMessageInput, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                    MessageRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",sendMessageInput);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",MessageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",UserId);
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","no");
+
+                    MessageRef.child(MessagePushKey).setValue(addMessage);
 
                     ExistsChatUser senders = new ExistsChatUser(UserId,Position);
                     CheckUserIdRef.child(CurrentUserId).child(UserId).setValue(senders);
@@ -1426,8 +1495,24 @@ public class ChatWithFriends extends AppCompatActivity {
                             if (snapshot.child(UserId).exists()){
                                 MessageType = "audio";
                                 MsgSentDetails = "not_seen";
-                                ChatMessages senderChatMessages = new ChatMessages(AudioUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,fileName,null,"not_delete","not_delete","no");
-                                MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                HashMap<String,Object> addMessage = new HashMap<>();
+                                addMessage.put("messageDetails",AudioUri);
+                                addMessage.put("messageTime",CurrentTime);
+                                addMessage.put("messageDate",CurrentDate);
+                                addMessage.put("messageType",MessageType);
+                                addMessage.put("senderId",CurrentUserId);
+                                addMessage.put("receiverId",UserId);
+                                addMessage.put("messageId",MessagePushKey);
+                                addMessage.put("messageSeenDetails",MsgSentDetails);
+                                addMessage.put("fileName",fileName);
+                                addMessage.put("fileType",null);
+                                addMessage.put("senderSideMsgDelete","not_delete");
+                                addMessage.put("receiverSideMsgDelete","not_delete");
+                                addMessage.put("forward","no");
+
+
+                                MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                 HashMap<String,Object> position = new HashMap<String, Object>();
                                 position.put("firstPosition","first");
@@ -1502,8 +1587,23 @@ public class ChatWithFriends extends AppCompatActivity {
                                 MessageType = "audio";
                                 MsgSentDetails = "not_seen";
                                 Position = "first";
-                                ChatMessages senderChatMessages = new ChatMessages(FileUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,fileName,null,"not_delete","not_delete","no");
-                                MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                HashMap<String,Object> addMessage = new HashMap<>();
+                                addMessage.put("messageDetails",FileUri);
+                                addMessage.put("messageTime",CurrentTime);
+                                addMessage.put("messageDate",CurrentDate);
+                                addMessage.put("messageType",MessageType);
+                                addMessage.put("senderId",CurrentUserId);
+                                addMessage.put("receiverId",UserId);
+                                addMessage.put("messageId",MessagePushKey);
+                                addMessage.put("messageSeenDetails",MsgSentDetails);
+                                addMessage.put("fileName",fileName);
+                                addMessage.put("fileType",null);
+                                addMessage.put("senderSideMsgDelete","not_delete");
+                                addMessage.put("receiverSideMsgDelete","not_delete");
+                                addMessage.put("forward","no");
+
+                                MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                 ExistsChatUser senders = new ExistsChatUser(UserId,Position);
                                 CheckUserIdRef.child(CurrentUserId).child(UserId).setValue(senders);
@@ -1671,8 +1771,24 @@ public class ChatWithFriends extends AppCompatActivity {
                             if (snapshot.child(UserId).exists()){
                                 MessageType = "file";
                                 MsgSentDetails = "not_seen";
-                                ChatMessages senderChatMessages = new ChatMessages(FileUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,fileName,fileType,"not_delete","not_delete","no");
-                                MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                Log.e(TAG,fileType+" "+fileName);
+                                HashMap<String,Object> addMessage = new HashMap<>();
+                                addMessage.put("messageDetails",FileUri);
+                                addMessage.put("messageTime",CurrentTime);
+                                addMessage.put("messageDate",CurrentDate);
+                                addMessage.put("messageType",MessageType);
+                                addMessage.put("senderId",CurrentUserId);
+                                addMessage.put("receiverId",UserId);
+                                addMessage.put("messageId",MessagePushKey);
+                                addMessage.put("messageSeenDetails",MsgSentDetails);
+                                addMessage.put("fileName",fileName);
+                                addMessage.put("fileType",fileType);
+                                addMessage.put("senderSideMsgDelete","not_delete");
+                                addMessage.put("receiverSideMsgDelete","not_delete");
+                                addMessage.put("forward","no");
+
+                                MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                 HashMap<String,Object> position = new HashMap<String, Object>();
                                 position.put("firstPosition","first");
@@ -1747,8 +1863,23 @@ public class ChatWithFriends extends AppCompatActivity {
                                 MessageType = "file";
                                 MsgSentDetails = "not_seen";
                                 Position = "first";
-                                ChatMessages senderChatMessages = new ChatMessages(FileUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,fileName,fileType,"not_delete","not_delete","no");
-                                MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                HashMap<String,Object> addMessage = new HashMap<>();
+                                addMessage.put("messageDetails",FileUri);
+                                addMessage.put("messageTime",CurrentTime);
+                                addMessage.put("messageDate",CurrentDate);
+                                addMessage.put("messageType",MessageType);
+                                addMessage.put("senderId",CurrentUserId);
+                                addMessage.put("receiverId",UserId);
+                                addMessage.put("messageId",MessagePushKey);
+                                addMessage.put("messageSeenDetails",MsgSentDetails);
+                                addMessage.put("fileName",fileName);
+                                addMessage.put("fileType",fileType);
+                                addMessage.put("senderSideMsgDelete","not_delete");
+                                addMessage.put("receiverSideMsgDelete","not_delete");
+                                addMessage.put("forward","no");
+
+                                MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                 ExistsChatUser senders = new ExistsChatUser(UserId,Position);
                                 CheckUserIdRef.child(CurrentUserId).child(UserId).setValue(senders);
@@ -1921,8 +2052,23 @@ public class ChatWithFriends extends AppCompatActivity {
                             if (snapshot.child(UserId).exists()){
                                 MessageType = "image";
                                 MsgSentDetails = "not_seen";
-                                ChatMessages senderChatMessages = new ChatMessages(CameraImageUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                                MsfRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                HashMap<String,Object> addMessage = new HashMap<>();
+                                addMessage.put("messageDetails",CameraImageUri);
+                                addMessage.put("messageTime",CurrentTime);
+                                addMessage.put("messageDate",CurrentDate);
+                                addMessage.put("messageType",MessageType);
+                                addMessage.put("senderId",CurrentUserId);
+                                addMessage.put("receiverId",UserId);
+                                addMessage.put("messageId",MessagePushKey);
+                                addMessage.put("messageSeenDetails",MsgSentDetails);
+                                addMessage.put("fileName",null);
+                                addMessage.put("fileType",null);
+                                addMessage.put("senderSideMsgDelete","not_delete");
+                                addMessage.put("receiverSideMsgDelete","not_delete");
+                                addMessage.put("forward","no");
+
+                                MsfRef.child(MessagePushKey).setValue(addMessage);
 
                                 HashMap<String,Object> position = new HashMap<String, Object>();
                                 position.put("firstPosition","first");
@@ -1998,8 +2144,23 @@ public class ChatWithFriends extends AppCompatActivity {
                                 MessageType = "image";
                                 MsgSentDetails = "not_seen";
                                 Position = "first";
-                                ChatMessages senderChatMessages = new ChatMessages(CameraImageUri, CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                                MsfRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                                HashMap<String,Object> addMessage = new HashMap<>();
+                                addMessage.put("messageDetails",CameraImageUri);
+                                addMessage.put("messageTime",CurrentTime);
+                                addMessage.put("messageDate",CurrentDate);
+                                addMessage.put("messageType",MessageType);
+                                addMessage.put("senderId",CurrentUserId);
+                                addMessage.put("receiverId",UserId);
+                                addMessage.put("messageId",MessagePushKey);
+                                addMessage.put("messageSeenDetails",MsgSentDetails);
+                                addMessage.put("fileName",null);
+                                addMessage.put("fileType",null);
+                                addMessage.put("senderSideMsgDelete","not_delete");
+                                addMessage.put("receiverSideMsgDelete","not_delete");
+                                addMessage.put("forward","no");
+
+                                MsfRef.child(MessagePushKey).setValue(addMessage);
 
                                 ExistsChatUser senders = new ExistsChatUser(UserId,Position);
                                 CheckUserIdRef.child(CurrentUserId).child(UserId).setValue(senders);
@@ -2128,8 +2289,23 @@ public class ChatWithFriends extends AppCompatActivity {
                     MessageType = "icon";
                     MsgSentDetails = "not_seen";
                     String MessagePushKey = MessageRef.push().getKey();
-                    ChatMessages senderChatMessages = new ChatMessages("icon", CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                    MessageRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails","icon");
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",MessageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",UserId);
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","no");
+
+                    MessageRef.child(MessagePushKey).setValue(addMessage);
 
                     HashMap<String,Object> position = new HashMap<String, Object>();
                     position.put("firstPosition","first");
@@ -2200,8 +2376,23 @@ public class ChatWithFriends extends AppCompatActivity {
                     MsgSentDetails = "not_seen";
                     Position = "first";
                     String MessagePushKey = MessageRef.push().getKey();
-                    ChatMessages senderChatMessages = new ChatMessages("icon", CurrentTime, CurrentDate, MessageType, CurrentUserId, UserId, MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","no");
-                    MessageRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails","icon");
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",MessageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",UserId);
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","no");
+
+                    MessageRef.child(MessagePushKey).setValue(addMessage);
 
                     ExistsChatUser senders = new ExistsChatUser(UserId,Position);
                     CheckUserIdRef.child(CurrentUserId).child(UserId).setValue(senders);

@@ -28,6 +28,7 @@ import com.vanniktech.emoji.EmojiTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -190,7 +191,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
                             if (snapshot.child(model.getCommentId()).hasChild(CurrentUserId)){
                                 commentLikeRef.child(model.getCommentId()).child(CurrentUserId).removeValue();
                             }else {
-                                commentLikeRef.child(model.getCommentId()).child(CurrentUserId).setValue(true);
+                                HashMap<String,Object> likeComment = new HashMap<>();
+                                likeComment.put(CurrentUserId,true);
+                                commentLikeRef.child(model.getCommentId()).updateChildren(likeComment);
                             }
                             click[0] = false;
                         }

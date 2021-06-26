@@ -153,8 +153,22 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(friends.getFriendUid()).exists()){
                     MsgSentDetails = "not_seen";
-                    ChatMessages senderChatMessages = new ChatMessages(file_uri, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,fileName,null,"not_delete","not_delete","yes");
-                    MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",file_uri);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",fileName);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+                    MsgRef.child(MessagePushKey).setValue(addMessage);
 
                     HashMap<String,Object> position = new HashMap<String, Object>();
                     position.put("firstPosition","first");
@@ -223,8 +237,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
                 }else {
                     MsgSentDetails = "not_seen";
                     Position = "first";
-                    ChatMessages senderChatMessages = new ChatMessages(file_uri, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,fileName,null,"not_delete","not_delete","yes");
-                    MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",file_uri);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",fileName);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MsgRef.child(MessagePushKey).setValue(addMessage);
 
                     ExistsChatUser senders = new ExistsChatUser(friends.getFriendUid(),Position);
                     CheckUserIdRef.child(CurrentUserId).child(friends.getFriendUid()).setValue(senders);
@@ -350,8 +379,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(friends.getFriendUid()).exists()){
                     MsgSentDetails = "not_seen";
-                    ChatMessages senderChatMessages = new ChatMessages(messageDetails, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,fileName,fileType,"not_delete","not_delete","yes");
-                    MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",messageDetails);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",fileName);
+                    addMessage.put("fileType",fileType);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MsgRef.child(MessagePushKey).setValue(addMessage);
 
                     HashMap<String,Object> position = new HashMap<String, Object>();
                     position.put("firstPosition","first");
@@ -420,8 +464,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
                 }else {
                     MsgSentDetails = "not_seen";
                     Position = "first";
-                    ChatMessages senderChatMessages = new ChatMessages(messageDetails, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,fileName,fileType,"not_delete","not_delete","yes");
-                    MsgRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",messageDetails);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",fileName);
+                    addMessage.put("fileType",fileType);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MsgRef.child(MessagePushKey).setValue(addMessage);
 
                     ExistsChatUser senders = new ExistsChatUser(friends.getFriendUid(),Position);
                     CheckUserIdRef.child(CurrentUserId).child(friends.getFriendUid()).setValue(senders);
@@ -548,8 +607,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.child(friends.getFriendUid()).exists()){
                     MsgSentDetails = "not_seen";
-                    ChatMessages senderChatMessages = new ChatMessages(messageDetails, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","yes");
-                    MsfRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",messageDetails);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MsfRef.child(MessagePushKey).setValue(addMessage);
 
                     HashMap<String,Object> position = new HashMap<String, Object>();
                     position.put("firstPosition","first");
@@ -618,8 +692,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
                 }else {
                     MsgSentDetails = "not_seen";
                     Position = "first";
-                    ChatMessages senderChatMessages = new ChatMessages(messageDetails, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","yes");
-                    MsfRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",messageDetails);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MsfRef.child(MessagePushKey).setValue(addMessage);
 
                     ExistsChatUser senders = new ExistsChatUser(friends.getFriendUid(),Position);
                     CheckUserIdRef.child(CurrentUserId).child(friends.getFriendUid()).setValue(senders);
@@ -743,8 +832,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
                 if (snapshot.child(friends.getFriendUid()).exists()){
                     MsgSentDetails = "not_seen";
                     String MessagePushKey = MessageRef.push().getKey();
-                    ChatMessages senderChatMessages = new ChatMessages(sendMessageInput, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","yes");
-                    MessageRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",sendMessageInput);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MessageRef.child(MessagePushKey).setValue(addMessage);
 
                     HashMap<String,Object> position = new HashMap<String, Object>();
                     position.put("firstPosition","first");
@@ -814,8 +918,23 @@ public class ShareMessageAdapter extends RecyclerView.Adapter<ShareMessageAdapte
                     MsgSentDetails = "not_seen";
                     Position = "first";
                     String MessagePushKey = MessageRef.push().getKey();
-                    ChatMessages senderChatMessages = new ChatMessages(sendMessageInput, CurrentTime, CurrentDate, messageType, CurrentUserId, friends.getFriendUid(), MessagePushKey, MsgSentDetails,null,null,"not_delete","not_delete","yes");
-                    MessageRef.child(MessagePushKey).setValue(senderChatMessages);
+
+                    HashMap<String,Object> addMessage = new HashMap<>();
+                    addMessage.put("messageDetails",sendMessageInput);
+                    addMessage.put("messageTime",CurrentTime);
+                    addMessage.put("messageDate",CurrentDate);
+                    addMessage.put("messageType",messageType);
+                    addMessage.put("senderId",CurrentUserId);
+                    addMessage.put("receiverId",friends.getFriendUid());
+                    addMessage.put("messageId",MessagePushKey);
+                    addMessage.put("messageSeenDetails",MsgSentDetails);
+                    addMessage.put("fileName",null);
+                    addMessage.put("fileType",null);
+                    addMessage.put("senderSideMsgDelete","not_delete");
+                    addMessage.put("receiverSideMsgDelete","not_delete");
+                    addMessage.put("forward","yes");
+
+                    MessageRef.child(MessagePushKey).setValue(addMessage);
 
                     ExistsChatUser senders = new ExistsChatUser(friends.getFriendUid(),Position);
                     CheckUserIdRef.child(CurrentUserId).child(friends.getFriendUid()).setValue(senders);

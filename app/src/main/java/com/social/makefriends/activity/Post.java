@@ -57,6 +57,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 
 public class Post extends AppCompatActivity  {
@@ -183,8 +184,8 @@ public class Post extends AppCompatActivity  {
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF6200EE"));
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FFFFFF"));
 
-                            /*dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,new int[]{
-                                    DsPhotoEditorActivity.TOOL_WARMTH,DsPhotoEditorActivity.TOOL_PIXELATE});*/
+                            dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,new int[]{
+                                    DsPhotoEditorActivity.TOOL_WARMTH,DsPhotoEditorActivity.TOOL_PIXELATE});
                             launcher.launch(dsPhotoEditorIntent);
                         }else {
                             Log.e("Result","Error in Pick Image");
@@ -211,11 +212,11 @@ public class Post extends AppCompatActivity  {
 
     private void SendPostInformation(AlertDialog progressDialog, TextView message) {
         String userId = firebaseAuth.getCurrentUser().getUid();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Post").child(userId);
-        String key = databaseReference.push().getKey();
-        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("User Details").child(userId);
-        DatabaseReference databaseReference2 = FirebaseDatabase.getInstance().getReference("All Post");
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("Post").child(userId).child(key);
+        DatabaseReference userPostRef = FirebaseDatabase.getInstance().getReference("Post").child(userId);
+        String key = userPostRef.push().getKey();
+        DatabaseReference userDetailsRef = FirebaseDatabase.getInstance().getReference("User Details").child(userId);
+        DatabaseReference allPostRef = FirebaseDatabase.getInstance().getReference("All Post");
+        StorageReference postUrlRef = FirebaseStorage.getInstance().getReference("Post").child(userId).child(key);
 
         Calendar Date = Calendar.getInstance();
         SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMM-yyyy");
@@ -225,7 +226,7 @@ public class Post extends AppCompatActivity  {
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm aa");
         CurrentTime = currentTime.format(Time.getTime());
 
-        databaseReference2.addValueEventListener(new ValueEventListener() {
+        allPostRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -241,7 +242,7 @@ public class Post extends AppCompatActivity  {
             }
         });
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userPostRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -257,7 +258,7 @@ public class Post extends AppCompatActivity  {
             }
         });
 
-        storageReference.putFile(finalUri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+        postUrlRef.putFile(finalUri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
                 double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
@@ -267,7 +268,7 @@ public class Post extends AppCompatActivity  {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (task.isSuccessful()){
-                    return storageReference.getDownloadUrl();
+                    return postUrlRef.getDownloadUrl();
                 }else {
                     progressDialog.dismiss();
                     Toast.makeText(Post.this, "Image Url not downloaded. Please Try Again !!!", Toast.LENGTH_SHORT).show();
@@ -280,7 +281,7 @@ public class Post extends AppCompatActivity  {
                 if (task.isSuccessful()){
                     Uri downloadUri = task.getResult();
                     PostImageUrl = downloadUri.toString();
-                    databaseReference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    userDetailsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()){
@@ -289,13 +290,32 @@ public class Post extends AppCompatActivity  {
                                 String UserProfilePic = snapshot.child("userProfileImageUrl").getValue().toString();
                                 String TotalPostCount = String.valueOf(countPost);
                                 String TotalPostCountProfile = String.valueOf(countPostProfile);
-                                UserPost userPost = new UserPost(key,PostImageUrl,TotalPostCountProfile,userId);
-                                AllPost allPost = new AllPost(key,Name,UserProfilePic,CurrentDate,CurrentTime,PostImageUrl,Caption,userId,TotalPostCount,UsersName);
-                                databaseReference.child(key).setValue(userPost).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                                //For User Post
+                                HashMap<String,Object> addUserPost = new HashMap<>();
+                                addUserPost.put("postId",key);
+                                addUserPost.put("postImage",PostImageUrl);
+                                addUserPost.put("postCount",TotalPostCountProfile);
+                                addUserPost.put("userId",userId);
+
+                                userPostRef.child(key).setValue(addUserPost).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
-                                            databaseReference2.child(key).setValue(allPost).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            //For All Post
+                                            HashMap<String,Object> allPost = new HashMap<>();
+                                            allPost.put("key",key);
+                                            allPost.put("userName",Name);
+                                            allPost.put("userProfilePic",UserProfilePic);
+                                            allPost.put("currentDate",CurrentDate);
+                                            allPost.put("currentTime",CurrentTime);
+                                            allPost.put("postImage",PostImageUrl);
+                                            allPost.put("caption",Caption);
+                                            allPost.put("currentUserId",userId);
+                                            allPost.put("countPost",TotalPostCount);
+                                            allPost.put("usersName",UsersName);
+
+                                            allPostRef.child(key).setValue(allPost).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     progressDialog.dismiss();

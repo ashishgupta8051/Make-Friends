@@ -37,6 +37,8 @@ import com.social.makefriends.notification.Token;
 import com.social.makefriends.utils.APIService;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -133,10 +135,22 @@ public class MyFriendRequestAdapter extends FirebaseRecyclerAdapter<Request, MyF
         makeFriend = FirebaseDatabase.getInstance().getReference("Friend");
         SendFriendRequestRef = FirebaseDatabase.getInstance().getReference("Friend Request");
         String Status = "friend";
-        Friends friends = new Friends(Status,userId,name,userName);
-        makeFriend.child(currentUserId).child(userId).setValue(friends);
-        Friends friends1 = new Friends(Status,currentUserId,currentName,currentUserName);
-        makeFriend.child(userId).child(currentUserId).setValue(friends1);
+
+        HashMap<String,Object> addFriends = new HashMap<>();
+        addFriends.put("status",Status);
+        addFriends.put("friendUid",userId);
+        addFriends.put("friend_name",name);
+        addFriends.put("friend_userName",userName);
+
+        makeFriend.child(currentUserId).child(userId).setValue(addFriends);
+
+        HashMap<String,Object> addFriends2 = new HashMap<>();
+        addFriends2.put("status",Status);
+        addFriends2.put("friendUid",currentUserId);
+        addFriends2.put("friend_name",currentName);
+        addFriends2.put("friend_userName",currentUserName);
+
+        makeFriend.child(userId).child(currentUserId).setValue(addFriends2);
         SendFriendRequestRef.child(currentUserId).child(userId).removeValue();
         SendFriendRequestRef.child(userId).child(currentUserId).removeValue();
 

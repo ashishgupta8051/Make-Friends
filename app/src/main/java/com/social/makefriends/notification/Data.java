@@ -1,11 +1,11 @@
 package com.social.makefriends.notification;
 
 public class Data {
-    private String senderNotificationUserId;
-    private String notificationBody;
-    private String notificationTitle;
-    private String receiverNotificationUserId;
-    private String notificationType; //Like Chatting Type,Request Type
+    String senderNotificationUserId;
+    String notificationBody;
+    String notificationTitle;
+    String receiverNotificationUserId;
+    String notificationType; //Like Chatting Type,Request Type
 
     public Data() {
     }

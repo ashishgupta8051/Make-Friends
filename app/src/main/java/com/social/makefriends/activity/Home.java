@@ -72,6 +72,7 @@ public class Home extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         homePostAdapter = new HomePostAdapter(arrayList,Home.this);
+
         recyclerView.setAdapter(homePostAdapter);
 
         //Bottom navigation
@@ -166,7 +167,6 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        fetchData();
     }
 
     @Override
@@ -195,7 +195,9 @@ public class Home extends AppCompatActivity {
         }, 1000 * 60 * 15); // Show the ad after 15 minutes
     }
 
-    private void fetchData() {
+    @Override
+    protected void onStart() {
+        super.onStart();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

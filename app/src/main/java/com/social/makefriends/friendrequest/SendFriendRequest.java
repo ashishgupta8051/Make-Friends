@@ -52,6 +52,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -232,6 +233,7 @@ public class SendFriendRequest extends AppCompatActivity {
                             }else {
                                 noPostAvailable.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.INVISIBLE);
+                                Log.e("Error","Not esistes");
                             }
                         }
 
@@ -317,26 +319,6 @@ public class SendFriendRequest extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //Update Token
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            String token = task.getResult();
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                            Token token1 = new Token(token);
-                            reference.child(CurrentUserId).setValue(token1);
-                        }else {
-                            Toast.makeText(SendFriendRequest.this, task.getResult().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
     private void UnFriend() {
         AlertDialog.Builder builder = new AlertDialog.Builder(SendFriendRequest.this);
         builder.setMessage("Are you sure you want to unfriend");
@@ -380,10 +362,26 @@ public class SendFriendRequest extends AppCompatActivity {
 
     private void AcceptRequest(String name, String userName, String currentName, String currentUserName) {
         String Status = "friend";
-        Friends friends = new Friends(Status,UserId,name,userName);
-        FriendRef.child(CurrentUserId).child(UserId).setValue(friends);
-        Friends friends1 = new Friends(Status,CurrentUserId,currentName,currentUserName);
-        FriendRef.child(UserId).child(CurrentUserId).setValue(friends1);
+//        Friends friends = new Friends(Status,UserId,name,userName);
+
+        HashMap<String,Object> addFriends = new HashMap<>();
+        addFriends.put("status",Status);
+        addFriends.put("friendUid",UserId);
+        addFriends.put("friend_name",name);
+        addFriends.put("friend_userName",userName);
+
+        FriendRef.child(CurrentUserId).child(UserId).setValue(addFriends);
+
+//        Friends friends1 = new Friends(Status,CurrentUserId,currentName,currentUserName);
+
+        HashMap<String,Object> addFriends2 = new HashMap<>();
+        addFriends2.put("status",Status);
+        addFriends2.put("friendUid",CurrentUserId);
+        addFriends2.put("friend_name",currentName);
+        addFriends2.put("friend_userName",currentUserName);
+
+        FriendRef.child(UserId).child(CurrentUserId).setValue(addFriends2);
+
         SendFriendRequestRef.child(CurrentUserId).child(UserId).removeValue();
         SendFriendRequestRef.child(UserId).child(CurrentUserId).removeValue();
         CURRENT_STATE = "friend";
@@ -421,10 +419,19 @@ public class SendFriendRequest extends AppCompatActivity {
     private void SendRequest() {
         String Type = "sent";
         String type = "received";
-        Request sendRequest = new Request(Type,null);
-        Request receiveRequest = new Request(type,CurrentUserId);
+     /*   Request sendRequest = new Request(Type,null);
+        Request receiveRequest = new Request(type,CurrentUserId);*/
+
+        HashMap<String,Object> sendRequest = new HashMap<>();
+        sendRequest.put("request_type",Type);
+        sendRequest.put("senderUid",null);
+
         SendFriendRequestRef.child(CurrentUserId).child(UserId).setValue(sendRequest);
-        SendFriendRequestRef.child(UserId).child(CurrentUserId).setValue(receiveRequest);
+
+        HashMap<String,Object> receiverRequest = new HashMap<>();
+        receiverRequest.put("request_type",type);
+        receiverRequest.put("senderUid",CurrentUserId);
+        SendFriendRequestRef.child(UserId).child(CurrentUserId).setValue(receiverRequest);
 
         CURRENT_STATE = "request_sent";
         Button1.setText(" Cancel Request ");

@@ -30,6 +30,8 @@ import com.social.makefriends.model.SearchFriendHistory;
 import com.social.makefriends.model.UserDetails;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SearchFriendsAdapter extends FirebaseRecyclerAdapter<UserDetails, SearchFriendsAdapter.SearchViewHolder> {
@@ -110,7 +112,14 @@ public class SearchFriendsAdapter extends FirebaseRecyclerAdapter<UserDetails, S
                                     Log.e("Error","Already Added in database");
                                 }else {
                                     String Total = String.valueOf(countProfile);
-                                    SearchFriendHistory searchFriendHistory = new SearchFriendHistory(name,userName,ProfileImageUri,UserId,Total);
+
+                                    HashMap<String,Object> searchFriendHistory = new HashMap<>();
+                                    searchFriendHistory.put("search_Name",name);
+                                    searchFriendHistory.put("search_UserName",userName);
+                                    searchFriendHistory.put("search_ProfilePic",ProfileImageUri);
+                                    searchFriendHistory.put("search_UserId",UserId);
+                                    searchFriendHistory.put("totalCount",Total);
+
                                     databaseReference.child(UserId).setValue(searchFriendHistory);
                                 }
                             }

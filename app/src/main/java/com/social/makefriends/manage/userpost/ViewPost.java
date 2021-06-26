@@ -52,6 +52,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -185,7 +186,9 @@ public class ViewPost extends AppCompatActivity {
                                 Like.child(PostId).child(CurrentUserId).removeValue();
                                 //holder.PostLike.setImageResource(R.drawable.uncolored_like);
                             } else {
-                                Like.child(PostId).child(CurrentUserId).setValue(CurrentUserId);
+                                HashMap<String,Object> like = new HashMap<>();
+                                like.put(CurrentUserId,CurrentUserId);
+                                Like.child(PostId).updateChildren(like);
                                 //holder.PostLike.setImageResource(R.drawable.colored_like);
                             }
                             LickChecker[0] = false;
@@ -214,7 +217,9 @@ public class ViewPost extends AppCompatActivity {
                                 DisLike.child(PostId).child(CurrentUserId).removeValue();
                                 //holder.PostLike.setImageResource(R.drawable.uncolored_like);
                             } else {
-                                DisLike.child(PostId).child(CurrentUserId).setValue(CurrentUserId);
+                                HashMap<String,Object> dislike = new HashMap<>();
+                                dislike.put(CurrentUserId,CurrentUserId);
+                                DisLike.child(PostId).updateChildren(dislike);
                                 //holder.PostLike.setImageResource(R.drawable.colored_like);
                             }
                             LickChecker2[0] = false;
@@ -464,8 +469,9 @@ public class ViewPost extends AppCompatActivity {
                             if (snapshot.hasChild(PostId)){
                                 savePostRef.child(PostId).removeValue();
                             }else {
-                                FavPost favPost = new FavPost(PostId);
-                                savePostRef.child(PostId).setValue(favPost);
+                                HashMap<String,Object> addFevPost = new HashMap<>();
+                                addFevPost.put("favPostId",PostId);
+                                savePostRef.child(PostId).updateChildren(addFevPost);
                             }
                             postChecker[0] = false;
                         }
