@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -117,6 +118,23 @@ public class UpdateProfile extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
+        //get Token Id
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            String token = task.getResult();
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+                            HashMap<String,Object> addToken = new HashMap<>();
+                            addToken.put("token",token);
+                            reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
+                        }else {
+                            Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
         databaseReference1.addValueEventListener(new ValueEventListener() {

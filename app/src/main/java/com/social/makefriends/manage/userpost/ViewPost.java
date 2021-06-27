@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +70,8 @@ public class ViewPost extends AppCompatActivity {
     private DatabaseReference postRef,savePostRef,commentRef;
     Bitmap bitmap;
     private long countPost;
+    private StrictMode.VmPolicy.Builder builder;
+    private BitmapDrawable bitmapDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,22 +344,29 @@ public class ViewPost extends AppCompatActivity {
                                 });
                                 break;
                             case R.id.action_share_post:
-                                try {
-                                    File file = new File(getExternalCacheDir(),"sample.png");
+                                builder = new StrictMode.VmPolicy.Builder();
+                                StrictMode.setVmPolicy(builder.build());
+
+                                bitmapDrawable = (BitmapDrawable) PostImage.getDrawable();
+                                bitmap = bitmapDrawable.getBitmap();
+
+                                File file = new File(ViewPost.this.getExternalCacheDir(),"sample.png");
+                                Intent shareIntent = null;
+                                try{
                                     fileOutputStream = new FileOutputStream(file);
-                                    bitmap = ((BitmapDrawable)PostImage.getDrawable()).getBitmap();
-                                    bitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+
                                     fileOutputStream.flush();
                                     fileOutputStream.close();
-                                    file.setReadable(true,false);
-                                    Intent intent = new Intent(Intent.ACTION_SEND);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                                    intent.setType("image/png");
-                                    startActivity(Intent.createChooser(intent,"Share via"));
-                                } catch (Exception e){
-                                    Toast.makeText(ViewPost.this, "Something is wrong please try again", Toast.LENGTH_SHORT).show();
+
+                                    shareIntent = new Intent(Intent.ACTION_SEND);
+                                    shareIntent.setType("image/*");
+                                    shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+                                    shareIntent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+                                }catch (Exception e){
+                                    e.printStackTrace();
                                 }
+                                startActivity(Intent.createChooser(shareIntent,"share image"));
                                 break;
                             case R.id.action_update_post:
                                 Intent intent = new Intent(ViewPost.this,UpdatePost.class);

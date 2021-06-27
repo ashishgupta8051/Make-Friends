@@ -144,23 +144,6 @@ public class SignUp extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
         databaseReference.setValue(addUserDetails);
         sharedPrefManager.saveWallpaper("d");
-
-        //get Token Id
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            String token = task.getResult();
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                            HashMap<String,Object> addToken = new HashMap<>();
-                            addToken.put("token",token);
-                            reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
-                        }else {
-                            Toast.makeText(SignUp.this, task.getResult().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
     @Override

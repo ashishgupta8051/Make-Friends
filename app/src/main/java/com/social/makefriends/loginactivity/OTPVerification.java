@@ -130,23 +130,6 @@ public class OTPVerification extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 sharedPrefManager.saveWallpaper(id);
 
-                                //get Token Id
-                                FirebaseMessaging.getInstance().getToken()
-                                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<String> task) {
-                                                if (task.isSuccessful()) {
-                                                    String token = task.getResult();
-                                                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                                                    HashMap<String,Object> addToken = new HashMap<>();
-                                                    addToken.put("token",token);
-                                                    reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
-                                                }else {
-                                                    Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-
                                 progressDialog.dismiss();
                                 startActivity(new Intent(getApplicationContext(), Home.class));
                                 finish();
@@ -182,23 +165,6 @@ public class OTPVerification extends AppCompatActivity {
 
                     databaseReference.setValue(addUserDetails);
                     sharedPrefManager.saveWallpaper("d");
-
-                    //get Token Id
-                    FirebaseMessaging.getInstance().getToken()
-                            .addOnCompleteListener(new OnCompleteListener<String>() {
-                                @Override
-                                public void onComplete(@NonNull Task<String> task) {
-                                    if (task.isSuccessful()) {
-                                        String token = task.getResult();
-                                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                                        HashMap<String,Object> addToken = new HashMap<>();
-                                        addToken.put("token",token);
-                                        reference.child(CurrentUserUid).setValue(addToken);
-                                    }else {
-                                        Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
 
                     progressDialog.dismiss();
                     Intent intent = new Intent(getApplicationContext(), UpdateProfile.class);

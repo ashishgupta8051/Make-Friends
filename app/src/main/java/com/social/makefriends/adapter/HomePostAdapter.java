@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -69,6 +70,8 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyViewHolder> implements ActivityCompat.OnRequestPermissionsResultCallback {
     private Bitmap bitmap;
     private FileOutputStream fileOutputStream;
+    private StrictMode.VmPolicy.Builder builder;
+    private BitmapDrawable bitmapDrawable;
     private String HomePostValue = "H";
     private List<AllPost> allPostList;
     private static final  int PERMISSION = 999;
@@ -371,22 +374,29 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                                 }
                                 break;
                             case R.id.action_share_post:
-                                try {
-                                    File file = new File(view.getContext().getExternalCacheDir(),"sample.png");
+                                builder = new StrictMode.VmPolicy.Builder();
+                                StrictMode.setVmPolicy(builder.build());
+
+                                bitmapDrawable = (BitmapDrawable) holder.PostImage.getDrawable();
+                                bitmap = bitmapDrawable.getBitmap();
+
+                                File file = new File(view.getContext().getExternalCacheDir(),"sample.png");
+                                Intent intent = null;
+                                try{
                                     fileOutputStream = new FileOutputStream(file);
-                                    bitmap = ((BitmapDrawable)holder.PostImage.getDrawable()).getBitmap();
-                                    bitmap.compress(Bitmap.CompressFormat.PNG,100,fileOutputStream);
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+
                                     fileOutputStream.flush();
                                     fileOutputStream.close();
-                                    file.setReadable(true,false);
-                                    Intent intent = new Intent(Intent.ACTION_SEND);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                                    intent.setType("image/png");
-                                    view.getContext().startActivity(Intent.createChooser(intent,"Share via"));
-                                } catch (Exception e){
-                                    Toast.makeText(view.getContext(),"Something is wrong please try again", Toast.LENGTH_SHORT).show();
+
+                                    intent = new Intent(Intent.ACTION_SEND);
+                                    intent.setType("image/*");
+                                    intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+                                    intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+                                }catch (Exception e){
+                                    e.printStackTrace();
                                 }
+                                context.startActivity(Intent.createChooser(intent,"share image"));
                                 break;
                             case R.id.action_update_post:
                                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
