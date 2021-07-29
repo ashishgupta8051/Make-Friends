@@ -187,23 +187,6 @@ public class UpdateProfile extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK){
-                            /*if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == RESULT_OK) {
-            Uri ImageUri = CropImage.getPickImageResultUri(this, data);
-
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, ImageUri)) {
-                uri = ImageUri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-            } else {
-                startCrop(ImageUri);
-            }
-        }*/
-                            /*if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-
-            }
-        }*/
-
                             Intent intent = result.getData();
                             Uri uri = intent.getData();
 
@@ -215,7 +198,19 @@ public class UpdateProfile extends AppCompatActivity {
                             dsPhotoEditorIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,new int[]{
                                     DsPhotoEditorActivity.TOOL_WARMTH,DsPhotoEditorActivity.TOOL_PIXELATE});
                             launcher.launch(dsPhotoEditorIntent);
+                        }else {
+                            Log.e("Error","Dp change error");
+                        }
+                    }
+        });
 
+        launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK){
+                            Intent intent = result.getData();
+                            Uri finalUri = intent.getData();
                             AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfile.this);
                             View view = getLayoutInflater().inflate(R.layout.progressdialog,null);
 
@@ -231,7 +226,7 @@ public class UpdateProfile extends AppCompatActivity {
                             progressDialog.show();
 
                             StorageReference profileImageRef = profileImagePath.child(firebaseAuth.getUid()).child("Image").child(firebaseAuth.getUid() + ".jpg");
-                            profileImageRef.putFile(uri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            profileImageRef.putFile(finalUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                                 @Override
                                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                                     if (task.isSuccessful()) {
@@ -378,27 +373,11 @@ public class UpdateProfile extends AppCompatActivity {
                                     }
                                 }
                             });
-
-                        }else {
-                            Log.e("Error","Dp change error");
-                        }
-                    }
-        });
-
-      /*  launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK){
-                            Intent intent = result.getData();
-                            Uri uri = intent.getData();
-
-
                         }else {
                             Log.e("Error","Dp change error 2");
                         }
                     }
-        });*/
+        });
     }
 
     private void requestPermission() {
