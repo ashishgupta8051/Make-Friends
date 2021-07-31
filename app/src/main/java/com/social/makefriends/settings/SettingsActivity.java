@@ -1,7 +1,10 @@
 package com.social.makefriends.settings;
 
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -17,12 +20,14 @@ import com.social.makefriends.activity.UserProfile;
 import com.social.makefriends.loginactivity.ChangePassword;
 import com.social.makefriends.loginactivity.Login;
 import com.social.makefriends.manage.userpost.FavouritePost;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 public class SettingsActivity extends AppCompatActivity {
     private String value;
     private TextView savePostTxt,themeTxt,logoutTxt,changePassword;
     private LoginManager loginManager;
     private FirebaseAuth firebaseAuth;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +138,19 @@ public class SettingsActivity extends AppCompatActivity {
         intent.putExtra("UserFriendsValue",value);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }

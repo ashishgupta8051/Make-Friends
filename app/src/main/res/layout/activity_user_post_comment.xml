@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="60dp"
-        android:hint="Type your comments ...."
+        android:hint="@string/commentHint"
         android:maxHeight="90dp"
         android:paddingLeft="45dp"
         android:paddingRight="10dp"

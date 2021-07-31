@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,7 @@ import com.social.makefriends.adapter.FriendChatListAdapter;
 import com.social.makefriends.loginactivity.Login;
 import com.social.makefriends.model.ExistsChatUser;
 import com.social.makefriends.notification.Token;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +49,7 @@ public class Chats extends AppCompatActivity {
     private ArrayList<ExistsChatUser> existsChatUsers = new ArrayList<>();
     private ArrayList<String> stringArrayList = new ArrayList<>();
     private ProgressBar progressBar;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +135,9 @@ public class Chats extends AppCompatActivity {
         super.onStart();
         checkOnlineStatus("Online");
 
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -173,6 +181,14 @@ public class Chats extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(Chats.this,Home.class));
         finish();
+    }
+
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }

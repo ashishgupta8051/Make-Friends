@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.social.makefriends.R;
 import com.social.makefriends.adapter.MyFriendRequestAdapter;
 import com.social.makefriends.model.Request;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 
 public class FriendRequest extends Fragment {

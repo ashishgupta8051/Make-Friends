@@ -10,12 +10,15 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,6 +50,7 @@ import com.social.makefriends.friendrequest.SendFriendRequest;
 import com.social.makefriends.friendrequest.SendFriendRequestDuplicate;
 import com.social.makefriends.model.AllPost;
 import com.social.makefriends.model.FavPost;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -72,6 +76,7 @@ public class ViewPost extends AppCompatActivity {
     private long countPost;
     private StrictMode.VmPolicy.Builder builder;
     private BitmapDrawable bitmapDrawable;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -626,5 +631,18 @@ public class ViewPost extends AppCompatActivity {
             startActivity(intent);
         }
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

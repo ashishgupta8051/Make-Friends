@@ -35,7 +35,7 @@
             android:gravity="top"
             android:singleLine="true"
             android:inputType="text"
-            android:hint="Write your caption ...."/>
+            android:hint="@string/caption_hint"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="Upload Post"
+        android:text="@string/uploadPostBtn"
         android:textColor="@color/white"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"

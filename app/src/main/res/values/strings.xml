@@ -1,9 +1,93 @@
 <resources>
-
     <!--App Name-->
     <string name="app_name">Make Friends</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+    //Facebook Login Details
     <string name="facebook_app_id">825919598194817</string>
     <string name="fb_login_protocol_scheme">fb825919598194817</string>
+
+    //Alert dialog box
+    <string name="offline_text_1">OPPS !!!</string>
+    <string name="offline_text_2">Please check your internet connection and try again</string>
+    <string name="try_again_btn">Try Again</string>
+    //Activity Change password
+    <string name="current_password_hint">Current Password</string>
+    <string name="new_password_hint">New Password</string>
+    <string name="new_password_hint_again">New Password again</string>
+    <string name="change_password_btn">Change Password</string>
+    //Chat with friend
+    <string name="userNameTxt">User Name</string>
+    <string name="onlineTxt">Online Status</string>
+    <string name="messageHint">Type your message...</string>
+    //Login
+    <string name="signIn_txt">Sign In</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="forgotPasswordTxt">Forgot Password</string>
+    <string name="loginBtn">Login</string>
+    <string name="message1">Don\'t have an Account, Create new Account</string>
+    <string name="message2">Or Login With</string>
+    <string name="loginWithPhoneBtn">Login With Phone</string>
+    //Login with phone
+    <string name="signIn_with_phone_txt">Sign In With Phone</string>
+    <string name="message3">Please enter your phone number</string>
+    <string name="nextBtn">Next</string>
+    //OTP Verification
+    <string name="otp_verification_txt">OTP Verification</string>
+    <string name="verify_number_txt">Verify Number</string>
+    <string name="verifyBtn">Verify</string>
+    //Post
+    <string name="caption_hint">Write your caption ....</string>
+    <string name="uploadPostBtn">Upload Post</string>
+    //Reset Password
+    <string name="resetPasswordTxt">Reset Password</string>
+    <string name="emailIdHint">Type your email id</string>
+    <string name="continueBtn">Continue</string>
+    //Search Friend
+    <string name="searchHint">Search your Friend</string>
+    <string name="message4">Clear all search History</string>
+    //Select wallpaper
+    <string name="defaultWallBtn">Default Wallpaper</string>
+    <string name="lightWallBtn">Light Wallpaper</string>
+    <string name="darkWallBtn">Dark Wallpaper</string>
+    <string name="pickWallBtn">Pick Image</string>
+    <string name="setBtn">Set</string>
+    //Send friend request
+    <string name="privacyPolicyTxt">Privacy Policy</string>
+    <string name="addFriendBtn"> Add friend </string>
+    <string name="messageBtn"> Message </string>
+    <string name="declineReqBtn"> Decline </string>
+    //Sign Up
+    <string name="signUpTxt">Sign Up</string>
+    <string name="nameHint">Name</string>
+    <string name="passwordHint">Password</string>
+    <string name="registerBtn">Register</string>
+    <string name="alreadySignInTxt">Already SignIn</string>
+    //Update profile
+    <string name="changeDPTxt">Change Profile Pic</string>
+    <string name="dobHint">Date of Birth</string>
+    <string name="addressHint">Address</string>
+    <string name="bioHint">Bio</string>
+    <string name="userNameHint">UserName</string>
+    //User post comment
+    <string name="commentHint">Type your comment...</string>
+    //Friend request status
+    <string name="acceptBtn">Accept</string>
+    <string name="nameTxt">Name</string>
+    //Setting
+    <string name="fevPostTxt">Favourite Post</string>
+    <string name="changePassTxt">Change Password</string>
+    <string name="themeTxt">Theme</string>
+    <string name="logoutTxt">Logout</string>
+
+    //Dialog Box
+    <string name="cameraImg">Camera</string>
+    <string name="imageImg">Image</string>
+    <string name="videoImg">Video</string>
+    <string name="fileImg">File</string>
+    <string name="audioImg">Audio</string>
+    <string name="progressDialogTxt">Progress Dialog</string>
+    <string name="pleaseWaitTxt">Please Wait...</string>
+    <string name="sendBtn">send</string>
 
 </resources>

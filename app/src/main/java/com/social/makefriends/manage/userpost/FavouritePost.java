@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,6 +24,7 @@ import com.social.makefriends.R;
 import com.social.makefriends.adapter.FavouritePostAdapter;
 import com.social.makefriends.model.FavPost;
 import com.social.makefriends.settings.SettingsActivity;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +37,7 @@ public class FavouritePost extends AppCompatActivity {
     private DatabaseReference favPostRef;
     private FavouritePostAdapter favouritePostAdapter;
     private ArrayList<FavPost> favPostArrayList = new ArrayList<>();
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,5 +108,18 @@ public class FavouritePost extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

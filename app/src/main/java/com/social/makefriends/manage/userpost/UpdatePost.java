@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -24,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
 import com.social.makefriends.activity.Home;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -35,6 +39,7 @@ public class UpdatePost extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String PostId,UserName,ProfilePic,UsersName,UserId,Value,Value2,wallpaper;
     private DatabaseReference databaseReference;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,5 +155,18 @@ public class UpdatePost extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

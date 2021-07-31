@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In with Phone"
+            android:text="@string/signIn_with_phone_txt"
             android:textColor="@color/black"
             android:textSize="35dp"
             android:layout_marginLeft="20dp"
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please enter your phone number"
+            android:text="@string/message3"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="next"
+            android:text="@string/nextBtn"
             android:backgroundTint="@color/teal_700"/>
 
     </LinearLayout>

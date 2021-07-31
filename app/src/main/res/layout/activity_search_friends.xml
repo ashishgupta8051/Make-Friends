@@ -17,7 +17,7 @@
           android:id="@+id/clear_all"
           android:layout_width="match_parent"
           android:layout_height="20dp"
-          android:text=" Clear all search History "
+          android:text="@string/message4"
           android:textColor="@color/black"
           android:background="@color/grey"
           android:textStyle="bold"

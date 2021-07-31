@@ -3,7 +3,10 @@ package com.social.makefriends.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -11,9 +14,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.social.makefriends.R;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 public class Notifications extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +71,14 @@ public class Notifications extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -79,4 +91,6 @@ public class Notifications extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(),Home.class));
         finish();
     }
+
+
 }

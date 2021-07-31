@@ -12,14 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Build;
@@ -79,6 +82,7 @@ import com.social.makefriends.notification.MyResponse;
 import com.social.makefriends.notification.Senders;
 import com.social.makefriends.notification.Token;
 import com.social.makefriends.utils.APIService;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.social.makefriends.utils.SharedPrefManager;
 import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiEditText;
@@ -130,6 +134,7 @@ public class ChatWithFriends extends AppCompatActivity {
     private ActivityResultLauncher<Intent> fileResultLauncher;
     private ActivityResultLauncher<Intent> audioResultLauncher;
     private ActivityResultLauncher<Intent> videoResultLauncher;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -823,6 +828,8 @@ public class ChatWithFriends extends AppCompatActivity {
         super.onStart();
         checkOnlineStatus("Online");
 
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
         send_message_input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -875,6 +882,12 @@ public class ChatWithFriends extends AppCompatActivity {
                 Toast.makeText(ChatWithFriends.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override

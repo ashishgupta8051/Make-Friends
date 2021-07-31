@@ -3,15 +3,20 @@ package com.social.makefriends.friendrequest.chatting.background;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 
 import com.social.makefriends.R;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 public class DarkWallpaper extends AppCompatActivity {
     private String userId,image,value,chatWallpaper;
     private CardView card1,card2,card3,card4,card5,card6,card7;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,5 +153,18 @@ public class DarkWallpaper extends AppCompatActivity {
         intent.putExtra("ChatBackground",chatWallpaper);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

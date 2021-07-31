@@ -16,7 +16,7 @@
         android:id="@+id/setWallpaperBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Set"
+        android:text="@string/setBtn"
         android:textColor="@color/white"
         android:layout_marginLeft="@dimen/_50sdp"
         android:layout_marginRight="@dimen/_50sdp"

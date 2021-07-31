@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +31,7 @@ import com.social.makefriends.adapter.SearchFriendHistoryAdapter;
 import com.social.makefriends.adapter.SearchFriendsAdapter;
 import com.social.makefriends.model.SearchFriendHistory;
 import com.social.makefriends.model.UserDetails;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 public class SearchFriends extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -35,6 +39,7 @@ public class SearchFriends extends AppCompatActivity {
     private SearchFriendHistoryAdapter searchFriendHistoryAdapter;
     private FirebaseAuth firebaseAuth;
     private TextView textView;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,12 +142,15 @@ public class SearchFriends extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         searchFriendHistoryAdapter.startListening();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         searchFriendHistoryAdapter.stopListening();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -150,4 +158,6 @@ public class SearchFriends extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Home.class));
         finish();
     }
+
+
 }

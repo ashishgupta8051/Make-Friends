@@ -10,9 +10,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,6 +59,7 @@ import com.social.makefriends.activity.Home;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.manage.userprofile.UpdateProfile;
 import com.social.makefriends.notification.Token;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.social.makefriends.utils.SharedPrefManager;
 
 import java.util.Arrays;
@@ -75,6 +79,7 @@ public class Login extends AppCompatActivity {
     private SharedPrefManager sharedPrefManager;
     private DatabaseReference userDetailsRef;
     private ActivityResultLauncher<Intent> resultLauncher;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -390,5 +395,19 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
 
 }

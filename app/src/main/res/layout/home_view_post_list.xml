@@ -37,7 +37,7 @@
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name"
+            tools:text="@string/nameTxt"
             android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -52,7 +52,7 @@
             android:id="@+id/post_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
+            tools:text="Date"
             android:textColor="@color/black"
             android:textSize="14dp"
             android:layout_marginTop="4dp"
@@ -65,7 +65,7 @@
             android:id="@+id/post_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time"
+            tools:text="Time"
             android:textColor="@color/black"
             android:textSize="14dp"
             android:layout_marginTop="4dp"
@@ -78,7 +78,7 @@
             android:id="@+id/post_caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Caption"
+            tools:text="caption"
             android:textSize="@dimen/_11sdp"
             android:textColor="@color/black"
             android:layout_marginTop="5dp"
@@ -97,6 +97,18 @@
             app:layout_constraintTop_toBottomOf="@+id/post_caption"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/homePostImageProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/purple_500"
+            app:layout_constraintTop_toTopOf="@id/post_image"
+            app:layout_constraintLeft_toLeftOf="@+id/post_image"
+            app:layout_constraintRight_toRightOf="@id/post_image"
+            app:layout_constraintBottom_toBottomOf="@id/post_image"
+            />
+
 
         <ImageView
             android:id="@+id/post_like"

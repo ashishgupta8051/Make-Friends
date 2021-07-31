@@ -14,11 +14,14 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,6 +56,7 @@ import com.google.firebase.storage.UploadTask;
 import com.social.makefriends.R;
 import com.social.makefriends.model.AllPost;
 import com.social.makefriends.model.UserPost;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -72,6 +76,7 @@ public class Post extends AppCompatActivity  {
     private static final int PERMISSION = 999;
     private ActivityResultLauncher<Intent> pickResultLauncher;
     private ActivityResultLauncher<Intent> launcher;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -377,6 +382,19 @@ public class Post extends AppCompatActivity  {
         finish();
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
 
 
 }

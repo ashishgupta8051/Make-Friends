@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ import com.social.makefriends.R;
 import com.social.makefriends.activity.UserProfile;
 import com.social.makefriends.fragment.FriendRequest;
 import com.social.makefriends.fragment.MyFriends;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.util.ArrayList;
 
@@ -40,6 +44,7 @@ public class TabLayoutView extends AppCompatActivity {
     private String Value;
     private Intent intent;
     private Bundle extras;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,5 +156,18 @@ public class TabLayoutView extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return stringArrayList.get(position);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

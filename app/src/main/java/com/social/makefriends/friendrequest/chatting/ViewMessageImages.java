@@ -10,12 +10,15 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.Manifest;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +34,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.social.makefriends.R;
 import com.social.makefriends.manage.userprofile.ViewProfileImage;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -42,6 +46,7 @@ public class ViewMessageImages extends AppCompatActivity {
     Bitmap bitmap;
     private static final  int PERMISSION = 999;
     private boolean check = true;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -201,6 +206,19 @@ public class ViewMessageImages extends AppCompatActivity {
         intent2.putExtra("ChatBackground",chatWallpaper);
         startActivity(intent2);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }

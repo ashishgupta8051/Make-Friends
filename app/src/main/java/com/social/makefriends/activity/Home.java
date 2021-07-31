@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +39,7 @@ import com.social.makefriends.R;
 import com.social.makefriends.adapter.HomePostAdapter;
 import com.social.makefriends.model.AllPost;
 import com.social.makefriends.friendrequest.SearchFriends;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +55,7 @@ public class Home extends AppCompatActivity {
     private ArrayList<AllPost> arrayList = new ArrayList<>();
     private ProgressBar progressBar;
     private String CurrentUserId;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +161,10 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -187,6 +196,12 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_search:
@@ -202,4 +217,7 @@ public class Home extends AppCompatActivity {
     public void onBackPressed() {
         finishAffinity();
     }
+
+
+
 }

@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
 import com.social.makefriends.adapter.ShareMessageAdapter;
 import com.social.makefriends.model.Friends;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.util.ArrayList;
 
@@ -36,6 +40,7 @@ public class ShareMessages extends AppCompatActivity {
     private ProgressBar progressBar;
     private String currentUserId,userId,image,value,backGroundImage,messageType,messageDetails,fileName,fileType;
     private ShareMessageAdapter shareMessageAdapter;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +187,10 @@ public class ShareMessages extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+
         friendRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -215,5 +224,12 @@ public class ShareMessages extends AppCompatActivity {
         intent.putExtra("ChatBackground",backGroundImage);
         startActivity(intent);
         finish();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

@@ -47,7 +47,7 @@
                     android:textColor="@color/black"
                     android:gravity="top"
                     android:scrollbars="vertical"
-                    android:hint="Write your caption ...." />
+                    android:hint="@string/caption_hint" />
 
 
             </com.google.android.material.textfield.TextInputLayout>

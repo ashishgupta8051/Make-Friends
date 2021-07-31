@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +39,7 @@ import com.social.makefriends.activity.Home;
 import com.social.makefriends.manage.userprofile.UpdateProfile;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.notification.Token;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.social.makefriends.utils.SharedPrefManager;
 
 import java.util.HashMap;
@@ -50,6 +54,7 @@ public class OTPVerification extends AppCompatActivity {
     private DatabaseReference userDetailsRef;
     private SharedPrefManager sharedPrefManager;
     private String loginDetails = "You are login with your 𝐏𝐡𝐨𝐧𝐞 𝐍𝐮𝐦𝐛𝐞𝐫. Your phone number is hidden and nobody can see your phone number.";
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,5 +191,18 @@ public class OTPVerification extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(getApplicationContext(),LoginWithPhone.class));
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

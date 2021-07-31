@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,8 +31,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.settings.SettingsActivity;
+import com.social.makefriends.utils.CheckInternetConnection;
 
 import java.util.HashMap;
+import java.util.PrimitiveIterator;
 
 public class ChangePassword extends AppCompatActivity {
     private String value;
@@ -37,6 +42,7 @@ public class ChangePassword extends AppCompatActivity {
     private Button changePasswordButton;
     private EditText currentPassword,changeLoginPassword,changeLoginPasswordAgain;
     private FirebaseUser firebaseUser;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,5 +147,18 @@ public class ChangePassword extends AppCompatActivity {
         intent.putExtra("UserFriendsValue",value);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

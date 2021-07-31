@@ -18,7 +18,7 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_5sdp"
         android:textColor="@color/black"
-        android:hint="Search your Friend"
+        android:hint="@string/searchHint"
         android:singleLine="true"
         android:background="@drawable/search_input_border"
         android:layout_alignParentTop="true"/>

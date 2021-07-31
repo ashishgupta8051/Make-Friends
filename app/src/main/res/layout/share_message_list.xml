@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/share_user_profile_image"
@@ -24,7 +24,7 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:singleLine="true"
-        android:text="Name"
+        tools:text="Name"
         android:textColor="@color/black"
         android:textSize="@dimen/_13sdp"
         android:textStyle="bold"
@@ -38,7 +38,7 @@
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_17sdp"
         android:singleLine="true"
-        android:text="UserName"
+        tools:text="UserName"
         android:textColor="@color/charcoal"
         android:textSize="@dimen/_10sdp"
         app:layout_constraintLeft_toRightOf="@+id/share_user_profile_image"
@@ -48,7 +48,7 @@
         android:id="@+id/send_share_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send"
+        android:text="@string/sendBtn"
         android:layout_marginRight="@dimen/_5sdp"
         android:textColor="@color/white"
         android:backgroundTint="@color/purple_500"

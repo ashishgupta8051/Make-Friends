@@ -9,9 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +49,7 @@ import com.social.makefriends.notification.MyResponse;
 import com.social.makefriends.notification.Senders;
 import com.social.makefriends.notification.Token;
 import com.social.makefriends.utils.APIService;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
@@ -74,6 +78,7 @@ public class SendFriendRequest extends AppCompatActivity {
     private ArrayList<UserPost> userPosts = new ArrayList<>();
     private ProgressBar progressBar;
     private APIService apiService;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -529,6 +534,19 @@ public class SendFriendRequest extends AppCompatActivity {
             startActivity(new Intent(SendFriendRequest.this, Home.class));
             finish();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }

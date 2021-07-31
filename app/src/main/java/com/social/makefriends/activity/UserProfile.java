@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +38,7 @@ import com.social.makefriends.manage.userprofile.UpdateProfile;
 import com.social.makefriends.manage.userprofile.ViewProfileImage;
 import com.social.makefriends.settings.SettingsActivity;
 import com.social.makefriends.ui.TabLayoutView;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,6 +58,7 @@ public class UserProfile extends AppCompatActivity {
     private DatabaseReference userPostRef;
     private ProgressBar progressBar;
     private ImageView noPostImage;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,6 +259,19 @@ public class UserProfile extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Home.class));
         }
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }

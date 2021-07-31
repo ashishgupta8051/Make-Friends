@@ -10,10 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 import com.social.makefriends.R;
 import com.social.makefriends.friendrequest.chatting.ChatWithFriends;
 import com.social.makefriends.model.UserDetails;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.social.makefriends.utils.SharedPrefManager;
 
 import java.io.IOException;
@@ -56,6 +60,7 @@ public class SelectWallpaper extends AppCompatActivity {
     Bitmap bitmap;
     private AlertDialog progressDialog;
     private ActivityResultLauncher<Intent> launcher;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -306,5 +311,18 @@ public class SelectWallpaper extends AppCompatActivity {
         intent1.putExtra("ChatBackground",chatWallpaper);
         startActivity(intent1);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

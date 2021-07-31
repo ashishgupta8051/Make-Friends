@@ -6,7 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +29,7 @@ import com.social.makefriends.activity.Home;
 import com.social.makefriends.adapter.CommentAdapter;
 import com.social.makefriends.model.Comments;
 import com.social.makefriends.model.UserDetails;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
@@ -56,6 +60,7 @@ public class UserPostComment extends AppCompatActivity {
     private DatabaseReference commentRef;
     private ArrayList<Comments> commentsArrayList = new ArrayList<>();
     private Boolean check = false;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -241,5 +246,18 @@ public class UserPostComment extends AppCompatActivity {
             startActivity(intent2);
         }
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 }

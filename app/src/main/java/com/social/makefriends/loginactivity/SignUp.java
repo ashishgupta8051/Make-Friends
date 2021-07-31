@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.PatternMatcher;
 import android.text.TextUtils;
@@ -28,6 +31,7 @@ import com.social.makefriends.R;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.manage.userprofile.UpdateProfile;
 import com.social.makefriends.notification.Token;
+import com.social.makefriends.utils.CheckInternetConnection;
 import com.social.makefriends.utils.SharedPrefManager;
 
 import java.util.HashMap;
@@ -39,6 +43,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String Name,Email,Password;
     private SharedPrefManager sharedPrefManager;
+    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +155,19 @@ public class SignUp extends AppCompatActivity {
     public void onBackPressed() {
         startActivity(new Intent(SignUp.this,Login.class));
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter =  new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver,intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
     }
 
 }

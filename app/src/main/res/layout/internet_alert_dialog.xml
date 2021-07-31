@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black">
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/light_blue_900">
 
-    <ImageView
-        android:id="@+id/wifi_off_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="224dp"
-        android:src="@drawable/ic_baseline_signal_wifi_off_24" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
+        <ImageView
+            android:id="@+id/wifi_off_image"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_signal_wifi_off_24" />
+
+        <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="You are Offline"
-            android:textSize="24dp"
-            android:textColor="@color/white"
+            android:text="@string/offline_text_1"
+            android:textSize="34dp"
+            android:textColor="@color/wifi_text_color"
             android:textStyle="bold"
+            android:fontFamily="serif"
             android:layout_gravity="center"
             />
 
@@ -30,23 +38,26 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Check your internet connection and try again"
-            android:textSize="16dp"
+            android:text="@string/offline_text_2"
+            android:textSize="18dp"
+            android:fontFamily="serif"
             android:layout_marginTop="10dp"
-            android:textColor="@color/white"
+            android:textColor="@color/wifi_text_color"
             android:layout_gravity="center"
             />
 
         <Button
-            android:id="@+id/btnRetry"
-            android:gravity="center"
+            android:id="@+id/retry_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="try again"
-            android:background="@drawable/wifi_check_button_background" />
+            android:layout_height="60dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:text="@string/try_again_btn"
+            android:textColor="@color/white"
+            android:fontFamily="serif"
+            android:backgroundTint="@color/Splash"
+            android:layout_marginTop="20dp"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
