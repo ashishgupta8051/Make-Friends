@@ -401,7 +401,6 @@ public class UpdateProfile extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    CropImage.startPickImageActivity(UpdateProfile.this);
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType("image/*");
                     dpLauncher.launch(intent);
@@ -412,13 +411,6 @@ public class UpdateProfile extends AppCompatActivity {
             }
         }
     }
-
-    /*private void startCrop(Uri imageUri) {
-        CropImage.activity(imageUri)
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(1, 1)
-                .start(this);
-    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -686,7 +678,6 @@ public class UpdateProfile extends AppCompatActivity {
             });
         }
     }
-
 
     @Override
     public void onBackPressed() {
