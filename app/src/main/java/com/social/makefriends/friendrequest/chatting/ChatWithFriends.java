@@ -2634,5 +2634,4 @@ public class ChatWithFriends extends AppCompatActivity {
             }
         });
     }
-
 }
