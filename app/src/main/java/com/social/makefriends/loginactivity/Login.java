@@ -87,7 +87,6 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sharedPrefManager = new SharedPrefManager(this);
-
         Signup = (TextView)findViewById(R.id.signup);
         resetpassword = (TextView)findViewById(R.id.forgot_password);
 
