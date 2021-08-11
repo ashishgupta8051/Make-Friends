@@ -1,20 +1,28 @@
 package com.social.makefriends.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,15 +73,20 @@ public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdap
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 AllPost allPost = snapshot.child(favPost.getFavPostId()).getValue(AllPost.class);
 
-                CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
-                circularProgressDrawable.setStrokeWidth(8);
-                circularProgressDrawable.setCenterRadius(35);
-                circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
-                circularProgressDrawable.start();
+                Glide.with(activity).load(allPost.getPostImage()).listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
 
-
-                Glide.with(activity).load(allPost.getPostImage()).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).
-                        placeholder(circularProgressDrawable).into(holder.imageView);
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        holder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                }).into(holder.imageView);
 
                 userDetailsRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -117,9 +130,11 @@ public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdap
 
     class FavouritePostHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
+        ProgressBar progressBar;
         public FavouritePostHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.post_image);
+            progressBar = itemView.findViewById(R.id.profileViewPostProgress);
         }
     }
 

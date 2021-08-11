@@ -104,6 +104,17 @@
             app:layout_constraintRight_toRightOf="parent"
             />
 
+        <ProgressBar
+            android:id="@+id/viewPostProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/purple_500"
+            app:layout_constraintTop_toTopOf="@id/post_image2"
+            app:layout_constraintLeft_toLeftOf="@id/post_image2"
+            app:layout_constraintRight_toRightOf="@id/post_image2"
+            app:layout_constraintBottom_toBottomOf="@id/post_image2"
+            />
+
         <ImageView
             android:id="@+id/post_like2"
             android:layout_width="28dp"

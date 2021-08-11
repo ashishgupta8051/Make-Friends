@@ -24,10 +24,20 @@
                     android:layout_height="130dp"
                     app:civ_border_color="@color/black"
                     app:civ_border_width="2dp"
-                    android:src="@drawable/profile_image"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"/>
+
+                <ProgressBar
+                    android:id="@+id/updateProfileProgress"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:indeterminateTint="@color/purple_500"
+                    app:layout_constraintTop_toTopOf="@id/update_profile_Image"
+                    app:layout_constraintLeft_toLeftOf="@id/update_profile_Image"
+                    app:layout_constraintRight_toRightOf="@id/update_profile_Image"
+                    app:layout_constraintBottom_toBottomOf="@id/update_profile_Image"
+                    />
 
                 <TextView
                     android:id="@+id/text2"

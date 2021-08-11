@@ -79,7 +79,7 @@ public class Login extends AppCompatActivity {
     private SharedPrefManager sharedPrefManager;
     private DatabaseReference userDetailsRef;
     private ActivityResultLauncher<Intent> resultLauncher;
-    private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private final BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

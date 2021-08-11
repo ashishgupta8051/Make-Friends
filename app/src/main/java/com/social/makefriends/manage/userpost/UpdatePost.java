@@ -1,22 +1,32 @@
 package com.social.makefriends.manage.userpost;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +50,7 @@ public class UpdatePost extends AppCompatActivity {
     private String PostId,UserName,ProfilePic,UsersName,UserId,Value,Value2,wallpaper;
     private DatabaseReference databaseReference;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,7 @@ public class UpdatePost extends AppCompatActivity {
 
         postImage = (ImageView)findViewById(R.id.update_post_image);
         postCaption = (EditText)findViewById(R.id.update_post_caption);
+        progressBar = findViewById(R.id.updatePostProgress);
 
         PostId = getIntent().getExtras().get("PostId").toString();
         UserName = getIntent().getExtras().get("UserName").toString();
@@ -71,13 +83,20 @@ public class UpdatePost extends AppCompatActivity {
                     String Caption = snapshot.child("caption").getValue().toString();
                     String Image = snapshot.child("postImage").getValue().toString();
 
-                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(UpdatePost.this);
-                    circularProgressDrawable.setStrokeWidth(10);
-                    circularProgressDrawable.setCenterRadius(45);
-                    circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
-                    circularProgressDrawable.start();
+                    Glide.with(UpdatePost.this).load(Image).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                    Picasso.get().load(Image).fit().placeholder(circularProgressDrawable).into(postImage);
+                        @SuppressLint("CheckResult")
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(postImage);
                     postCaption.setText(Caption);
                 }
             }

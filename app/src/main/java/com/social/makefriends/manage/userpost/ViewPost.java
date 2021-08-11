@@ -1,6 +1,7 @@
 package com.social.makefriends.manage.userpost;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -18,6 +19,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -30,9 +32,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,6 +82,7 @@ public class ViewPost extends AppCompatActivity {
     private DatabaseReference postRef,savePostRef,commentRef;
     Bitmap bitmap;
     private long countPost;
+    private ProgressBar progressBar;
     private StrictMode.VmPolicy.Builder builder;
     private BitmapDrawable bitmapDrawable;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
@@ -111,6 +120,7 @@ public class ViewPost extends AppCompatActivity {
         PostDislike = (ImageView)findViewById(R.id.post_dislike2);
         PostComment = (ImageView)findViewById(R.id.post_comment2);
         PostImageSave = (ImageView)findViewById(R.id.post_image_save2);
+        progressBar = findViewById(R.id.viewPostProgress);
 
         UserName = (TextView)findViewById(R.id.user_name2);
         Date = (TextView)findViewById(R.id.post_date2);
@@ -252,13 +262,21 @@ public class ViewPost extends AppCompatActivity {
                     String Post_Image = allPost.getPostImage();
                     String ProfileImage = allPost.getUserProfilePic();
 
-                    CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(ViewPost.this);
-                    circularProgressDrawable.setStrokeWidth(10);
-                    circularProgressDrawable.setCenterRadius(45);
-                    circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
-                    circularProgressDrawable.start();
 
-                    Picasso.get().load(Post_Image).placeholder(circularProgressDrawable).into(PostImage);
+                    Glide.with(ViewPost.this).load(Post_Image).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+
+                        @SuppressLint("CheckResult")
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(PostImage);
 
                     if (ProfileImage.equals("None")){
                         UserProfileImage.setImageResource(R.drawable.profile_image);

@@ -105,9 +105,6 @@ dependencies {
     //OtpView
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'
 
-    //Loader
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
     //Facebook Ads
     implementation 'com.facebook.android:audience-network-sdk:6.5.0'
 }

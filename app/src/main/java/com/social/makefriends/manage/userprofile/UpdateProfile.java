@@ -5,12 +5,14 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
@@ -19,6 +21,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,9 +33,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.google.android.gms.tasks.Continuation;
@@ -74,6 +83,7 @@ public class UpdateProfile extends AppCompatActivity {
     private ActivityResultLauncher<Intent> dpLauncher;
     private ActivityResultLauncher<Intent> launcher;
     private TextView loginDetails;
+    private ProgressBar progressBar;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
@@ -94,6 +104,7 @@ public class UpdateProfile extends AppCompatActivity {
         dob = (EditText) findViewById(R.id.update_Dob);
         address = (EditText) findViewById(R.id.update_address);
         bio = (EditText) findViewById(R.id.update_bio);
+        progressBar = findViewById(R.id.updateProfileProgress);
 
         userName = (EditText) findViewById(R.id.update_username);
 
@@ -150,7 +161,20 @@ public class UpdateProfile extends AppCompatActivity {
                     if (ProfileImage.equals("None")) {
                         UpdateProfileImage.setImageResource(R.drawable.profile_image);
                     } else {
-                        Picasso.get().load(ProfileImage).fit().placeholder(R.drawable.profile_image).into(UpdateProfileImage);
+                        Glide.with(UpdateProfile.this).load(ProfileImage).listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @SuppressLint("CheckResult")
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        }).into(UpdateProfileImage);
                     }
 
                     UserDetails userDetails = snapshot.getValue(UserDetails.class);

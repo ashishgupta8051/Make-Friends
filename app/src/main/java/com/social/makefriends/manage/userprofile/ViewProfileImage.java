@@ -1,19 +1,29 @@
 package com.social.makefriends.manage.userprofile;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +40,7 @@ public class ViewProfileImage extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String Value;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private ProgressBar progressBar;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -43,6 +54,7 @@ public class ViewProfileImage extends AppCompatActivity {
         Value = getIntent().getExtras().get("Value").toString();
 
         imageView = (ImageView)findViewById(R.id.ProfileImage);
+        progressBar = findViewById(R.id.viewProfileImageProgress);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
 
@@ -54,14 +66,20 @@ public class ViewProfileImage extends AppCompatActivity {
                     if (ProfileImage.equals("None")){
                        imageView.setImageResource(R.drawable.profile_image);
                     }else {
+                        Glide.with(ViewProfileImage.this).load(ProfileImage).listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
 
-                        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(ViewProfileImage.this);
-                        circularProgressDrawable.setStrokeWidth(10);
-                        circularProgressDrawable.setCenterRadius(45);
-                        circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
-                        circularProgressDrawable.start();
-
-                        Picasso.get().load(ProfileImage).fit().placeholder(circularProgressDrawable).into(imageView);
+                            @SuppressLint("CheckResult")
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        }).into(imageView);
                     }
                 }
             }

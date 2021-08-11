@@ -28,6 +28,18 @@
                 app:layout_constraintRight_toRightOf="parent"/>
 
 
+            <ProgressBar
+                android:id="@+id/updatePostProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/purple_500"
+                app:layout_constraintTop_toTopOf="@id/update_post_image"
+                app:layout_constraintLeft_toLeftOf="@id/update_post_image"
+                app:layout_constraintRight_toRightOf="@id/update_post_image"
+                app:layout_constraintBottom_toBottomOf="@id/update_post_image"
+                />
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout9"
                 android:layout_width="match_parent"
