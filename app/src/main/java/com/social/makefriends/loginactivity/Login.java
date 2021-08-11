@@ -248,6 +248,8 @@ public class Login extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
+                        }else {
+                            Toast.makeText(Login.this, "not", Toast.LENGTH_SHORT).show();
                         }
                     }
         });
