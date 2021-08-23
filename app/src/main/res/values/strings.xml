@@ -18,7 +18,7 @@
     //Chat with friend
     <string name="userNameTxt">User Name</string>
     <string name="onlineTxt">Online Status</string>
-    <string name="messageHint">Type your message...</string>
+    <string name="messageHint">Type your message…</string>
     //Login
     <string name="signIn_txt">Sign In</string>
     <string name="email_hint">Email</string>
@@ -70,7 +70,7 @@
     <string name="bioHint">Bio</string>
     <string name="userNameHint">UserName</string>
     //User post comment
-    <string name="commentHint">Type your comment...</string>
+    <string name="commentHint">Type your comment…</string>
     //Friend request status
     <string name="acceptBtn">Accept</string>
     <string name="nameTxt">Name</string>
@@ -87,7 +87,7 @@
     <string name="fileImg">File</string>
     <string name="audioImg">Audio</string>
     <string name="progressDialogTxt">Progress Dialog</string>
-    <string name="pleaseWaitTxt">Please Wait...</string>
+    <string name="pleaseWaitTxt">Please Wait…</string>
     <string name="sendBtn">send</string>
 
 </resources>

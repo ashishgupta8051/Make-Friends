@@ -160,6 +160,7 @@ public class UpdateProfile extends AppCompatActivity {
                     String ProfileImage = snapshot.child("userProfileImageUrl").getValue().toString();
                     if (ProfileImage.equals("None")) {
                         UpdateProfileImage.setImageResource(R.drawable.profile_image);
+                        progressBar.setVisibility(View.GONE);
                     } else {
                         Glide.with(UpdateProfile.this).load(ProfileImage).listener(new RequestListener<Drawable>() {
                             @Override

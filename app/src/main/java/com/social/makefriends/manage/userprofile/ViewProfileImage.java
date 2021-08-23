@@ -65,6 +65,7 @@ public class ViewProfileImage extends AppCompatActivity {
                     String ProfileImage = snapshot.child("userProfileImageUrl").getValue().toString();
                     if (ProfileImage.equals("None")){
                        imageView.setImageResource(R.drawable.profile_image);
+                       progressBar.setVisibility(View.GONE);
                     }else {
                         Glide.with(ViewProfileImage.this).load(ProfileImage).listener(new RequestListener<Drawable>() {
                             @Override
