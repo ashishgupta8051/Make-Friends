@@ -1524,7 +1524,6 @@ public class ChatWithFriends extends AppCompatActivity {
                                 addMessage.put("receiverSideMsgDelete","not_delete");
                                 addMessage.put("forward","no");
 
-
                                 MsgRef.child(MessagePushKey).setValue(addMessage);
 
                                 HashMap<String,Object> position = new HashMap<String, Object>();
