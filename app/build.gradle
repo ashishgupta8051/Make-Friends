@@ -100,7 +100,7 @@ dependencies {
     implementation(name:'ds-photo-editor-sdk-v10', ext:'aar')
 
     //Country Code Picker
-    implementation 'com.hbb20:ccp:2.5.1'
+    implementation 'com.hbb20:ccp:2.5.3'
 
     //OtpView
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'

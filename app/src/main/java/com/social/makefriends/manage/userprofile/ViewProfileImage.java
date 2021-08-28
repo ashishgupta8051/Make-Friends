@@ -67,7 +67,7 @@ public class ViewProfileImage extends AppCompatActivity {
                        imageView.setImageResource(R.drawable.profile_image);
                        progressBar.setVisibility(View.GONE);
                     }else {
-                        Glide.with(ViewProfileImage.this).load(ProfileImage).listener(new RequestListener<Drawable>() {
+                        Glide.with(getApplicationContext()).load(ProfileImage).listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
                                 progressBar.setVisibility(View.GONE);

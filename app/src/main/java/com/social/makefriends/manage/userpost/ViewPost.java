@@ -263,7 +263,7 @@ public class ViewPost extends AppCompatActivity {
                     String ProfileImage = allPost.getUserProfilePic();
 
 
-                    Glide.with(ViewPost.this).load(Post_Image).listener(new RequestListener<Drawable>() {
+                    Glide.with(getApplicationContext()).load(Post_Image).listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
                             progressBar.setVisibility(View.GONE);

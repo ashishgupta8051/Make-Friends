@@ -24,6 +24,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -162,7 +163,7 @@ public class UpdateProfile extends AppCompatActivity {
                         UpdateProfileImage.setImageResource(R.drawable.profile_image);
                         progressBar.setVisibility(View.GONE);
                     } else {
-                        Glide.with(UpdateProfile.this).load(ProfileImage).listener(new RequestListener<Drawable>() {
+                        Glide.with(getApplicationContext()).load(ProfileImage).listener(new RequestListener<Drawable>() {
                             @Override
                             public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
                                 progressBar.setVisibility(View.GONE);
