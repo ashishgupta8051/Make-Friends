@@ -58,6 +58,8 @@ import com.social.makefriends.friendrequest.SendFriendRequest;
 import com.social.makefriends.friendrequest.SendFriendRequestDuplicate;
 import com.social.makefriends.model.AllPost;
 import com.social.makefriends.model.FavPost;
+import com.social.makefriends.model.NotificationModel;
+import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 
@@ -79,13 +81,15 @@ public class ViewPost extends AppCompatActivity {
     private static final  int PERMISSION = 999;
     private String ViewPostValue = "V";
     private FileOutputStream fileOutputStream;
-    private DatabaseReference postRef,savePostRef,commentRef;
+    private DatabaseReference postRef,savePostRef,commentRef,notificationRef,userDetailsRef;
     Bitmap bitmap;
     private long countPost;
     private ProgressBar progressBar;
     private StrictMode.VmPolicy.Builder builder;
     private BitmapDrawable bitmapDrawable;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private NotificationModel notificationModel;
+    private String currentUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +116,8 @@ public class ViewPost extends AppCompatActivity {
         UsersName = getIntent().getExtras().get("UsersName").toString();
         Value = getIntent().getExtras().get("value").toString();
         wallpaper = getIntent().getExtras().get("ChatBackground").toString();
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
+        userDetailsRef = FirebaseDatabase.getInstance().getReference("User Details").child(FirebaseAuth.getInstance().getUid());
 
         UserProfileImage = (CircleImageView)findViewById(R.id.user_profile_image2);
         PostImage = (ImageView)findViewById(R.id.post_image2);
@@ -129,6 +135,20 @@ public class ViewPost extends AppCompatActivity {
         TotalLike = (TextView)findViewById(R.id.post_like_number2);
         TotalDislike = (TextView)findViewById(R.id.post_dislike_number2);
         Comment = (TextView)findViewById(R.id.post_comment_number2);
+
+        userDetailsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserDetails userDetails = snapshot.getValue(UserDetails.class);
+                currentUserName = userDetails.getUsersName();
+                notificationModel = new NotificationModel(currentUserName," liked your photo.");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("TAG",error.getMessage());
+            }
+        });
 
         DatabaseReference likeRef = FirebaseDatabase.getInstance().getReference("Likes");
         final int[] likeCount = new int[1];
@@ -207,6 +227,10 @@ public class ViewPost extends AppCompatActivity {
                                 HashMap<String,Object> like = new HashMap<>();
                                 like.put(CurrentUserId,CurrentUserId);
                                 Like.child(PostId).updateChildren(like);
+                                if (!FirebaseAuth.getInstance().getUid().equals(UserId)){
+                                    String key = notificationRef.push().getKey();
+                                    notificationRef.child(UserId).child(key).setValue(notificationModel);
+                                }
                                 //holder.PostLike.setImageResource(R.drawable.colored_like);
                             }
                             LickChecker[0] = false;

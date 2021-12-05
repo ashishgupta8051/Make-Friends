@@ -48,6 +48,7 @@ public class LoginWithPhone extends AppCompatActivity {
 
         phoneNumber = findViewById(R.id.et_number);
         ccp = findViewById(R.id.ccp);
+
         btnSubmit = findViewById(R.id.btn_submit);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginWithPhone.this);

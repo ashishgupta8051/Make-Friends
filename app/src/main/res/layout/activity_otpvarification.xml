@@ -74,18 +74,21 @@
             android:inputType="number"
             android:itemBackground="@color/otp_view_background"
             app:OtpItemCount="6"
-            app:OtpLineColor="@color/teal_700"
+            app:OtpLineColor="@color/purple_500"
             android:focusableInTouchMode="true"
             app:OtpViewType="rectangle"
             />
 
         <Button
             android:id="@+id/btn_verify"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:padding="@dimen/_10sdp"
             android:layout_gravity="center"
-            android:text="@string/verifyBtn"
-            android:backgroundTint="@color/teal_700"/>
+            android:text="@string/nextBtn"
+            android:backgroundTint="@color/purple_500"/>
 
 
     </LinearLayout>

@@ -159,6 +159,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="49.5dp"
                 android:layout_marginTop="6dp"
+
                 app:layout_constraintTop_toBottomOf="@+id/text"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
@@ -168,7 +169,7 @@
                 android:id="@+id/facebook_login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:paddingTop="12dp"
@@ -182,20 +183,19 @@
                 android:id="@+id/loginWithPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="@string/loginWithPhoneBtn"
                 android:textAllCaps="false"
                 android:textStyle="bold"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:layout_marginRight="@dimen/_2sdp"
                 android:backgroundTint="@color/teal_700"
                 app:layout_constraintTop_toBottomOf="@+id/facebook_login_button"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"/>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 </ScrollView>

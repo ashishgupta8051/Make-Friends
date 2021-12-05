@@ -40,6 +40,7 @@ import com.social.makefriends.activity.Home;
 import com.social.makefriends.adapter.FriendProfilePostImageAdapter;
 import com.social.makefriends.friendrequest.chatting.ChatWithFriends;
 import com.social.makefriends.model.Friends;
+import com.social.makefriends.model.NotificationModel;
 import com.social.makefriends.model.Request;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.model.UserPost;
@@ -72,13 +73,14 @@ public class SendFriendRequest extends AppCompatActivity {
     private ImageView PrivacyImage,noPostAvailable;
     private Button Button1,Button2,Button3,Button4;
     private String CurrentUserId,CURRENT_STATE,CurrentTime,CurrentDate,wallpaper;
-    private DatabaseReference SendFriendRequestRef,FriendRef,userPost,UserDetails;
+    private DatabaseReference SendFriendRequestRef,FriendRef,userPost,UserDetails,notificationRef;
     private RecyclerView recycler;
     private FriendProfilePostImageAdapter friendProfilePostImageAdapter;
     private ArrayList<UserPost> userPosts = new ArrayList<>();
     private ProgressBar progressBar;
     private APIService apiService;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private NotificationModel notificationModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +138,7 @@ public class SendFriendRequest extends AppCompatActivity {
         FriendRef = FirebaseDatabase.getInstance().getReference("Friend");
         userPost = FirebaseDatabase.getInstance().getReference("Post");
         UserDetails = FirebaseDatabase.getInstance().getReference("User Details");
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
 
         CURRENT_STATE = "not_friend";
 
@@ -410,6 +413,11 @@ public class SendFriendRequest extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserDetails userDetails = snapshot.child(CurrentUserId).getValue(UserDetails.class);
+                notificationModel = new NotificationModel(userDetails.getUsersName(),msg);
+                if (!FirebaseAuth.getInstance().getUid().equals(UserId)){
+                    String key = notificationRef.push().getKey();
+                    notificationRef.child(UserId).child(key).setValue(notificationModel);
+                }
                 sendNotification(UserId,userDetails.getUserName(),msg);
             }
 
@@ -418,7 +426,6 @@ public class SendFriendRequest extends AppCompatActivity {
                 Toast.makeText(SendFriendRequest.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void SendRequest() {
@@ -468,6 +475,7 @@ public class SendFriendRequest extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Token token = dataSnapshot.getValue(Token.class);
                     Data data = new Data(CurrentUserId,name+" : "+msg,"Friend Request",userId,"friendRequest");
+
                     Senders senders = new Senders(data,token.getToken());
 
                     apiService.sendNotification(senders).enqueue(new Callback<MyResponse>() {
@@ -475,8 +483,10 @@ public class SendFriendRequest extends AppCompatActivity {
                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                             if (response.code() == 200){
                                 if (response.body().success != 1){
-//                                    Toast.makeText(getApplicationContext(), "Failed!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Failed!!", Toast.LENGTH_SHORT).show();
                                 }
+                            }else {
+                                Toast.makeText(getApplicationContext(), "Response is null", Toast.LENGTH_SHORT).show();
                             }
                         }
 

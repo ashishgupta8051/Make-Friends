@@ -379,8 +379,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     holder.SenderMessageImage.setVisibility(View.VISIBLE);
 
                     CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
-                    circularProgressDrawable.setStrokeWidth(10);
-                    circularProgressDrawable.setCenterRadius(42);
+                    circularProgressDrawable.setStrokeWidth(6);
+                    circularProgressDrawable.setCenterRadius(30);
                     circularProgressDrawable.setColorSchemeColors(R.color.light_blue_900);
                     circularProgressDrawable.start();
 
@@ -504,8 +504,8 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                     holder.ReceiverMessageImage.setVisibility(View.VISIBLE);
 
                     CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(activity);
-                    circularProgressDrawable.setStrokeWidth(10);
-                    circularProgressDrawable.setCenterRadius(42);
+                    circularProgressDrawable.setStrokeWidth(6);
+                    circularProgressDrawable.setCenterRadius(30);
                     circularProgressDrawable.setColorSchemeColors(R.color.silver);
                     circularProgressDrawable.start();
 

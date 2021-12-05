@@ -1,6 +1,6 @@
 <resources>
     <!--App Name-->
-    <string name="app_name">Make Friends</string>
+    <string name="app_name">FRIENDS</string>
 
     //Facebook Login Details
     <string name="facebook_app_id">825919598194817</string>

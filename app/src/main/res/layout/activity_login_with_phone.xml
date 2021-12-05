@@ -66,32 +66,51 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_20sdp"
+            android:background="@drawable/phone_number_background"
             android:orientation="horizontal">
 
             <com.hbb20.CountryCodePicker
                 android:id="@+id/ccp"
+                app:ccp_showFlag="false"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@color/black"/>
 
             <EditText
                 android:id="@+id/et_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp"
-                android:inputType="phone"/>
+                android:layout_gravity="center"
+                android:background="#05C9C2C2"
+                android:hint="Mobile Number"
+                android:inputType="number"
+                android:maxLength="40"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:padding="@dimen/_10sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_11sdp" />
 
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_submit"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:padding="@dimen/_10sdp"
             android:layout_gravity="center"
             android:text="@string/nextBtn"
-            android:backgroundTint="@color/teal_700"/>
+            android:backgroundTint="@color/purple_500"/>
 
     </LinearLayout>
 

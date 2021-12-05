@@ -6,11 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".activity.Notifications">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notificationRec"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigationview"
+        android:visibility="invisible"
+        tools:listitem="@layout/notification_list" />
+
+    <ProgressBar
+        android:id="@+id/notificationProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/purple_500"
+        android:layout_centerInParent="true"
+        />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigationview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation"
+        app:labelVisibilityMode="labeled"
         android:background="?android:attr/windowBackground"
         android:layout_alignParentBottom="true"
         app:itemTextColor="@drawable/bottom_navigation_item_selector"

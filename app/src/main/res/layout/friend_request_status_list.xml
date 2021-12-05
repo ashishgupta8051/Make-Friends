@@ -62,6 +62,7 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
+            android:gravity="center"
             android:text="@string/acceptBtn"
             android:textColor="@color/white"
            />
@@ -74,6 +75,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_5sdp"
             android:text="@string/declineReqBtn"
+            android:gravity="center"
             android:backgroundTint="@color/silver"
             android:textColor="@color/black"/>
 

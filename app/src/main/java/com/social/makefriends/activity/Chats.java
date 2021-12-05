@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +52,7 @@ public class Chats extends AppCompatActivity {
     private ProgressBar progressBar;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,39 +86,36 @@ public class Chats extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
         bottomNavigationView.setSelectedItemId(R.id.nav_chat);
-        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+        //bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_home:
-                        startActivity(new Intent(getApplicationContext(),Home.class));
-                        finish();
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_post:
-                        startActivity(new Intent(getApplicationContext(),Post.class));
-                        finish();
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_chat:
-                        return true;
-                    case R.id.nav_notification:
-                        startActivity(new Intent(getApplicationContext(), Notifications.class));
-                        finish();
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.nav_profile:
-                        Intent intent = new Intent(getApplicationContext(),UserProfile.class);
-                        intent.putExtra("UserFriendsValue","A");
-                        startActivity(intent);
-                        finish();
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return true;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.nav_home:
+                    startActivity(new Intent(getApplicationContext(),Home.class));
+                    finish();
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.nav_post:
+                    startActivity(new Intent(getApplicationContext(),Post.class));
+                    finish();
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.nav_chat:
+                    return true;
+                case R.id.nav_notification:
+                    startActivity(new Intent(getApplicationContext(), Notifications.class));
+                    finish();
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.nav_profile:
+                    Intent intent = new Intent(getApplicationContext(),UserProfile.class);
+                    intent.putExtra("UserFriendsValue","A");
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(0,0);
+                    return true;
             }
+            return true;
         });
 
     }
@@ -153,7 +152,7 @@ public class Chats extends AppCompatActivity {
                             stringArrayList.add(existsChatUser.getExistsUserId());
                         }
                         friendChatListAdapter.notifyDataSetChanged();
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+//                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
                         progressBar.setVisibility(View.INVISIBLE);
                     }
 

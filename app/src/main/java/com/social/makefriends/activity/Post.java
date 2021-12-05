@@ -42,7 +42,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+//import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -140,41 +140,38 @@ public class Post extends AppCompatActivity  {
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
-        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+//        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
 
         bottomNavigationView.setSelectedItemId(R.id.nav_post);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        startActivity(new Intent(getApplicationContext(), Home.class));
-                        finish();
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.nav_post:
-                        return true;
-                    case R.id.nav_chat:
-                        startActivity(new Intent(getApplicationContext(), Chats.class));
-                        finish();
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.nav_notification:
-                        startActivity(new Intent(getApplicationContext(), Notifications.class));
-                        finish();
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.nav_profile:
-                        Intent intent = new Intent(getApplicationContext(),UserProfile.class);
-                        intent.putExtra("UserFriendsValue","A");
-                        startActivity(intent);
-                        finish();
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return true;
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    startActivity(new Intent(getApplicationContext(), Home.class));
+                    finish();
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.nav_post:
+                    return true;
+                case R.id.nav_chat:
+                    startActivity(new Intent(getApplicationContext(), Chats.class));
+                    finish();
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.nav_notification:
+                    startActivity(new Intent(getApplicationContext(), Notifications.class));
+                    finish();
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.nav_profile:
+                    Intent intent = new Intent(getApplicationContext(),UserProfile.class);
+                    intent.putExtra("UserFriendsValue","A");
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(0,0);
+                    return true;
             }
+            return true;
         });
 
         pickResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

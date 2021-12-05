@@ -38,6 +38,7 @@ import com.social.makefriends.R;
 import com.social.makefriends.adapter.FriendProfilePostImageAdapterDuplicate;
 import com.social.makefriends.friendrequest.chatting.ChatWithFriends;
 import com.social.makefriends.model.Friends;
+import com.social.makefriends.model.NotificationModel;
 import com.social.makefriends.model.Request;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.model.UserPost;
@@ -71,13 +72,14 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
     private ImageView PrivacyImage,noPostAvailable;
     private Button Button1,Button2,Button3,Button4;
     private String CurrentUserId,CURRENT_STATE,CurrentTime,CurrentDate;
-    private DatabaseReference SendFriendRequestRef,FriendRef,userPost;
+    private DatabaseReference SendFriendRequestRef,FriendRef,userPost,notificationRef;
     private RecyclerView recycler;
     private FriendProfilePostImageAdapterDuplicate friendProfilePostImageAdapterDuplicate;
     private ProgressBar progressBar;
     private ArrayList<UserPost> userPosts = new ArrayList<>();
     private APIService apiService;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private NotificationModel notificationModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,7 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
         SendFriendRequestRef = FirebaseDatabase.getInstance().getReference("Friend Request");
         FriendRef = FirebaseDatabase.getInstance().getReference("Friend");
         userPost = FirebaseDatabase.getInstance().getReference("Post");
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
 
         CURRENT_STATE = "not_friend";
 
@@ -183,6 +186,7 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
                             intent.putExtra("ChatBackground",chatWallpaper);
                             startActivity(intent);
                             finish();
+
                         }
                     });
                 }else {
@@ -415,6 +419,11 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserDetails userDetails = snapshot.child(CurrentUserId).getValue(UserDetails.class);
+                notificationModel = new NotificationModel(userDetails.getUsersName(),msg);
+                if (!FirebaseAuth.getInstance().getUid().equals(UserId)){
+                    String key = notificationRef.push().getKey();
+                    notificationRef.child(UserId).child(key).setValue(notificationModel);
+                }
                 sendNotification(UserId,userDetails.getUserName(),msg);
             }
 
@@ -488,7 +497,7 @@ public class SendFriendRequestDuplicate extends AppCompatActivity {
                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                             if (response.code() == 200){
                                 if (response.body().success != 1){
-//                                    Toast.makeText(getApplicationContext(), "Failed!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Failed!!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

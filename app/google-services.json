@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "950268618290-ki4b4kvvoohb2qbrj9jko1tlnjkhsc6n.apps.googleusercontent.com",
+          "client_id": "950268618290-tum5mdhthpgadh0thq8t3uaeth0jacvl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.social.makefriends",
-            "certificate_hash": "3c842c4c0604d767fd8f0806b97ccf1acffbb4f7"
+            "certificate_hash": "402eb6fb5c8b594964272b740312d4f5db06ff32"
           }
         },
         {

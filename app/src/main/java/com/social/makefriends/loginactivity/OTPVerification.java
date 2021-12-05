@@ -102,11 +102,11 @@ public class OTPVerification extends AppCompatActivity {
                 btnVerify.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        progressDialog.show();
                         firebaseAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressDialog.show();
                                     Check(progressDialog);
                                 } else {
                                     progressDialog.dismiss();

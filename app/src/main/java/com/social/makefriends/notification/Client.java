@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Client {
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "https://fcm.googleapis.com/";
+    private static final String BASE_URL = "https://fcm.googleapis.com/fcm/";
 
     public static Retrofit getClient(){
         if (retrofit == null){

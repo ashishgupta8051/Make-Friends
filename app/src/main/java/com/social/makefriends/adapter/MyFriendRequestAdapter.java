@@ -160,8 +160,8 @@ public class MyFriendRequestAdapter extends FirebaseRecyclerAdapter<Request, MyF
         UserDetails.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserDetails userDetails = snapshot.child(currentUserId).getValue(UserDetails.class);
-                sendNotification(userId,userDetails.getUserName(),msg,currentUserId);
+                UserDetails userDetails = snapshot.child(FirebaseAuth.getInstance().getUid()).getValue(UserDetails.class);
+                sendNotification(FirebaseAuth.getInstance().getUid(), userId,userDetails.getUserName(),msg);
             }
 
             @Override

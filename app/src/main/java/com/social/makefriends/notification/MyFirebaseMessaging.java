@@ -1,5 +1,6 @@
 package com.social.makefriends.notification;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -8,11 +9,13 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,16 +29,27 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.social.makefriends.R;
 import com.social.makefriends.friendrequest.SendFriendRequestDuplicate;
 import com.social.makefriends.friendrequest.chatting.ChatWithFriends;
+import com.social.makefriends.manage.userpost.UserPostComment;
 import com.social.makefriends.model.UserDetails;
 
-public class MyFirebaseMessaging extends FirebaseMessagingService {
+import java.util.Random;
 
+public class MyFirebaseMessaging extends FirebaseMessagingService {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userRef;
+    private String channelId;
+    private int notificationId;
+
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
+    }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        channelId = "pushNotification";
+        notificationId = new Random().nextInt();
 
         userRef = FirebaseDatabase.getInstance().getReference("User Details");
         firebaseAuth = FirebaseAuth.getInstance();
@@ -43,8 +57,9 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null && receiverUserId.equals(firebaseUser.getUid())){
-            createNotification(remoteMessage,receiverUserId);
+             createNotification(remoteMessage,receiverUserId);
         }
+
     }
 
     private void createNotification(RemoteMessage remoteMessage, String receiverUserId) {
@@ -54,7 +69,6 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String title = remoteMessage.getData().get("notificationTitle");
         String messageType = remoteMessage.getData().get("notificationType");
 
-        int j = Integer.parseInt(senderUserId.replaceAll("[\\D]",""));
         if (messageType.equals("chatting")){
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,25 +87,9 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessaging.this,j,intent,PendingIntent.FLAG_ONE_SHOT);
-                    sendNotification(pendingIntent);
-                }
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessaging.this,0,intent,0);
 
-                private void sendNotification(PendingIntent pendingIntent) {
-                    Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MyFirebaseMessaging.this,"")
-                            .setSmallIcon(R.drawable.splash_screen_logo)
-                            .setContentTitle(title)
-                            .setContentText(body)
-                            .setAutoCancel(true)
-                            .setSound(defaultSound)
-                            .setContentIntent(pendingIntent);
-                    NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                    int i = 0;
-                    if (j > 0){
-                        i = j;
-                    }
-                    notificationManager.notify(i,builder.build());
+                    sendNotification(pendingIntent,title,body);
                 }
 
                 @Override
@@ -104,29 +102,36 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             Bundle bundle = new Bundle();
             bundle.putString("UserId",senderUserId);
             bundle.putString("Value","TLB");
-
             intent.putExtras(bundle);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessaging.this,j,intent,PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(MyFirebaseMessaging.this,0,intent,0);
 
-            Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(MyFirebaseMessaging.this,"")
-                    .setSmallIcon(R.drawable.splash_screen_logo)
-                    .setContentTitle(title)
-                    .setContentText(body)
-                    .setAutoCancel(true)
-                    .setSound(defaultSound)
-                    .setContentIntent(pendingIntent);
-            NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-            int i = 0;
-            if (j > 0){
-                i = j;
-            }
-            notificationManager.notify(i,builder.build());
+            sendNotification(pendingIntent,title,body);
+        }
+    }
 
+    private void sendNotification(PendingIntent pendingIntent, String title, String body) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,channelId);
+        builder.setSmallIcon(R.drawable.splash_screen_logo);
+        builder.setContentTitle(title);
+        builder.setContentText(body);
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(body));
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence channelName = "notification";
+            String channelDescription = "This notification is used for get Push Notification";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId,channelName,importance);
+            channel.setDescription(channelDescription);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
 
-
+        NotificationManagerCompat compat = NotificationManagerCompat.from(this);
+        compat.notify(notificationId,builder.build());
     }
 }

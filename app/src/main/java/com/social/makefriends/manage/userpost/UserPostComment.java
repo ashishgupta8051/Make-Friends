@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,12 +25,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
 import com.social.makefriends.activity.Home;
 import com.social.makefriends.adapter.CommentAdapter;
 import com.social.makefriends.model.Comments;
+import com.social.makefriends.model.NotificationModel;
 import com.social.makefriends.model.UserDetails;
+import com.social.makefriends.notification.Client;
+import com.social.makefriends.notification.Data;
+import com.social.makefriends.notification.MyResponse;
+import com.social.makefriends.notification.Senders;
+import com.social.makefriends.notification.Token;
+import com.social.makefriends.utils.APIService;
 import com.social.makefriends.utils.CheckInternetConnection;
 import com.squareup.picasso.Picasso;
 import com.vanniktech.emoji.EmojiEditText;
@@ -40,6 +50,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserPostComment extends AppCompatActivity {
     private String PostId,UserName,UserPic,UsersName,UserId,Value2,wallpaper;
@@ -57,10 +70,12 @@ public class UserPostComment extends AppCompatActivity {
     private String Comment;
     private String Value;
     private ProgressBar progressBar;
-    private DatabaseReference commentRef;
+    private DatabaseReference commentRef,notificationRef,userDetailsRef;
     private ArrayList<Comments> commentsArrayList = new ArrayList<>();
     private Boolean check = false;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
+    private NotificationModel notificationModel;
+    private APIService apiService;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -69,6 +84,8 @@ public class UserPostComment extends AppCompatActivity {
         setContentView(R.layout.activity_user_post_comment);
 
         getSupportActionBar().setTitle("Comments");
+
+        apiService = Client.getClient().create(APIService.class);
 
         PostId = getIntent().getExtras().get("PostId").toString();
         UserName = getIntent().getExtras().get("UserName").toString();
@@ -83,6 +100,8 @@ public class UserPostComment extends AppCompatActivity {
         CurrentUserId = firebaseAuth.getCurrentUser().getUid();
 
         commentRef = FirebaseDatabase.getInstance().getReference("Comment").child(PostId);
+        userDetailsRef = FirebaseDatabase.getInstance().getReference("User Details").child(CurrentUserId);
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
 
         Send = (ImageView)findViewById(R.id.send_comment);
         CommentEditBox = (EmojiEditText) findViewById(R.id.comment_input_box);
@@ -102,8 +121,7 @@ public class UserPostComment extends AppCompatActivity {
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-        commentAdapter = new CommentAdapter(UserPostComment.this,commentsArrayList,Value,wallpaper);
-        recyclerView.setAdapter(commentAdapter);
+
 
         if (UserPic.equals("None")){
             ProfilePic.setImageResource(R.drawable.profile_image);
@@ -112,6 +130,23 @@ public class UserPostComment extends AppCompatActivity {
         }
         Name.setText(UserName);
         usersName.setText(UsersName);
+
+        userDetailsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    UserDetails userDetails = snapshot.getValue(UserDetails.class);
+                    notificationModel = new NotificationModel(userDetails.getUsersName()," Comment on your photo.");
+                }else {
+                    Log.e("TAG","User does not exists");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         EmojiPopup popup = EmojiPopup.Builder.fromRootView(findViewById(R.id.comment_const1)).build(CommentEditBox);
         emojiImg.setOnClickListener(new View.OnClickListener() {
@@ -175,8 +210,8 @@ public class UserPostComment extends AppCompatActivity {
 
                                 HashMap<String,Object> addComment = new HashMap<>();
                                 addComment.put("commentId",commentId);
-                                addComment.put("image",Image);
-                                addComment.put("name",userName);
+                                addComment.put("profilePic",Image);
+                                addComment.put("userName",userName);
                                 addComment.put("currentDate",CurrentDate);
                                 addComment.put("currentTime",CurrentTime);
                                 addComment.put("postComment",Comment);
@@ -186,6 +221,10 @@ public class UserPostComment extends AppCompatActivity {
                                 addComment.put("postUserId",UserId);
 
                                 commentRef.child(commentId).updateChildren(addComment);
+                                if (!FirebaseAuth.getInstance().getUid().equals(UserId)){
+                                    String key = notificationRef.push().getKey();
+                                    notificationRef.child(UserId).child(key).setValue(notificationModel);
+                                }
                                 CommentEditBox.setText(null);
                                 emojiImg.setImageResource(R.drawable.emoji);
                                 check = false;
@@ -206,6 +245,7 @@ public class UserPostComment extends AppCompatActivity {
 
     private void fetchAllComments() {
         commentRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -213,6 +253,8 @@ public class UserPostComment extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         Comments comments = dataSnapshot.getValue(Comments.class);
                         commentsArrayList.add(comments);
+                        commentAdapter = new CommentAdapter(UserPostComment.this,commentsArrayList,Value,wallpaper);
+                        recyclerView.setAdapter(commentAdapter);
                     }
                     commentAdapter.notifyDataSetChanged();
                     recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());

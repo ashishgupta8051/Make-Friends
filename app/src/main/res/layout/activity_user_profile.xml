@@ -168,6 +168,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation"
+        app:labelVisibilityMode="labeled"
         android:background="?android:attr/windowBackground"
         android:layout_alignParentBottom="true"
         app:itemTextColor="@drawable/bottom_navigation_item_selector"

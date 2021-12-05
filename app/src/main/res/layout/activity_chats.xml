@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_navigation"
         android:background="?android:attr/windowBackground"
+        app:labelVisibilityMode="labeled"
         android:layout_alignParentBottom="true"
         app:itemTextColor="@drawable/bottom_navigation_item_selector"
         app:itemIconTint="@drawable/bottom_navigation_item_selector"

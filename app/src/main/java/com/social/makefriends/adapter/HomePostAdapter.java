@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -59,6 +61,7 @@ import com.social.makefriends.model.AllPost;
 import com.social.makefriends.manage.userpost.UserPostComment;
 import com.social.makefriends.manage.userpost.UpdatePost;
 import com.social.makefriends.model.FavPost;
+import com.social.makefriends.model.NotificationModel;
 import com.social.makefriends.model.UserDetails;
 import com.squareup.picasso.Picasso;
 import java.io.File;
@@ -82,7 +85,9 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
     private List<AllPost> allPostList;
     private static final  int PERMISSION = 999;
     private Activity context;
-    private DatabaseReference userRef,savePostRef,allPostRef,likeRef,disLikeRef,commentRef;
+    private String currentUserName;
+    private DatabaseReference userRef,savePostRef,allPostRef,likeRef,disLikeRef,commentRef,notificationRef;
+    private  NotificationModel notificationModel;
 
     public HomePostAdapter(List<AllPost> allPostList, Activity context) {
         this.allPostList = allPostList;
@@ -95,7 +100,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
         AllPost model = allPostList.get(position);
         FirebaseAuth firebaseAuth;
         firebaseAuth = FirebaseAuth.getInstance();
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
+        String currentUserId = firebaseAuth.getUid();
 
         String userId = model.getCurrentUserId();
         String postId = model.getKey();
@@ -110,6 +115,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
         savePostRef = FirebaseDatabase.getInstance().getReference("Favourite Post").child(currentUserId);
         allPostRef = FirebaseDatabase.getInstance().getReference("All Post");
         commentRef = FirebaseDatabase.getInstance().getReference("Comment");
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
 
         if (Profile_Pic.equals("None")){
             holder.ProfilePic.setImageResource(R.drawable.profile_image);
@@ -117,7 +123,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
             Picasso.get().load(Profile_Pic).fit().placeholder(R.drawable.profile_image).into(holder.ProfilePic);
         }
 
-        Glide.with(context).load(PostImage).listener(new RequestListener<Drawable>() {
+        Glide.with(context).load(PostImage).diskCacheStrategy(DiskCacheStrategy.ALL).listener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
                 holder.progressBar.setVisibility(View.GONE);
@@ -146,6 +152,54 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                 }else {
                     holder.Comment.setText(null);
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                UserDetails userDetails = snapshot.getValue(UserDetails.class);
+                currentUserName = userDetails.getUsersName();
+                notificationModel = new NotificationModel(currentUserName," liked your photo.");
+                String chatWallpaper = userDetails.getChatBackgroundWall();
+                holder.ProfilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentUserId.equals(userId)){
+                            Intent intent2 = new Intent(v.getContext(),UserProfile.class);
+                            intent2.putExtra("UserFriendsValue","A");
+                            v.getContext().startActivity(intent2);
+                        }else {
+                            Intent intent = new Intent(v.getContext(), SendFriendRequest.class);
+                            intent.putExtra("UserId",userId);
+                            intent.putExtra("Value","H");
+                            intent.putExtra("ChatBackground",chatWallpaper);
+                            v.getContext().startActivity(intent);
+                        }
+                        ((AppCompatActivity)v.getContext()).finish();
+                    }
+                });
+                holder.PostComment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), UserPostComment.class);
+                        intent.putExtra("PostId",postId);
+                        intent.putExtra("UserName",Name);
+                        intent.putExtra("UserDp",Profile_Pic);
+                        intent.putExtra("UsersName",usersName);
+                        intent.putExtra("CurrentUserId",userId);
+                        intent.putExtra("Value",HomePostValue);
+                        intent.putExtra("value",HomePostValue);
+                        intent.putExtra("ChatBackground",chatWallpaper);
+                        v.getContext().startActivity(intent);
+                        ((AppCompatActivity)v.getContext()).finish();
+                    }
+                });
             }
 
             @Override
@@ -212,6 +266,22 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
             }
         });
 
+        savePostRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild(postId)){
+                    holder.PostImageSave.setImageResource(R.drawable.fav_fill);
+                }else {
+                    holder.PostImageSave.setImageResource(R.drawable.fav);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         final boolean[] LickChecker = {false};
         holder.PostLike.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,10 +293,16 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                         if (LickChecker[0] == true) {
                             if (snapshot.child(postId).hasChild(currentUserId)) {
                                 likeRef.child(postId).child(currentUserId).removeValue();
+                                //holder.PostLike.setImageResource(R.drawable.uncolored_like);
                             } else {
                                 HashMap<String,Object> like = new HashMap<>();
                                 like.put(currentUserId,currentUserId);
-                                likeRef.child(postId).setValue(like);
+                                likeRef.child(postId).updateChildren(like);
+                                if (!FirebaseAuth.getInstance().getUid().equals(userId)){
+                                    String key = notificationRef.push().getKey();
+                                    notificationRef.child(userId).child(key).setValue(notificationModel);
+                                }
+                                //holder.PostLike.setImageResource(R.drawable.colored_like);
                             }
                             LickChecker[0] = false;
                         }
@@ -255,7 +331,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                             } else {
                                 HashMap<String,Object> dislike = new HashMap<>();
                                 dislike.put(currentUserId,currentUserId);
-                                disLikeRef.child(postId).setValue(dislike);
+                                disLikeRef.child(postId).updateChildren(dislike);
                                 //holder.PostLike.setImageResource(R.drawable.colored_like);
                             }
                             LickChecker2[0] = false;
@@ -267,70 +343,6 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                         Log.e("Error",error.toString());
                     }
                 });
-            }
-        });
-
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserDetails userDetails = snapshot.getValue(UserDetails.class);
-                String chatWallpaper = userDetails.getChatBackgroundWall();
-                holder.ProfilePic.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (currentUserId.equals(userId)){
-                            Intent intent2 = new Intent(v.getContext(),UserProfile.class);
-                            intent2.putExtra("UserFriendsValue","A");
-                            v.getContext().startActivity(intent2);
-                        }else {
-                            Intent intent = new Intent(v.getContext(), SendFriendRequest.class);
-                            intent.putExtra("UserId",userId);
-                            intent.putExtra("Value","H");
-                            intent.putExtra("ChatBackground",chatWallpaper);
-                            v.getContext().startActivity(intent);
-                        }
-                        ((AppCompatActivity)v.getContext()).finish();
-
-                    }
-                });
-
-                holder.PostComment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(v.getContext(), UserPostComment.class);
-                        intent.putExtra("PostId",postId);
-                        intent.putExtra("UserName",Name);
-                        intent.putExtra("UserDp",Profile_Pic);
-                        intent.putExtra("UsersName",usersName);
-                        intent.putExtra("CurrentUserId",userId);
-                        intent.putExtra("Value",HomePostValue);
-                        intent.putExtra("value",HomePostValue);
-                        intent.putExtra("ChatBackground",chatWallpaper);
-                        v.getContext().startActivity(intent);
-                        ((AppCompatActivity)v.getContext()).finish();
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        savePostRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(postId)){
-                    holder.PostImageSave.setImageResource(R.drawable.fav_fill);
-                }else {
-                    holder.PostImageSave.setImageResource(R.drawable.fav);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
