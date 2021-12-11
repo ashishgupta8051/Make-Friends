@@ -6,50 +6,100 @@
     android:layout_height="match_parent"
     tools:context=".activity.Post">
 
-    <ImageView
-        android:id="@+id/post_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_290sdp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/upload_icon"/>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout8"
+    <RelativeLayout
+        android:id="@+id/postRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/post_image"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp">
 
-        <EditText
-            android:id="@+id/post_caption"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:gravity="top"
-            android:singleLine="true"
-            android:inputType="text"
-            android:hint="@string/caption_hint"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:id="@+id/upload_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/adddrwable"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_1sdp"
+                android:paddingBottom="@dimen/_8sdp">
 
-    <Button
-        android:id="@+id/upload"
+                <TextView
+                    android:id="@+id/upload_photo_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="UPLOAD PHOTO"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_11sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/upload_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:background="@drawable/borderline"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_8sdp">
+
+                <TextView
+                    android:id="@+id/upload_video_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="UPLOAD VIDEO"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/upload_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:background="@drawable/borderline"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_8sdp">
+
+                <TextView
+                    android:id="@+id/upload_status_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="UPLOAD STATUS"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_11sdp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/uploadPostBtn"
-        android:textColor="@color/white"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:backgroundTint="@color/purple_500"
-        android:layout_below="@+id/layout8"/>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_above="@id/bottom_navigationview"
+        android:layout_below="@+id/postRelativeLayout"
+        android:layout_marginTop="@dimen/_5sdp" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigationview"

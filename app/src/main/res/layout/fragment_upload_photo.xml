@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.UploadPhoto">
+
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_2sdp"
+        android:layout_height="@dimen/_290sdp"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/post_image_def"
+        android:padding="@dimen/_40sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_290sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/upload_icon"/>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/post_image"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <EditText
+            android:id="@+id/post_caption"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:gravity="top"
+            android:singleLine="true"
+            android:inputType="text"
+            android:hint="@string/caption_hint"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout8"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="3dp"
+        android:backgroundTint="@color/purple_500"
+        android:text="@string/uploadPhoto"
+        android:textColor="@color/white" />
+
+
+
+</RelativeLayout>

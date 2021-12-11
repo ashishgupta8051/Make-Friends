@@ -2,6 +2,7 @@ package com.social.makefriends.model;
 
 public class AllPost {
     String Key;
+    String PostType;
     String UserName;
     String UserProfilePic;
     String CurrentDate;
@@ -14,9 +15,10 @@ public class AllPost {
 
     public AllPost(){}
 
-    public AllPost(String key, String userName, String userProfilePic, String currentDate, String currentTime, String postImage,
+    public AllPost(String key,String postType, String userName, String userProfilePic, String currentDate, String currentTime, String postImage,
                    String caption, String currentUserId, String countPost, String usersName) {
         Key = key;
+        PostType = postType;
         UserName = userName;
         UserProfilePic = userProfilePic;
         CurrentDate = currentDate;
@@ -34,6 +36,14 @@ public class AllPost {
 
     public void setKey(String key) {
         Key = key;
+    }
+
+    public String getPostType() {
+        return PostType;
+    }
+
+    public void setPostType(String postType) {
+        PostType = postType;
     }
 
     public String getUserName() {

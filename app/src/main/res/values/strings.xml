@@ -38,7 +38,7 @@
     <string name="verifyBtn">Verify</string>
     //Post
     <string name="caption_hint">Write your caption ....</string>
-    <string name="uploadPostBtn">Upload Post</string>
+    <string name="uploadPhoto">Upload Photo</string>
     //Reset Password
     <string name="resetPasswordTxt">Reset Password</string>
     <string name="emailIdHint">Type your email id</string>
@@ -89,5 +89,8 @@
     <string name="progressDialogTxt">Progress Dialog</string>
     <string name="pleaseWaitTxt">Please Wait…</string>
     <string name="sendBtn">send</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="upload_video">Upload Video</string>
 
 </resources>

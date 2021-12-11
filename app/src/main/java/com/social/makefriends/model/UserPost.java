@@ -2,14 +2,16 @@ package com.social.makefriends.model;
 
 public class UserPost {
     String postId;
+    String PostType;
     String postImage;
     String PostCount;
     String UserId;
 
     public UserPost(){}
 
-    public UserPost(String postId, String postImage, String postCount, String userId) {
+    public UserPost(String postId,String postType, String postImage, String postCount, String userId) {
         this.postId = postId;
+        PostType = postType;
         this.postImage = postImage;
         PostCount = postCount;
         UserId = userId;
@@ -21,6 +23,14 @@ public class UserPost {
 
     public void setPostId(String postId) {
         this.postId = postId;
+    }
+
+    public String getPostType() {
+        return PostType;
+    }
+
+    public void setPostType(String postType) {
+        PostType = postType;
     }
 
     public String getPostImage() {
