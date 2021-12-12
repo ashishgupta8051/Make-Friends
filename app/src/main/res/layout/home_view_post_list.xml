@@ -109,6 +109,18 @@
             app:layout_constraintBottom_toBottomOf="@id/post_image"
             />
 
+        <ImageView
+            android:id="@+id/playVideo"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
+            android:src="@drawable/play"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@id/post_image"
+            app:layout_constraintLeft_toLeftOf="@+id/post_image"
+            app:layout_constraintRight_toRightOf="@id/post_image"
+            app:layout_constraintBottom_toBottomOf="@id/post_image"
+            />
+
 
         <ImageView
             android:id="@+id/post_like"

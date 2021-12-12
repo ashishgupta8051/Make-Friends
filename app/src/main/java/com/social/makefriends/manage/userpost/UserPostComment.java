@@ -277,6 +277,7 @@ public class UserPostComment extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(),Home.class);
             startActivity(intent);
         }else {
+            String postType = getIntent().getExtras().get("postType").toString();
             Intent intent2 = new Intent(getApplicationContext(),ViewPost.class);
             intent2.putExtra("PostId",PostId);
             intent2.putExtra("UserName",UserName);
@@ -284,6 +285,7 @@ public class UserPostComment extends AppCompatActivity {
             intent2.putExtra("CurrentUserId",UserId);
             intent2.putExtra("UsersName",UsersName);
             intent2.putExtra("value",Value2);
+            intent2.putExtra("postType",postType);
             intent2.putExtra("ChatBackground",wallpaper);
             startActivity(intent2);
         }

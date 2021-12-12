@@ -1,6 +1,7 @@
 package com.social.makefriends.friendrequest.chatting;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,6 +20,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -27,10 +30,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.social.makefriends.R;
 import com.social.makefriends.manage.userprofile.ViewProfileImage;
@@ -43,6 +51,7 @@ public class ViewMessageImages extends AppCompatActivity {
     private String CurrentUserId,UserId,Value,Image,MsgId,Message,chatWallpaper;
     private FirebaseAuth firebaseAuth;
     private ImageView imageView,backButton,download;
+    private ProgressBar progressBar;
     Bitmap bitmap;
     private static final  int PERMISSION = 999;
     private boolean check = true;
@@ -67,6 +76,7 @@ public class ViewMessageImages extends AppCompatActivity {
         imageView = findViewById(R.id.message_details_image);
         backButton = findViewById(R.id.back);
         download = findViewById(R.id.download_image);
+        progressBar = findViewById(R.id.messageProgressBar);
 
         backButton.setBackgroundColor(Color.TRANSPARENT);
         download.setBackgroundColor(Color.TRANSPARENT);
@@ -84,15 +94,21 @@ public class ViewMessageImages extends AppCompatActivity {
             }
         });
 
-        //Create image loader
-        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(ViewMessageImages.this);
-        circularProgressDrawable.setStrokeWidth(10);
-        circularProgressDrawable.setCenterRadius(45);
-        circularProgressDrawable.setColorSchemeColors(R.color.purple_500);
-        circularProgressDrawable.start();
+        Glide.with(ViewMessageImages.this).load(Message).diskCacheStrategy(DiskCacheStrategy.ALL).listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                progressBar.setVisibility(View.GONE);
+                return false;
+            }
 
-        //Set image in imageview
-        Glide.with(ViewMessageImages.this).load(Message).placeholder(circularProgressDrawable).diskCacheStrategy(DiskCacheStrategy.NONE).into(imageView);
+            @SuppressLint("CheckResult")
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                progressBar.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(imageView);
+
 
         download.setOnClickListener(new View.OnClickListener() {
             @Override

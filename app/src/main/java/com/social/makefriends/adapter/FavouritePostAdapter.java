@@ -39,7 +39,6 @@ import java.util.List;
 
 
 public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdapter.FavouritePostHolder>{
-
     private FirebaseAuth firebaseAuth;
     private List<FavPost> favPostList;
     private String Value;
@@ -73,20 +72,41 @@ public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdap
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 AllPost allPost = snapshot.child(favPost.getFavPostId()).getValue(AllPost.class);
 
-                Glide.with(activity).load(allPost.getPostImage()).listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
-                        holder.progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
+                if (allPost.getPostType().equals("photo")){
+                    Glide.with(activity).load(allPost.getPostImage()).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.playVideo.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                    @SuppressLint("CheckResult")
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.GONE);
-                        return false;
-                    }
-                }).into(holder.imageView);
+                        @SuppressLint("CheckResult")
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.playVideo.setVisibility(View.GONE);
+                            return false;
+                        }
+                    }).into(holder.imageView);
+                }else {
+                    Glide.with(activity).load(allPost.getPostImage()).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.playVideo.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+
+                        @SuppressLint("CheckResult")
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.playVideo.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+                    }).into(holder.imageView);
+                }
 
                 userDetailsRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -101,6 +121,7 @@ public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdap
                                 intent.putExtra("ProfilePic",allPost.getUserProfilePic());
                                 intent.putExtra("CurrentUserId",allPost.getCurrentUserId());
                                 intent.putExtra("UsersName",allPost.getUsersName());
+                                intent.putExtra("postType",allPost.getPostType());
                                 intent.putExtra("value","SE");
                                 intent.putExtra("ChatBackground",userDetails.getChatBackgroundWall());
                                 v.getContext().startActivity(intent);
@@ -129,11 +150,12 @@ public class FavouritePostAdapter extends RecyclerView.Adapter<FavouritePostAdap
     }
 
     class FavouritePostHolder extends RecyclerView.ViewHolder{
-        ImageView imageView;
+        ImageView imageView,playVideo;
         ProgressBar progressBar;
         public FavouritePostHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.post_image);
+            playVideo = itemView.findViewById(R.id.playVideo);
             progressBar = itemView.findViewById(R.id.profileViewPostProgress);
         }
     }

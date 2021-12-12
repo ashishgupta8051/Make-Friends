@@ -10,12 +10,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,6 +32,7 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,9 +58,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.social.makefriends.MainActivity;
 import com.social.makefriends.R;
 import com.social.makefriends.activity.UserProfile;
 import com.social.makefriends.friendrequest.SendFriendRequest;
+import com.social.makefriends.manage.userpost.PlayPostVideo;
 import com.social.makefriends.manage.userpost.PostDislikedUsers;
 import com.social.makefriends.manage.userpost.PostLikedUsers;
 import com.social.makefriends.model.AllPost;
@@ -66,7 +74,12 @@ import com.social.makefriends.model.UserDetails;
 import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -123,20 +136,51 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
             Picasso.get().load(Profile_Pic).fit().placeholder(R.drawable.profile_image).into(holder.ProfilePic);
         }
 
-        Glide.with(context).load(PostImage).diskCacheStrategy(DiskCacheStrategy.ALL).listener(new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
-                holder.progressBar.setVisibility(View.GONE);
-                return false;
-            }
+        if (model.getPostType().equals("photo")){
+            Glide.with(context).load(PostImage).diskCacheStrategy(DiskCacheStrategy.ALL).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.playVideo.setVisibility(View.GONE);
+                    return false;
+                }
 
-            @SuppressLint("CheckResult")
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                holder.progressBar.setVisibility(View.GONE);
-                return false;
-            }
-        }).into(holder.PostImage);
+                @SuppressLint("CheckResult")
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.playVideo.setVisibility(View.GONE);
+                    return false;
+                }
+            }).into(holder.PostImage);
+        }else {
+            Glide.with(context).load(PostImage).diskCacheStrategy(DiskCacheStrategy.ALL).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.playVideo.setVisibility(View.VISIBLE);
+                    return false;
+                }
+
+                @SuppressLint("CheckResult")
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.playVideo.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            }).into(holder.PostImage);
+            holder.playVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PlayPostVideo.class);
+                    intent.putExtra("value",HomePostValue);
+                    intent.putExtra("url",PostImage);
+                    context.startActivity(intent);
+                    context.finish();
+                }
+            });
+        }
 
         holder.UserName.setText(model.getUserName());
         holder.Date.setText(model.getCurrentDate());
@@ -388,41 +432,82 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.action_download_post:
-                                if (Build.VERSION.SDK_INT >= 23){
-                                     if (ContextCompat.checkSelfPermission(context,
-                                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                    savePostImage(context,model);
+                                if (model.getPostType().equals("photo")){
+                                    if (Build.VERSION.SDK_INT >= 23){
+                                        if (ContextCompat.checkSelfPermission(context,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                            savePostImage(context,model);
+                                        }else {
+                                            requestPermission(context);
+                                        }
+                                    }else {
+                                        savePostImage(context,model);
+                                    }
                                 }else {
-                                    requestPermission(context);
+                                    if (Build.VERSION.SDK_INT >= 23){
+                                        if (ContextCompat.checkSelfPermission(context,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                                            savePostVideo(context,model);
+                                        }else {
+                                            requestPermission(context);
+                                        }
+                                    }else {
+                                        savePostVideo(context,model);
+                                    }
                                 }
-                                }else {
-                                    savePostImage(context,model);
-                                }
+
                                 break;
                             case R.id.action_share_post:
-                                builder = new StrictMode.VmPolicy.Builder();
-                                StrictMode.setVmPolicy(builder.build());
+                                if (model.getPostType().equals("photo")){
+                                    builder = new StrictMode.VmPolicy.Builder();
+                                    StrictMode.setVmPolicy(builder.build());
 
-                                bitmapDrawable = (BitmapDrawable) holder.PostImage.getDrawable();
-                                bitmap = bitmapDrawable.getBitmap();
+                                    bitmapDrawable = (BitmapDrawable) holder.PostImage.getDrawable();
+                                    bitmap = bitmapDrawable.getBitmap();
 
-                                File file = new File(view.getContext().getExternalCacheDir(),"sample.png");
-                                Intent intent = null;
-                                try{
-                                    fileOutputStream = new FileOutputStream(file);
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+                                    File file = new File(view.getContext().getExternalCacheDir(),"sample.png");
+                                    Intent intent = null;
+                                    try{
+                                        fileOutputStream = new FileOutputStream(file);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
 
-                                    fileOutputStream.flush();
-                                    fileOutputStream.close();
+                                        fileOutputStream.flush();
+                                        fileOutputStream.close();
 
-                                    intent = new Intent(Intent.ACTION_SEND);
-                                    intent.setType("image/*");
-                                    intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
-                                    intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-                                }catch (Exception e){
-                                    e.printStackTrace();
+                                        intent = new Intent(Intent.ACTION_SEND);
+                                        intent.setType("image/*");
+                                        intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+                                        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                    context.startActivity(Intent.createChooser(intent,"Share Image"));
+                                }else {
+                                    builder = new StrictMode.VmPolicy.Builder();
+                                    StrictMode.setVmPolicy(builder.build());
+
+                                    bitmapDrawable = (BitmapDrawable) holder.PostImage.getDrawable();
+                                    bitmap = bitmapDrawable.getBitmap();
+
+                                    File file = new File(view.getContext().getExternalCacheDir(),"sample.png");
+                                    Intent intent = null;
+                                    try{
+                                        fileOutputStream = new FileOutputStream(file);
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG,100,fileOutputStream);
+
+                                        fileOutputStream.flush();
+                                        fileOutputStream.close();
+
+                                        intent = new Intent(Intent.ACTION_SEND);
+                                        intent.setType("*/*");
+                                        intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file));
+                                        intent.putExtra(Intent.EXTRA_TEXT,model.getPostImage());
+                                        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                    context.startActivity(Intent.createChooser(intent,"Share Video"));
                                 }
-                                context.startActivity(Intent.createChooser(intent,"share image"));
                                 break;
                             case R.id.action_update_post:
                                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -438,6 +523,7 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
                                         intent.putExtra("CurrentUserId",userId);
                                         intent.putExtra("Value",HomePostValue);
                                         intent.putExtra("value",HomePostValue);
+                                        intent.putExtra("postType",model.getPostType());
                                         intent.putExtra("ChatBackground",Image);
                                         view.getContext().startActivity(intent);
                                         ((AppCompatActivity)view.getContext()).finish();
@@ -542,6 +628,24 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
         });
     }
 
+    private void savePostVideo(Activity context, AllPost model) {
+        String title = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis());
+        String url = model.getPostImage();
+
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse(url));
+        request.setTitle(title);
+        //request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        String folder = "/Make Friends/Post Image";
+        request.setDestinationInExternalPublicDir(folder,title+".mp4");
+
+        DownloadManager downloadManager=(DownloadManager)context.getSystemService(Context.DOWNLOAD_SERVICE);
+        request.setMimeType("video/*");
+        //request.allowScanningByMediaScanner();
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+        downloadManager.enqueue(request);
+    }
+
     private void requestPermission(Activity v) {
         if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -616,10 +720,13 @@ public class HomePostAdapter extends RecyclerView.Adapter<HomePostAdapter.MyView
         ImageView PostImage,MoreOption,PostLike,PostDislike,PostComment,PostImageSave;
         TextView UserName,Date,Time,Caption,TotalLike,TotalDislike,Comment;
         ProgressBar progressBar;
+        ImageView playVideo;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             progressBar = itemView.findViewById(R.id.homePostImageProgress);
+
+            playVideo = itemView.findViewById(R.id.playVideo);
 
             ProfilePic = (CircleImageView)itemView.findViewById(R.id.user_profile_image);
             PostImage = (ImageView)itemView.findViewById(R.id.post_image);

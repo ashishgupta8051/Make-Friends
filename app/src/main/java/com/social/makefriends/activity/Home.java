@@ -130,7 +130,7 @@ public class Home extends AppCompatActivity {
                             addToken.put("token",token);
                             reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
                         }else {
-                            Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), task.getResult(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

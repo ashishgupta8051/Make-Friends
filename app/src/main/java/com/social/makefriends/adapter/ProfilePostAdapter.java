@@ -57,20 +57,39 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<ProfilePostAdapter.
         String postId = model.getPostId();
         String PostImage = model.getPostImage();
 
-        Glide.with(activity).load(PostImage).listener(new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
-                holder.progressBar.setVisibility(View.GONE);
-                return false;
-            }
+        if (model.getPostType().equals("photo")){
+            Glide.with(activity).load(PostImage).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                    holder.progressBar.setVisibility(View.GONE);
+                    return false;
+                }
 
-            @SuppressLint("CheckResult")
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                holder.progressBar.setVisibility(View.GONE);
-                return false;
-            }
-        }).into(holder.PostImage);
+                @SuppressLint("CheckResult")
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    return false;
+                }
+            }).into(holder.PostImage);
+        }else {
+            Glide.with(activity).load(PostImage).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.playVideo.setVisibility(View.VISIBLE);
+                    return false;
+                }
+
+                @SuppressLint("CheckResult")
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.playVideo.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            }).into(holder.PostImage);
+        }
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -97,6 +116,7 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<ProfilePostAdapter.
                                     Intent intent = new Intent(v.getContext(),ViewPost.class);
                                     intent.putExtra("PostId",postId);
                                     intent.putExtra("UserName",UserName);
+                                    intent.putExtra("postType",model.getPostType());
                                     intent.putExtra("ProfilePic",ProfilePic);
                                     intent.putExtra("CurrentUserId",UserId);
                                     intent.putExtra("UsersName",UsersName);
@@ -141,11 +161,12 @@ public class ProfilePostAdapter extends RecyclerView.Adapter<ProfilePostAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView PostImage;
+        ImageView PostImage,playVideo;
         ProgressBar progressBar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             PostImage = (ImageView)itemView.findViewById(R.id.post_image);
+            playVideo = (ImageView)itemView.findViewById(R.id.playVideo);
             progressBar = itemView.findViewById(R.id.profileViewPostProgress);
         }
     }

@@ -10,7 +10,9 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -19,8 +21,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -44,13 +48,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UpdatePost extends AppCompatActivity {
-    private ImageView postImage;
+    private ImageView postImage,playVideo;
     private EditText postCaption;
     private FirebaseAuth firebaseAuth;
-    private String PostId,UserName,ProfilePic,UsersName,UserId,Value,Value2,wallpaper;
+    private String PostId,UserName,ProfilePic,UsersName,UserId,Value,Value2,wallpaper,postType;
     private DatabaseReference databaseReference;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
     private ProgressBar progressBar;
+    private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +70,11 @@ public class UpdatePost extends AppCompatActivity {
         postImage = (ImageView)findViewById(R.id.update_post_image);
         postCaption = (EditText)findViewById(R.id.update_post_caption);
         progressBar = findViewById(R.id.updatePostProgress);
+        playVideo = findViewById(R.id.playVideo);
+        videoView = findViewById(R.id.videoView);
 
         PostId = getIntent().getExtras().get("PostId").toString();
+        postType = getIntent().getExtras().get("postType").toString();
         UserName = getIntent().getExtras().get("UserName").toString();
         ProfilePic = getIntent().getExtras().get("UserDp").toString();
         UsersName = getIntent().getExtras().get("UsersName").toString();
@@ -83,20 +91,68 @@ public class UpdatePost extends AppCompatActivity {
                     String Caption = snapshot.child("caption").getValue().toString();
                     String Image = snapshot.child("postImage").getValue().toString();
 
-                    Glide.with(getApplicationContext()).load(Image).listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
-                            progressBar.setVisibility(View.GONE);
-                            return false;
-                        }
+                    if (postType.equals("photo")){
+                        Glide.with(getApplicationContext()).load(Image).listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
 
-                        @SuppressLint("CheckResult")
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            progressBar.setVisibility(View.GONE);
-                            return false;
-                        }
-                    }).into(postImage);
+                            @SuppressLint("CheckResult")
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        }).into(postImage);
+                    }else {
+                        Glide.with(getApplicationContext()).load(Image).listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                                progressBar.setVisibility(View.GONE);
+                                playVideo.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+
+                            @SuppressLint("CheckResult")
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                playVideo.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+                        }).into(postImage);
+
+                        playVideo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                playVideo.setVisibility(View.GONE);
+                                progressBar.setVisibility(View.VISIBLE);
+                                videoView.setVisibility(View.VISIBLE);
+                                postImage.setVisibility(View.GONE);
+
+                                MediaController mediaController = new MediaController(UpdatePost.this);
+                                mediaController.setAnchorView(videoView);
+                                mediaController.setMediaPlayer(videoView);
+                                mediaController.setPadding(4,0,4,0);
+                                videoView.setMediaController(mediaController);
+                                videoView.setVideoURI(Uri.parse(Image));
+                                videoView.requestFocus();
+                                videoView.setOnPreparedListener(mp -> {
+                                    videoView.start();
+                                    mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                                        @Override
+                                        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                                            progressBar.setVisibility(View.GONE);
+                                            mp.start();
+                                            mediaController.hide();
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    }
                     postCaption.setText(Caption);
                 }
             }
@@ -121,6 +177,7 @@ public class UpdatePost extends AppCompatActivity {
             intent2.putExtra("UsersName",UsersName);
             intent2.putExtra("value",Value2);
             intent2.putExtra("ChatBackground",wallpaper);
+            intent2.putExtra("postType",postType);
             startActivity(intent2);
         }
         finish();
@@ -165,6 +222,7 @@ public class UpdatePost extends AppCompatActivity {
                             intent2.putExtra("UsersName",UsersName);
                             intent2.putExtra("value",Value2);
                             intent2.putExtra("ChatBackground",wallpaper);
+                            intent2.putExtra("postType",postType);
                             startActivity(intent2);
                         }
                         finish();

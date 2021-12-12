@@ -38,7 +38,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class FriendProfilePostImageAdapter extends RecyclerView.Adapter<FriendProfilePostImageAdapter.ViewHolder> {
-
     private Activity context;
     private String Value,chatWallpaper;
     private DatabaseReference userRef;
@@ -69,20 +68,41 @@ public class FriendProfilePostImageAdapter extends RecyclerView.Adapter<FriendPr
                     UserPost userPost = snapshot.getValue(UserPost.class);
                     String image = userPost.getPostImage();
 
-                    Glide.with(context).load(image).listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
-                            holder.progressBar.setVisibility(View.GONE);
-                            return false;
-                        }
+                    if (model.getPostType().equals("photo")) {
+                        Glide.with(context).load(image).listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                                holder.progressBar.setVisibility(View.GONE);
+                                holder.playVideo.setVisibility(View.GONE);
+                                return false;
+                            }
 
-                        @SuppressLint("CheckResult")
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            holder.progressBar.setVisibility(View.GONE);
-                            return false;
-                        }
-                    }).into(holder.PostImage);
+                            @SuppressLint("CheckResult")
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                holder.progressBar.setVisibility(View.GONE);
+                                holder.playVideo.setVisibility(View.GONE);
+                                return false;
+                            }
+                        }).into(holder.PostImage);
+                    }else {
+                        Glide.with(context).load(image).listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@SuppressLint("CheckResult") @Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource)  {
+                                holder.progressBar.setVisibility(View.GONE);
+                                holder.playVideo.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+
+                            @SuppressLint("CheckResult")
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                holder.progressBar.setVisibility(View.GONE);
+                                holder.playVideo.setVisibility(View.VISIBLE);
+                                return false;
+                            }
+                        }).into(holder.PostImage);
+                    }
                 }
             }
 
@@ -109,6 +129,7 @@ public class FriendProfilePostImageAdapter extends RecyclerView.Adapter<FriendPr
                             Intent intent = new Intent(v.getContext(), ViewPost.class);
                             intent.putExtra("PostId",postId);
                             intent.putExtra("UserName",UserName);
+                            intent.putExtra("postType",model.getPostType());
                             intent.putExtra("ProfilePic",ProfilePic);
                             intent.putExtra("CurrentUserId",UserId);
                             intent.putExtra("UsersName",UsersName);
@@ -145,11 +166,12 @@ public class FriendProfilePostImageAdapter extends RecyclerView.Adapter<FriendPr
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView PostImage;
+        ImageView PostImage,playVideo;
         ProgressBar progressBar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             PostImage = (ImageView)itemView.findViewById(R.id.post_image);
+            playVideo = (ImageView)itemView.findViewById(R.id.playVideo);
             progressBar = itemView.findViewById(R.id.profileViewPostProgress);
         }
     }

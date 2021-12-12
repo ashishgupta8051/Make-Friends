@@ -28,7 +28,7 @@ import com.social.makefriends.utils.CheckInternetConnection;
 import java.util.ArrayList;
 
 public class PostLikedUsers extends AppCompatActivity {
-    private String value,postId;
+    private String PostId,UserName,UserPic,UsersName,UserId,Value2,wallpaper,Value;
     private DatabaseReference likedRef;
     private ArrayList<String> strList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -46,17 +46,21 @@ public class PostLikedUsers extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Likes");
 
-        intent = getIntent();
-        extras = intent.getExtras();
-
-        if (extras != null){
-            value = extras.getString("Value");
-            postId = extras.getString("PostId");
+        Value = getIntent().getExtras().get("Value").toString();
+        if (Value.equals("H")){
+            PostId = getIntent().getExtras().get("PostId").toString();
         }else {
-            Log.e("Details","Value is null");
+            PostId = getIntent().getExtras().get("PostId").toString();
+            UserName = getIntent().getExtras().get("UserName").toString();
+            UserPic = getIntent().getExtras().get("UserDp").toString();
+            UsersName = getIntent().getExtras().get("UsersName").toString();
+            Value = getIntent().getExtras().get("Value").toString();
+            Value2 = getIntent().getExtras().get("value").toString();
+            UserId = getIntent().getExtras().get("CurrentUserId").toString();
+            wallpaper = getIntent().getExtras().get("ChatBackground").toString();
         }
 
-        likedRef = FirebaseDatabase.getInstance().getReference("Likes").child(postId);
+        likedRef = FirebaseDatabase.getInstance().getReference("Likes").child(PostId);
 
         recyclerView = findViewById(R.id.likeRec);
         progressBar = findViewById(R.id.likeProgress);
@@ -98,22 +102,23 @@ public class PostLikedUsers extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (value.contentEquals("H")){
-            Intent intent = new Intent(getApplicationContext(), Home.class);
+        if (Value.contentEquals("H")){
+            Intent intent = new Intent(getApplicationContext(),Home.class);
             startActivity(intent);
-            finish();
         }else {
-            Intent intent = new Intent(getApplicationContext(), ViewPost.class);
-            intent.putExtra("value",value);
-            intent.putExtra("PostId",postId);
-            intent.putExtra("UserName",extras.getString("UserName"));
-            intent.putExtra("ProfilePic",extras.getString("ProfilePic"));
-            intent.putExtra("UsersName",extras.getString("UsersName"));
-            intent.putExtra("CurrentUserId",extras.getString("CurrentUserId"));
-            intent.putExtra("ChatBackground",extras.getString("ChatBackground"));
-            startActivity(intent);
-            finish();
+            String postType = getIntent().getExtras().get("postType").toString();
+            Intent intent2 = new Intent(getApplicationContext(),ViewPost.class);
+            intent2.putExtra("PostId",PostId);
+            intent2.putExtra("UserName",UserName);
+            intent2.putExtra("ProfilePic",UserPic);
+            intent2.putExtra("CurrentUserId",UserId);
+            intent2.putExtra("UsersName",UsersName);
+            intent2.putExtra("value",Value2);
+            intent2.putExtra("postType",postType);
+            intent2.putExtra("ChatBackground",wallpaper);
+            startActivity(intent2);
         }
+        finish();
     }
 
     @Override
