@@ -3,6 +3,7 @@ package com.social.makefriends.manage.userpost;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class PlayPostVideo extends AppCompatActivity {
         }
 
 
-        getSupportActionBar().setTitle("Play Video");
+        getSupportActionBar().hide();
 
         videoview = findViewById(R.id.videoView);
         progressBar = findViewById(R.id.ProgressBar);

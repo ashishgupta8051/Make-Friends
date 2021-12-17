@@ -24,7 +24,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -135,23 +134,6 @@ public class UpdateProfile extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-
-        //get Token Id
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            String token = task.getResult();
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
-                            HashMap<String,Object> addToken = new HashMap<>();
-                            addToken.put("token",token);
-                            reference.child(firebaseAuth.getCurrentUser().getUid()).setValue(addToken);
-                        }else {
-                            Toast.makeText(getApplicationContext(), task.getResult().toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
 
         DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("User Details").child(firebaseAuth.getUid());
         databaseReference1.addValueEventListener(new ValueEventListener() {
@@ -289,6 +271,26 @@ public class UpdateProfile extends AppCompatActivity {
                                                     progressDialog.dismiss();
                                                     Toast.makeText(UpdateProfile.this, "Profile Image Upload Failed !!!", Toast.LENGTH_SHORT).show();
                                                 }
+                                            }
+                                        });
+
+                                        DatabaseReference statusRef = FirebaseDatabase.getInstance().getReference("All Status").child(FirebaseAuth.getInstance().getUid());
+                                        statusRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()){
+                                                    Map<String, Object> updateChild = new HashMap<String, Object>();
+
+                                                    updateChild.put("profileImage", ProfileImageUri);
+                                                    statusRef.updateChildren(updateChild);
+                                                }else {
+                                                    Log.e("TAG ","Please upload some status");
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                Toast.makeText(UpdateProfile.this, error.getMessage(), Toast.LENGTH_SHORT);
                                             }
                                         });
 
@@ -515,7 +517,7 @@ public class UpdateProfile extends AppCompatActivity {
                                 userName.setError("Choose a different username");
                                 Toast.makeText(UpdateProfile.this, "Choose a different username", Toast.LENGTH_SHORT).show();
                             } else {
-                                Map<String, Object> updateProfile = new HashMap<String, Object>();
+                                Map<String, Object> updateProfile = new HashMap<>();
                                 updateProfile.put("userName", Name);
                                 updateProfile.put("userEmail", Email);
                                 updateProfile.put("userDob", Dob);
@@ -553,6 +555,27 @@ public class UpdateProfile extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(UpdateProfile.this, error.getCode(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            DatabaseReference statusRef = FirebaseDatabase.getInstance().getReference("All Status").child(FirebaseAuth.getInstance().getUid());
+            statusRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        Map<String, Object> updateChild = new HashMap<String, Object>();
+
+                        updateChild.put("name", Name);
+                        updateChild.put("userName", UserName);
+                        statusRef.updateChildren(updateChild);
+                    }else {
+                        Log.e("TAG ","Please upload some status");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(UpdateProfile.this, error.getMessage(), Toast.LENGTH_SHORT);
                 }
             });
 

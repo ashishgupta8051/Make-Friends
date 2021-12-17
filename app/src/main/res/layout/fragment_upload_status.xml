@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.UploadStatus">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/post_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="upload status"
-        android:gravity="center"/>
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:scaleType="centerCrop" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/pick_post_status"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_290sdp"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/_40sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/upload_status" />
+
+    <ImageView
+        android:id="@+id/shareStatus"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/message_send"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/_20sdp"/>
+
+</RelativeLayout>

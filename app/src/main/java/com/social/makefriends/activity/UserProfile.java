@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devlomi.circularstatusview.CircularStatusView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 //import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,10 +35,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
 import com.social.makefriends.adapter.ProfilePostAdapter;
 import com.social.makefriends.friendrequest.SearchFriends;
+import com.social.makefriends.model.Status;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.model.UserPost;
 import com.social.makefriends.manage.userprofile.UpdateProfile;
 import com.social.makefriends.manage.userprofile.ViewProfileImage;
+import com.social.makefriends.model.UserStatus;
 import com.social.makefriends.settings.SettingsActivity;
 import com.social.makefriends.ui.TabLayoutView;
 import com.social.makefriends.utils.CheckInternetConnection;
@@ -44,8 +48,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import omari.hamza.storyview.StoryView;
+import omari.hamza.storyview.callback.OnStoryChangedCallback;
+import omari.hamza.storyview.callback.StoryClickListeners;
+import omari.hamza.storyview.model.MyStory;
 
 public class UserProfile extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -56,9 +65,10 @@ public class UserProfile extends AppCompatActivity {
     private ProfilePostAdapter profilePostAdapter;
     private String Value,CurrentUserId;
     private ArrayList<UserPost> userPosts = new ArrayList<>();
-    private DatabaseReference userPostRef;
+    private DatabaseReference userPostRef,statusRef;
     private ProgressBar progressBar;
     private ImageView noPostImage;
+    private CircularStatusView circularStatusView;
     private BroadcastReceiver broadcastReceiver = new CheckInternetConnection();
 
     @Override
@@ -77,6 +87,7 @@ public class UserProfile extends AppCompatActivity {
         address = (TextView)findViewById(R.id.address);
         bio = (TextView)findViewById(R.id.bio);
         UsersName = (TextView)findViewById(R.id.users_name);
+        circularStatusView = findViewById(R.id.circular_status_view);
 
         ProfileImage = (CircleImageView)findViewById(R.id.profile_Image);
 
@@ -90,9 +101,9 @@ public class UserProfile extends AppCompatActivity {
         Value = getIntent().getExtras().get("UserFriendsValue").toString();
 
         userPostRef = FirebaseDatabase.getInstance().getReference("Post").child(CurrentUserId);
+        statusRef = FirebaseDatabase.getInstance().getReference("All Status").child(CurrentUserId);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
-//        bottomNavigationView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
 
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
@@ -103,17 +114,6 @@ public class UserProfile extends AppCompatActivity {
 
         profilePostAdapter = new ProfilePostAdapter(Value,UserProfile.this,userPosts);
         recyclerView.setAdapter(profilePostAdapter);
-
-        ProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ViewProfileImage.class);
-                intent.putExtra("Value",Value);
-                startActivity(intent);
-                finish();
-
-            }
-        });
 
         ViewFriend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +162,73 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(UserProfile.this, error.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        statusRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    UserStatus userStatus = snapshot.getValue(UserStatus.class);
+                    ArrayList<Status> arrayList = new ArrayList<>();
+                    for (DataSnapshot snapshot1 : snapshot.child("status").getChildren()){
+                        Status status = snapshot1.getValue(Status.class);
+                        arrayList.add(status);
+                    }
+                    assert userStatus != null;
+                    userStatus.setStatusList(arrayList);
+                    circularStatusView.setVisibility(View.VISIBLE);
+
+                    circularStatusView.setPortionsCount(userStatus.getStatusList().size());
+
+                    ProfileImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ArrayList<MyStory> myStories = new ArrayList<>();
+                            for(Status status: userStatus.getStatusList()){
+                                myStories.add(new MyStory(status.getStatusUrl()));
+                            }
+
+                            new StoryView.Builder(getSupportFragmentManager())
+                                    .setStoriesList(myStories) // Required
+                                    .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
+                                    .setTitleText(userStatus.getName())
+                                    .setSubtitleText(userStatus.getUserName())// Default is Hidden// Default is Hidden
+                                    .setTitleLogoUrl(userStatus.getProfileImage())// Default is Hidden
+                                    .setStoryClickListeners(new StoryClickListeners() {
+                                        @Override
+                                        public void onDescriptionClickListener(int position) {
+
+                                        }
+
+                                        @Override
+                                        public void onTitleIconClickListener(int position) {
+
+                                        }
+                                    }) // Optional Listeners
+                                    .build() // Must be called before calling show method
+                                    .show();
+                        }
+                    });
+                }else {
+                    ProfileImage.setBorderWidth(3);
+                    ProfileImage.setBorderColor(Color.BLACK);
+                    ProfileImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getApplicationContext(), ViewProfileImage.class);
+                            intent.putExtra("Value",Value);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    Log.e("TAG ","Not found any status");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

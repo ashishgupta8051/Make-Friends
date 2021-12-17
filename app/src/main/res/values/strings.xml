@@ -53,7 +53,7 @@
     <string name="pickWallBtn">Pick Image</string>
     <string name="setBtn">Set</string>
     //Send friend request
-    <string name="privacyPolicyTxt">Privacy Policy</string>
+    <string name="privacyPolicyTxt">Privacy</string>
     <string name="addFriendBtn"> Add friend </string>
     <string name="messageBtn"> Message </string>
     <string name="declineReqBtn"> Decline </string>

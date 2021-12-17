@@ -22,6 +22,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/more"
+            android:background="?selectableItemBackground"
             android:layout_marginTop="5dp"
             android:layout_marginRight="2dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -143,11 +144,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
+            android:background="?selectableItemBackground"
             android:textColor="@color/charcoal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/post_like2"
-            app:layout_constraintTop_toBottomOf="@+id/post_image2"
-            app:layout_constraintRight_toLeftOf="@+id/post_dislike2"/>
+            app:layout_constraintRight_toLeftOf="@+id/post_dislike2"
+            app:layout_constraintTop_toBottomOf="@+id/post_image2" />
 
         <ImageView
             android:id="@+id/post_dislike2"
@@ -165,6 +167,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textColor="@color/charcoal"
+            android:background="?selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/post_dislike2"
             app:layout_constraintTop_toBottomOf="@+id/post_image2"
@@ -187,6 +190,7 @@
             android:layout_marginLeft="15dp"
             android:singleLine="true"
             android:textColor="@color/charcoal"
+            android:background="?selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/post_comment2"
             app:layout_constraintTop_toBottomOf="@+id/post_image2" />

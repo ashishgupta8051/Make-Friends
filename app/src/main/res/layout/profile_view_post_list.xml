@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="115dp"
     android:layout_height="115dp"
+    android:background="?selectableItemBackground"
     android:layout_marginBottom="@dimen/_2sdp"
     android:layout_gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto">

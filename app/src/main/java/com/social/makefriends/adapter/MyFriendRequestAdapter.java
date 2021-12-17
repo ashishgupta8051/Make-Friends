@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
 import com.social.makefriends.friendrequest.SendFriendRequestDuplicate;
 import com.social.makefriends.model.Friends;
+import com.social.makefriends.model.NotificationModel;
 import com.social.makefriends.model.Request;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.notification.Client;
@@ -49,6 +50,8 @@ public class MyFriendRequestAdapter extends FirebaseRecyclerAdapter<Request, MyF
     private DatabaseReference getUserDatabaseReference,currentUserDatabaseReference,makeFriend,SendFriendRequestRef;
     private Activity activity;
     private APIService apiService;
+    private DatabaseReference notificationRef;
+    private NotificationModel notificationModel;
 
     public MyFriendRequestAdapter(@NonNull FirebaseRecyclerOptions<Request> options , Activity activity) {
         super(options);
@@ -63,6 +66,7 @@ public class MyFriendRequestAdapter extends FirebaseRecyclerAdapter<Request, MyF
         String UserId = model.getSenderUid();
         getUserDatabaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(UserId);
         currentUserDatabaseReference = FirebaseDatabase.getInstance().getReference("User Details").child(CurrentUserId);
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
         getUserDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -161,6 +165,11 @@ public class MyFriendRequestAdapter extends FirebaseRecyclerAdapter<Request, MyF
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserDetails userDetails = snapshot.child(FirebaseAuth.getInstance().getUid()).getValue(UserDetails.class);
+                notificationModel = new NotificationModel(userDetails.getUsersName(),msg);
+                if (!FirebaseAuth.getInstance().getUid().equals(userId)){
+                    String key = notificationRef.push().getKey();
+                    notificationRef.child(userId).child(key).setValue(notificationModel);
+                }
                 sendNotification(FirebaseAuth.getInstance().getUid(), userId,userDetails.getUserName(),msg);
             }
 

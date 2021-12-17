@@ -23,7 +23,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".manage.userpost.PlayPostVideo"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/ImageTheme"/>
         <activity android:name=".loginactivity.OTPVerification" />
         <activity android:name=".loginactivity.LoginWithPhone" />
         <activity android:name=".loginactivity.ChangePassword" />

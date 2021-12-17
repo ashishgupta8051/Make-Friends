@@ -72,7 +72,9 @@ public class UploadVideo extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
 
         binding.upload.setOnClickListener(view -> {
-            if (binding.postCaption.getText().toString().isEmpty()){
+            if (finalUri == null){
+                Toast.makeText(requireContext(), "Please select the video", Toast.LENGTH_SHORT).show();
+            }else if (binding.postCaption.getText().toString().isEmpty()){
                 binding.postCaption.requestFocus();
                 binding.postCaption.setError("Enter your caption");
             }else {

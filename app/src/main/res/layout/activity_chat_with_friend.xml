@@ -140,11 +140,11 @@
         android:id="@+id/thumb"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/thumb"
-        android:layout_marginRight="10dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="4.6dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="4.6dp"
+        android:src="@drawable/thumb" />
 
     <ImageView
         android:id="@+id/emoji"

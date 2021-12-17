@@ -45,7 +45,6 @@ public class MyFriends extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);

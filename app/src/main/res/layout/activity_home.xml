@@ -7,34 +7,45 @@
     android:layout_height="match_parent"
     tools:context=".activity.Home">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_navigationview">
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_recycle_view"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/home_view_post_list"
-            />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/purple_500"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/statusRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:reverseLayout="false"
+                tools:listitem="@layout/status_list" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_recycle_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_below="@id/statusRecyclerView"
+                tools:listitem="@layout/home_view_post_list"
+                />
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/purple_500"
+        android:layout_centerInParent="true"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigationview"

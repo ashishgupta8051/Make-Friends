@@ -6,63 +6,78 @@
     android:layout_height="match_parent"
     tools:context=".fragment.UploadVideo">
 
-    <ImageView
-        android:id="@+id/pickVideo2"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:visibility="gone"
-        android:src="@drawable/upload_video"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_alignParentEnd="true"/>
-
-    <VideoView
-        android:id="@+id/post_video"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_below="@+id/pickVideo2"
-        android:layout_height="@dimen/_290sdp"
-        android:scaleType="centerCrop"
-        android:visibility="invisible" />
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
-    <ImageView
-        android:id="@+id/pickVideo"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_290sdp"
-        android:padding="@dimen/_40sdp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/upload_video" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/post_video"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <EditText
-            android:id="@+id/post_caption"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:gravity="top"
-            android:singleLine="true"
-            android:inputType="text"
-            android:hint="@string/caption_hint"/>
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/pickVideo2"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:visibility="gone"
+                android:src="@drawable/upload_video"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_alignParentEnd="true"/>
 
-    <Button
-        android:id="@+id/upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout8"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="3dp"
-        android:backgroundTint="@color/purple_500"
-        android:text="@string/upload_video"
-        android:textColor="@color/white" />
+            <VideoView
+                android:id="@+id/post_video"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/pickVideo2"
+                android:layout_height="@dimen/_290sdp"
+                android:scaleType="centerCrop"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/pickVideo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_290sdp"
+                android:padding="@dimen/_40sdp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/upload_video" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/post_video"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <EditText
+                    android:id="@+id/post_caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:gravity="top"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    android:hint="@string/caption_hint"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/upload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout8"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="3dp"
+                android:backgroundTint="@color/purple_500"
+                android:text="@string/upload_video"
+                android:textColor="@color/white" />
+
+
+        </RelativeLayout>
+
+
+    </ScrollView>
 
 </RelativeLayout>
