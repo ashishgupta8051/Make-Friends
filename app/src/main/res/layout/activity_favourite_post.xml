@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".manage.userpost.FavouritePost">
+    tools:context=".ui.activity.userpost.FavouritePost">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fav_recyclerView"

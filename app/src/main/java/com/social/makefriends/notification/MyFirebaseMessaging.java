@@ -3,13 +3,9 @@ package com.social.makefriends.notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,9 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.social.makefriends.R;
-import com.social.makefriends.friendrequest.SendFriendRequestDuplicate;
-import com.social.makefriends.friendrequest.chatting.ChatWithFriends;
-import com.social.makefriends.manage.userpost.UserPostComment;
+import com.social.makefriends.ui.activity.chat.friendrequest.SendFriendRequestDuplicate;
+import com.social.makefriends.ui.activity.chat.ChatWithFriends;
 import com.social.makefriends.model.UserDetails;
 
 import java.util.Random;

@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/adddrwable.xml" value="0.1828125" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/borderline.xml" value="0.1984375" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/ic_baseline_signal_wifi_off_24.xml" value="0.1725" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/ic_round_play_circle_outline_24.xml" value="0.1828125" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/phone_number_background.xml" value="0.1828125" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/play.xml" value="0.1828125" />
@@ -21,7 +22,7 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_send_friend_request.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_send_friend_request_duplicate.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
-        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_tab_layout_view.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_tab_layout_view.xml" value="0.18" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_update_post.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_user_post_comment.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_user_profile.xml" value="0.25" />
@@ -33,13 +34,13 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/bottomsheet_attachment.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/chat_list.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/fragment_friend_request.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/fragment_my_friends.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/fragment_my_friends.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/fragment_upload_photo.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/fragment_upload_status.xml" value="0.18" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/fragment_upload_video.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/friend_request_status_list.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/home_view_post_list.xml" value="0.33" />
-        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/internet_alert_dialog.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/internet_alert_dialog.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/messages_list.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/notification_list.xml" value="0.33" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/post_comment_list.xml" value="0.16666666666666666" />

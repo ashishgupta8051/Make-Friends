@@ -1,47 +1,28 @@
 package com.social.makefriends.adapter;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.devlomi.circularstatusview.CircularStatusView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
-import com.social.makefriends.activity.Home;
+import com.social.makefriends.ui.activity.home.Home;
 
 import com.social.makefriends.model.Status;
-import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.model.UserStatus;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import omari.hamza.storyview.StoryView;
-import omari.hamza.storyview.callback.OnStoryChangedCallback;
 import omari.hamza.storyview.callback.StoryClickListeners;
 import omari.hamza.storyview.model.MyStory;
 

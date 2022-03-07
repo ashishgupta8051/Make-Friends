@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
-import com.social.makefriends.friendrequest.chatting.ChatWithFriends;
+import com.social.makefriends.ui.activity.chat.ChatWithFriends;
 import com.social.makefriends.model.ChatMessages;
 import com.social.makefriends.model.ExistsChatUser;
 import com.social.makefriends.model.ViewModel;
@@ -277,7 +277,7 @@ public class FriendChatListAdapter extends RecyclerView.Adapter<FriendChatListAd
 
 
     private void ClickItem(ChatHolder holder) {
-        String s = existsChatUsers.get(holder.getAdapterPosition());
+        String s = existsChatUsers.get(holder.getAbsoluteAdapterPosition());
         if (holder.Check.getVisibility() == View.GONE){
             holder.Check.setVisibility(View.VISIBLE);
             selectList.add(s);

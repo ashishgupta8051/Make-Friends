@@ -32,8 +32,7 @@ import com.social.makefriends.R;
 import com.social.makefriends.model.AllPost;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.model.UserPost;
-import com.social.makefriends.manage.userpost.ViewPost;
-import com.squareup.picasso.Picasso;
+import com.social.makefriends.ui.activity.userpost.ViewPost;
 
 import java.util.List;
 

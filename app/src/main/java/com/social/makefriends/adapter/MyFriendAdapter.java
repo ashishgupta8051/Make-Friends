@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
-import com.social.makefriends.friendrequest.SendFriendRequestDuplicate;
+import com.social.makefriends.ui.activity.chat.friendrequest.SendFriendRequestDuplicate;
 import com.social.makefriends.model.Friends;
 import com.squareup.picasso.Picasso;
 

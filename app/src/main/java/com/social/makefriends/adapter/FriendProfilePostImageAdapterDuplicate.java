@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -30,11 +29,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.social.makefriends.R;
-import com.social.makefriends.manage.userpost.ViewPost;
+import com.social.makefriends.ui.activity.userpost.ViewPost;
 import com.social.makefriends.model.AllPost;
 import com.social.makefriends.model.UserDetails;
 import com.social.makefriends.model.UserPost;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 

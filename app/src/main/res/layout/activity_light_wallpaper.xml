@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:scrollbars="none"
-    tools:context=".friendrequest.chatting.background.LightWallpaper">
+    tools:context=".ui.activity.chat.wallpaper.LightWallpaper">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

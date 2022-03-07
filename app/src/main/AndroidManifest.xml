@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".ui.EmojiAppication"
+        android:name=".utils.EmojiAppication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_app_icon"
@@ -22,48 +22,48 @@
         android:theme="@style/MakeFriends"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".manage.userpost.PlayPostVideo"
+            android:name=".ui.activity.userpost.PlayPostVideo"
             android:exported="true"
             android:theme="@style/ImageTheme"/>
-        <activity android:name=".loginactivity.OTPVerification" />
-        <activity android:name=".loginactivity.LoginWithPhone" />
-        <activity android:name=".loginactivity.ChangePassword" />
-        <activity android:name=".manage.userpost.PostLikedUsers" />
-        <activity android:name=".manage.userpost.PostDislikedUsers" />
-        <activity android:name=".manage.userpost.FavouritePost" />
-        <activity android:name=".settings.SettingsActivity" />
-        <activity android:name=".friendrequest.chatting.ShareMessages" />
-        <activity android:name=".friendrequest.chatting.background.DarkWallpaper" />
-        <activity android:name=".friendrequest.chatting.background.LightWallpaper" />
-        <activity android:name=".friendrequest.chatting.background.SelectWallpaper" />
+        <activity android:name=".ui.activity.account.OTPVerification" />
+        <activity android:name=".ui.activity.account.LoginWithPhone" />
+        <activity android:name=".ui.activity.account.ChangePassword" />
+        <activity android:name=".ui.activity.userpost.PostLikedUsers" />
+        <activity android:name=".ui.activity.userpost.PostDislikedUsers" />
+        <activity android:name=".ui.activity.userpost.FavouritePost" />
+        <activity android:name=".ui.activity.seetings.SettingsActivity" />
+        <activity android:name=".ui.activity.chat.ShareMessages" />
+        <activity android:name=".ui.activity.chat.wallpaper.DarkWallpaper" />
+        <activity android:name=".ui.activity.chat.wallpaper.LightWallpaper" />
+        <activity android:name=".ui.activity.chat.wallpaper.SelectWallpaper" />
         <activity
-            android:name=".friendrequest.chatting.background.ViewWallpaper"
+            android:name=".ui.activity.chat.ViewWallpaper"
             android:theme="@style/ChangeTheme" />
         <activity
-            android:name=".friendrequest.chatting.ViewMessageImages"
+            android:name=".ui.activity.chat.ViewMessageImages"
             android:theme="@style/ChangeTheme" />
         <activity
-            android:name=".manage.userprofile.ViewProfileImage"
+            android:name=".ui.activity.userprofile.ViewProfileImage"
             android:theme="@style/ImageTheme" />
         <activity
-            android:name=".friendrequest.chatting.ChatWithFriends"
+            android:name=".ui.activity.chat.ChatWithFriends"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".friendrequest.SendFriendRequestDuplicate" />
-        <activity android:name=".ui.TabLayoutView" />
-        <activity android:name=".friendrequest.SendFriendRequest" />
-        <activity android:name=".manage.userpost.ViewPost" />
-        <activity android:name=".friendrequest.SearchFriends" />
-        <activity android:name=".manage.userpost.UserPostComment" />
-        <activity android:name=".manage.userpost.UpdatePost" />
-        <activity android:name=".manage.userprofile.UpdateProfile" />
-        <activity android:name=".activity.Post" />
-        <activity android:name=".activity.UserProfile" />
-        <activity android:name=".activity.Notifications" />
-        <activity android:name=".activity.Chats" />
-        <activity android:name=".activity.Home" />
-        <activity android:name=".loginactivity.ResetPassword" />
-        <activity android:name=".loginactivity.SignUp" />
-        <activity android:name=".loginactivity.Login" /> <!-- For Image Editor -->
+        <activity android:name=".ui.activity.chat.friendrequest.SendFriendRequestDuplicate" />
+        <activity android:name=".utils.TabLayoutView" />
+        <activity android:name=".ui.activity.chat.friendrequest.SendFriendRequest" />
+        <activity android:name=".ui.activity.userpost.ViewPost" />
+        <activity android:name=".ui.activity.home.SearchFriends" />
+        <activity android:name=".ui.activity.userpost.UserPostComment" />
+        <activity android:name=".ui.activity.userpost.UpdatePost" />
+        <activity android:name=".ui.activity.userprofile.UpdateProfile" />
+        <activity android:name=".ui.activity.userpost.Post" />
+        <activity android:name=".ui.activity.userprofile.UserProfile" />
+        <activity android:name=".ui.activity.notification.Notifications" />
+        <activity android:name=".ui.activity.chat.Chats" />
+        <activity android:name=".ui.activity.home.Home" />
+        <activity android:name=".ui.activity.account.ResetPassword" />
+        <activity android:name=".ui.activity.account.SignUp" />
+        <activity android:name=".ui.activity.account.Login" /> <!-- For Image Editor -->
         <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity" />
         <activity android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorStickerActivity" />
         <activity
@@ -101,7 +101,7 @@
         </service>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

@@ -4,22 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.TabLayoutView">
+    tools:context=".utils.TabLayoutView">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/_40sdp"
         android:background="@color/purple_500"
-        app:tabIndicatorColor="@color/purple_200"
-        app:tabTextColor="@color/white" />
+        android:orientation="horizontal">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_1sdp"
+            android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/myFriends"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:singleLine="true"
+                android:textStyle="bold"
+                android:text="My Friends"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+            <View
+                android:id="@+id/myFriendView"
+                android:background="@color/white"
+                android:layout_marginTop="-3dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2sdp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_1sdp"
+            android:layout_height="fill_parent"
+            android:layout_width="0dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/friendReq"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:singleLine="true"
+                android:text="@string/friend_request"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+
+            <View
+                android:id="@+id/friendReqView"
+                android:background="@color/white"
+                android:layout_marginTop="-3dp"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2sdp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tab_layout"
-        />
+        android:layout_below="@+id/linearLayout" />
 
 </RelativeLayout>

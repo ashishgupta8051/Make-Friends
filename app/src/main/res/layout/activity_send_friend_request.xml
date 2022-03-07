@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".friendrequest.SendFriendRequest">
+    tools:context=".ui.activity.chat.friendrequest.SendFriendRequest">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/friend_request_const1"
