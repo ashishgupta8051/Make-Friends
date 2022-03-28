@@ -79,7 +79,7 @@ public class Chats extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         friendChatListAdapter = new FriendChatListAdapter(existsChatUsers, Chats.this,stringArrayList);
-        recyclerView.setAdapter(friendChatListAdapter);
+        //recyclerView.setAdapter(friendChatListAdapter);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
         bottomNavigationView.setSelectedItemId(R.id.nav_chat);

@@ -39,6 +39,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
+import com.example.jean.jcplayer.JcPlayerManagerListener;
+import com.example.jean.jcplayer.general.JcStatus;
 import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -1458,7 +1460,7 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                         public void onClick(View v) {
                             Dialog dialog = new Dialog(v.getContext());
                             dialog.setContentView(R.layout.audio_bottom_sheet);
-                            dialog.setCanceledOnTouchOutside(false);
+
 
                             JcPlayerView jcplayerView = dialog.findViewById(R.id.jcplayer);
                             ListView listView = dialog.findViewById(R.id.audio_list);
@@ -1471,6 +1473,14 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                                     jcplayerView.playAudio(jcAudios.get(position));
                                 }
                             });
+
+                            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialogInterface) {
+                                    jcplayerView.pause();
+                                }
+                            });
+
                             jcplayerView.createNotification();
                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);
@@ -1665,6 +1675,14 @@ public class RetrieveMessageAdapter extends RecyclerView.Adapter<RetrieveMessage
                                     jcplayerView.playAudio(jcAudios.get(position));
                                 }
                             });
+
+                            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                @Override
+                                public void onCancel(DialogInterface dialogInterface) {
+                                    jcplayerView.pause();
+                                }
+                            });
+
                             jcplayerView.createNotification();
                             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);

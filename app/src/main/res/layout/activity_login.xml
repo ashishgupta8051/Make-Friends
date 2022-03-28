@@ -120,7 +120,7 @@
             <Button
                 android:id="@+id/login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_marginTop="10dp"
                 android:text="@string/loginBtn"
                 android:textColor="@color/white"
@@ -156,12 +156,11 @@
 
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/google_login"
-                android:layout_width="match_parent"
-                android:layout_height="49.5dp"
-                android:layout_marginTop="6dp"
-
+                android:layout_width="@dimen/_130sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_11sdp"
+                app:layout_constraintRight_toLeftOf="@id/loginWithPhone"
                 app:layout_constraintTop_toBottomOf="@+id/text"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 
 
@@ -172,6 +171,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
+                android:visibility="gone"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 app:layout_constraintRight_toRightOf="parent"
@@ -181,7 +181,7 @@
 
             <Button
                 android:id="@+id/loginWithPhone"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/_130sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/loginWithPhoneBtn"
                 android:textAllCaps="false"
@@ -189,9 +189,10 @@
                 android:padding="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_2sdp"
                 android:layout_marginRight="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:backgroundTint="@color/teal_700"
-                app:layout_constraintTop_toBottomOf="@+id/facebook_login_button"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text"
+                app:layout_constraintLeft_toRightOf="@id/google_login"
                 app:layout_constraintRight_toRightOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

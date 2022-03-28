@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:background="@color/purple_500"/>
+        android:background="@color/purple_500" />
 
     <ImageView
         android:id="@+id/chat_background"
@@ -109,22 +109,22 @@
         android:id="@+id/chat_input_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="46dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="58dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/message_editbox_border"
         android:hint="@string/messageHint"
-        android:textColorHint="@color/text_hint_color"
         android:maxHeight="90dp"
-        android:paddingRight="20dp"
         android:paddingLeft="40dp"
         android:paddingTop="5dp"
+        android:paddingRight="20dp"
         android:paddingBottom="5dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
         android:textColor="@color/black"
-        android:textSize="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/message_editbox_border"/>
+        android:textColorHint="@color/text_hint_color"
+        android:textSize="16dp" />
 
     <ImageView
         android:id="@+id/chat_message3"

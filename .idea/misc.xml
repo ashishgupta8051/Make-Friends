@@ -10,15 +10,17 @@
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/phone_number_background.xml" value="0.1828125" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/play.xml" value="0.1828125" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/drawable/play_video.xml" value="0.1828125" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_change_password.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_chat_with_friend.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_chats.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_home.xml" value="0.12805122048819528" />
-        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_login_with_phone.xml" value="0.25" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_notification.xml" value="0.1" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_otpvarification.xml" value="0.21" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_play_post_video.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_post.xml" value="0.33" />
+        <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_reset_password.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_send_friend_request.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_send_friend_request_duplicate.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/LENOVO/AndroidStudioProjects/Make Friends/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
