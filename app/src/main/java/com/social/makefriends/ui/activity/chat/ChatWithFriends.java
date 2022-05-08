@@ -309,11 +309,12 @@ public class ChatWithFriends extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ChatWithFriends.this);
                 View view = getLayoutInflater().inflate(R.layout.bottomsheet_attachment,null);
 
-                final ImageView pickCamera = (ImageView) view.findViewById(R.id.pick_camera_click_image);
-                final ImageView pickImage = (ImageView) view.findViewById(R.id.pick_image);
-                final ImageView pickVideo = (ImageView) view.findViewById(R.id.pick_video);
-                final ImageView pickAudio = (ImageView) view.findViewById(R.id.pick_audio);
-                final ImageView pickFiles = (ImageView) view.findViewById(R.id.pick_file);
+
+                final ImageView pickCamera = view.findViewById(R.id.pick_camera_click_image);
+                final ImageView pickImage = view.findViewById(R.id.pick_image);
+                final ImageView pickVideo = view.findViewById(R.id.pick_video);
+                final ImageView pickAudio = view.findViewById(R.id.pick_audio);
+                final ImageView pickFiles = view.findViewById(R.id.pick_file);
 
                 builder.setView(view);
                 AlertDialog alertDialog = builder.create();
@@ -2606,7 +2607,7 @@ public class ChatWithFriends extends AppCompatActivity {
                         public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                             if (response.code() == 200){
                                 if (response.body().success != 1){
-//                                    Toast.makeText(ChatWithFriends.this, "Failed!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatWithFriends.this, "Failed!!", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

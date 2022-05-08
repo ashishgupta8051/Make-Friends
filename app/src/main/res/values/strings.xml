@@ -27,7 +27,7 @@
     <string name="loginBtn">Login</string>
     <string name="message1">Don\'t have an Account, Create new Account</string>
     <string name="message2">Or Login With</string>
-    <string name="loginWithPhoneBtn">Login With Phone</string>
+    <string name="loginWithPhoneBtn">Phone</string>
     //Login with phone
     <string name="signIn_with_phone_txt">Sign In With Phone</string>
     <string name="message3">Please enter your phone number</string>

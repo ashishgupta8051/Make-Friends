@@ -157,7 +157,7 @@
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/google_login"
                 android:layout_width="@dimen/_130sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="@dimen/_42sdp"
                 android:layout_marginTop="@dimen/_11sdp"
                 app:layout_constraintRight_toLeftOf="@id/loginWithPhone"
                 app:layout_constraintTop_toBottomOf="@+id/text"
@@ -186,6 +186,7 @@
                 android:text="@string/loginWithPhoneBtn"
                 android:textAllCaps="false"
                 android:textStyle="bold"
+                android:drawableLeft="@drawable/phone"
                 android:padding="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_2sdp"
                 android:layout_marginRight="@dimen/_2sdp"

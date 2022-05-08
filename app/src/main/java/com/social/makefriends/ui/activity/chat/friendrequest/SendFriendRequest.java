@@ -178,13 +178,13 @@ public class SendFriendRequest extends AppCompatActivity {
                     Button4.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           /* Intent intent = new Intent(SendFriendRequest.this, ChatWithFriends.class);
+                            Intent intent = new Intent(SendFriendRequest.this, ChatWithFriends.class);
                             intent.putExtra("Value",Value);
                             intent.putExtra("UserId",UserId);
                             intent.putExtra("Image",ProfileImage);
                             intent.putExtra("ChatBackground",wallpaper);
                             startActivity(intent);
-                            finish();*/
+                            finish();
                         }
                     });
                 }else {
